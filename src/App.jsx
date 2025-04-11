@@ -1,10 +1,12 @@
 import "./App.css";
+import { Box } from "@mui/material";
+import SignUp from "./pages/SignUp";
 
 function App() {
   return (
-    <div>
-      <h1>Shoes Hub Guyss !!</h1>
-    </div>
+    <Box>
+      <SignUp />
+    </Box>
   );
 }
 
