@@ -1,15 +1,9 @@
 import React, { useState } from "react";
-import {
-  Box,
-  Button,
-  Container,
-  Link,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Container, Link, Typography } from "@mui/material";
 import { Field, Form, Formik } from "formik";
+import InputBox from "../componets/InputBox";
 
-function SignUp() {
+function SignUp(props) {
   const [ini, setIni] = useState({
     name: "",
     email: "",
@@ -38,74 +32,78 @@ function SignUp() {
                   <label className="!text-black" htmlFor="Name">
                     Name
                   </label>
-                  <Field
-                    as={TextField}
-                    name="name"
-                    placeholder="Andrews Stantham"
-                    variant="outlined"
-                    className="w-full "
-                    sx={TextFieldStyle}
-                  />
+                  <Field name="name">
+                    {({ field, form }) => (
+                      <InputBox
+                        field={field}
+                        form={form}
+                        placeholder="Andrews Stantham"
+                      />
+                    )}
+                  </Field>
                 </Box>
 
                 <Box>
                   <label className=" !text-black" htmlFor="Email">
                     Email
                   </label>
-                  <Field
-                    as={TextField}
-                    name="email"
-                    placeholder="Example@email.com"
-                    type="email"
-                    variant="outlined"
-                    className="w-full "
-                    sx={TextFieldStyle}
-                    required
-                  />
+                  <Field name="email">
+                    {({ field, form }) => (
+                      <InputBox
+                        field={field}
+                        form={form}
+                        placeholder="you@example.com"
+                        type="email"
+                      />
+                    )}
+                  </Field>
                 </Box>
 
                 <Box>
                   <label className=" !text-black" htmlFor="Phone No.">
                     Phone No.
                   </label>
-                  <Field
-                    as={TextField}
-                    name="mobile"
-                    placeholder="+91 956 8972 525"
-                    type="number"
-                    variant="outlined"
-                    className="w-full "
-                    sx={TextFieldStyle}
-                  />
+                  <Field name="mobile">
+                    {({ field, form }) => (
+                      <InputBox
+                        field={field}
+                        form={form}
+                        placeholder="+91 956 8972 525"
+                        type="number"
+                      />
+                    )}
+                  </Field>
                 </Box>
 
                 <Box>
                   <label className=" !text-black" htmlFor="Address">
                     Address
                   </label>
-                  <Field
-                    as={TextField}
-                    name="address"
-                    placeholder="Enter your currunt Address"
-                    variant="outlined"
-                    className="w-full "
-                    sx={TextFieldStyle}
-                  />
+                  <Field name="address">
+                    {({ field, form }) => (
+                      <InputBox
+                        field={field}
+                        form={form}
+                        placeholder="Enter your Address"
+                      />
+                    )}
+                  </Field>
                 </Box>
 
                 <Box>
                   <label className=" !text-black" htmlFor="Password">
                     Password
                   </label>
-                  <Field
-                    as={TextField}
-                    name="password"
-                    placeholder="at least 8 characters"
-                    variant="outlined"
-                    type="password"
-                    className="w-full "
-                    sx={TextFieldStyle}
-                  />
+                  <Field name="password">
+                    {({ field, form }) => (
+                      <InputBox
+                        field={field}
+                        form={form}
+                        placeholder="at least 8 characters"
+                        type="password"
+                      />
+                    )}
+                  </Field>
                 </Box>
 
                 {/* Primary Button  */}
@@ -130,14 +128,3 @@ function SignUp() {
 }
 
 export default SignUp;
-
-const TextFieldStyle = {
-  "& .MuiOutlinedInput-root": {
-    borderRadius: "12px",
-    backgroundColor: "#C9DBD54D",
-    padding: 0,
-    "& input": {
-      padding: "12px 16px",
-    },
-  },
-};
