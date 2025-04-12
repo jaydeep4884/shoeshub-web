@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { Box, Button, Container, TextField } from "@mui/material";
+import {
+  Box,
+  Button,
+  Container,
+  Link,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { Field, Form, Formik } from "formik";
 
 function SignUp() {
@@ -18,15 +25,15 @@ function SignUp() {
   return (
     <Box className="bg-[#FFF8F8]">
       <Container maxWidth>
-        <Box className="flex justify-center items-center  pt-14">
-          <Box className="bg-white py-11 shadow-xl rounded-[56px] px-16">
-            <h2 className="text-4xl font-bold mb-8">Welcome to ShoesHub 👋</h2>
+        <Box className="flex justify-center items-center  min-h-screen">
+          <Box className="bg-white p-12 shadow-xl rounded-[40px] ">
+            <h2 className="text-3xl font-bold mb-8">Welcome to ShoesHub 👋</h2>
             <Formik
               enableReinitialize
               initialValues={ini}
               onSubmit={handleSubmit}
             >
-              <Form className="flex flex-col gap-y-8">
+              <Form className="flex flex-col gap-y-5">
                 <Box>
                   <label className="!text-black" htmlFor="Name">
                     Name
@@ -36,13 +43,13 @@ function SignUp() {
                     name="name"
                     placeholder="Andrews Stantham"
                     variant="outlined"
-                    className="w-full !mt-2"
+                    className="w-full "
                     sx={TextFieldStyle}
                   />
                 </Box>
 
                 <Box>
-                  <label className="mb-2 !text-black" htmlFor="Email">
+                  <label className=" !text-black" htmlFor="Email">
                     Email
                   </label>
                   <Field
@@ -51,14 +58,14 @@ function SignUp() {
                     placeholder="Example@email.com"
                     type="email"
                     variant="outlined"
-                    className="w-full !mt-2"
+                    className="w-full "
                     sx={TextFieldStyle}
                     required
                   />
                 </Box>
 
                 <Box>
-                  <label className="mb-2 !text-black" htmlFor="Phone No.">
+                  <label className=" !text-black" htmlFor="Phone No.">
                     Phone No.
                   </label>
                   <Field
@@ -67,13 +74,13 @@ function SignUp() {
                     placeholder="+91 956 8972 525"
                     type="number"
                     variant="outlined"
-                    className="w-full !mt-2"
+                    className="w-full "
                     sx={TextFieldStyle}
                   />
                 </Box>
 
                 <Box>
-                  <label className="mb-2 !text-black" htmlFor="Address">
+                  <label className=" !text-black" htmlFor="Address">
                     Address
                   </label>
                   <Field
@@ -81,13 +88,13 @@ function SignUp() {
                     name="address"
                     placeholder="Enter your currunt Address"
                     variant="outlined"
-                    className="w-full !mt-2"
+                    className="w-full "
                     sx={TextFieldStyle}
                   />
                 </Box>
 
                 <Box>
-                  <label className="mb-2 !text-black" htmlFor="Password">
+                  <label className=" !text-black" htmlFor="Password">
                     Password
                   </label>
                   <Field
@@ -96,7 +103,7 @@ function SignUp() {
                     placeholder="at least 8 characters"
                     variant="outlined"
                     type="password"
-                    className="w-full !mt-2"
+                    className="w-full "
                     sx={TextFieldStyle}
                   />
                 </Box>
@@ -110,6 +117,9 @@ function SignUp() {
                 >
                   Sign Up
                 </Field>
+                <Typography className="text-center">
+                  Already Have An Account ? <Link>Login</Link>
+                </Typography>
               </Form>
             </Formik>
           </Box>
@@ -127,7 +137,7 @@ const TextFieldStyle = {
     backgroundColor: "#C9DBD54D",
     padding: 0,
     "& input": {
-      padding: "14px 20px",
+      padding: "12px 16px",
     },
   },
 };
