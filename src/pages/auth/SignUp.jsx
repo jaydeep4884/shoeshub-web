@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { Box, Button, Container, Link, Typography } from "@mui/material";
+import { Box, Button, Container, Typography } from "@mui/material";
 import { Field, Form, Formik } from "formik";
-import InputBox from "../componets/InputBox";
+import InputBox from "../../componets/InputBox";
+import { Link } from "react-router";
 
 function SignUp(props) {
   const [ini, setIni] = useState({
@@ -116,7 +117,10 @@ function SignUp(props) {
                   Sign Up
                 </Field>
                 <Typography className="text-center">
-                  Already Have An Account ? <Link>Login</Link>
+                  Already Have an Account ?{" "}
+                  <Link to="/" className="underline">
+                    Login
+                  </Link>
                 </Typography>
               </Form>
             </Formik>
