@@ -1,40 +1,39 @@
-import React, { useState } from "react";
 import { Box, Button, Container, Typography } from "@mui/material";
 import { Field, Form, Formik } from "formik";
-import InputBox from "../../componets/InputBox";
-import { Link } from "react-router";
+import InputBox from "../componets/ui/InputBox";
+import { Link, useNavigate } from "react-router";
 
-function Login(props) {
-  const [ini, setIni] = useState({
+function Login() {
+  const navigate = useNavigate();
+
+  const initialValues = {
     email: "",
     password: "",
-  });
+  };
 
   const handleSubmit = async (values, { resetForm }) => {
     console.log(values);
+    navigate("/");
     resetForm();
   };
+
   return (
     <Box className="bg-[#FFF8F8]">
       <Container maxWidth>
-        <Box className="flex justify-center items-center  min-h-screen">
-          <Box className="bg-white px-12 py-20 shadow-xl min-w-[35%] rounded-[40px] ">
+        <Box className="flex justify-center items-center min-h-screen">
+          <Box className="bg-white px-12 py-20 shadow-xl min-w-[35%] rounded-[40px]">
             <Box className="mb-10">
               <h2 className="text-3xl font-bold mb-5">Welcome Back 👋</h2>
               <Typography className="text-sm">
                 Today is a new day. It's your day. You shape it. <br />
-                Sign in to start Purchasing New Shoes !!
+                Sign in to start Purchasing New Shoes!!
               </Typography>
             </Box>
 
-            <Formik
-              enableReinitialize
-              initialValues={ini}
-              onSubmit={handleSubmit}
-            >
+            <Formik initialValues={initialValues} onSubmit={handleSubmit}>
               <Form className="flex flex-col gap-y-5">
                 <Box>
-                  <label className=" !text-black" htmlFor="Email">
+                  <label className="!text-black" htmlFor="email">
                     Email
                   </label>
                   <Field name="email">
@@ -50,7 +49,7 @@ function Login(props) {
                 </Box>
 
                 <Box>
-                  <label className=" !text-black" htmlFor="Password">
+                  <label className="!text-black" htmlFor="password">
                     Password
                   </label>
                   <Field name="password">
@@ -63,12 +62,11 @@ function Login(props) {
                       />
                     )}
                   </Field>
-                  <Typography className="text-end !mt-6 text-[#A98240]">
+                  <p className="text-end mt-6 text-[#A98240] cursor-pointer ">
                     Forgot Password?
-                  </Typography>
+                  </p>np
                 </Box>
 
-                {/* Primary Button  */}
                 <Field
                   as={Button}
                   className="!bg-black !rounded-xl !py-[10px] !capitalize !text-lg"
@@ -77,12 +75,13 @@ function Login(props) {
                 >
                   Login
                 </Field>
-                <Typography className="text-center">
-                  If you Don't Have an Account ?{" "}
+
+                <p className="text-center ">
+                  If you don't have an account,{" "}
                   <Link to="/signup" className="underline">
                     Register
                   </Link>
-                </Typography>
+                </p>
               </Form>
             </Formik>
           </Box>

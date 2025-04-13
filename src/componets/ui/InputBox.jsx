@@ -14,6 +14,7 @@ function InputBox({ field, form, ...props }) {
       helperText={hasError ? errors[name] : ""}
       variant="outlined"
       className="w-full"
+      required
       sx={{
         "& .MuiOutlinedInput-root": {
           borderRadius: "12px",
