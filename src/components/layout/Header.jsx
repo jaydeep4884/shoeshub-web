@@ -11,13 +11,13 @@ import {
 } from "@mui/material";
 import { X } from "lucide-react";
 import MenuIcon from "@mui/icons-material/Menu";
-
 import brand from "../img/brand.png";
 import search from "../img/icons/Search-icon.svg";
 import likeIcon from "../img/icons/like-icon.svg";
 import orderIcon from "../img/icons/order-icon.svg";
 import cartIcon from "../img/icons/cart-icon.svg";
 import locationIcon from "../img/icons/location-icon.svg";
+import { Link } from "react-router";
 
 const NAV_LINKS = ["Home", "Kids", "Men’s", "Women", "Couple"];
 
@@ -89,9 +89,11 @@ export default function Header() {
                 Cart
               </Box>
             </Box>
-            <button className="hidden md:flex px-4 py-1 border rounded-md hover:bg-slate-200">
-              Sign In
-            </button>
+            <Link to="/login">
+              <button className="hidden md:flex px-4 py-1 border rounded-md hover:bg-slate-200">
+                Sign In
+              </button>
+            </Link>
             <button
               className="md:hidden"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
