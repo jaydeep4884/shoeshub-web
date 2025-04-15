@@ -1,6 +1,6 @@
 import { Box, Button, Container } from "@mui/material";
 import { Field, Form, Formik } from "formik";
-import InputBox from "../componets/ui/InputBox";
+import InputBox from "../components/ui/InputBox";
 import { Link, useNavigate } from "react-router";
 
 function SignUp() {

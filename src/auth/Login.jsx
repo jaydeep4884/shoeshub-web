@@ -1,6 +1,6 @@
 import { Box, Button, Container, Typography } from "@mui/material";
 import { Field, Form, Formik } from "formik";
-import InputBox from "../componets/ui/InputBox";
+import InputBox from "../components/ui/InputBox";
 import { Link, useNavigate } from "react-router";
 
 function Login() {
@@ -64,7 +64,8 @@ function Login() {
                   </Field>
                   <p className="text-end mt-6 text-[#A98240] cursor-pointer ">
                     Forgot Password?
-                  </p>np
+                  </p>
+                  np
                 </Box>
 
                 <Field
