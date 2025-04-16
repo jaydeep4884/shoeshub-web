@@ -40,7 +40,14 @@ const Footer = () => {
   };
 
   return (
-    <footer className="w-full bg-[#F8F8F8]">
+    <footer
+      className="w-full !bg-[#faeded]"
+      style={{
+        borderTop: "10px solid",
+        borderImage:
+          " linear-gradient(to right, rgba(151, 71, 255, 1), rgba(255, 165, 0, 1)) 1",
+      }}
+    >
       <Container maxWidth="lg">
         <Box className="py-16">
           <Box className="flex flex-col lg:flex-row gap-10">
