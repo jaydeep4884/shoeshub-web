@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { X } from "lucide-react";
 import MenuIcon from "@mui/icons-material/Menu";
-import brand from "../img/brand.png";
+import brand from "../img/logo/brand.png";
 import search from "../img/icons/Search-icon.svg";
 import likeIcon from "../img/icons/like-icon.svg";
 import orderIcon from "../img/icons/order-icon.svg";
@@ -52,9 +52,9 @@ export default function Header() {
 
   return (
     <header className="w-full bg-white shadow-sm sticky top-0 z-50">
-      <Container maxWidth>
+      <Container maxWidth="lg">
         {/* Top Bar */}
-        <Box className="flex items-stretch justify-between flex-wrap px-4 py-3 md:pt-4 md:pb-0 gap-4">
+        <Box className="flex items-stretch !justify-between flex-wrap  py-3 md:pt-4 md:pb-0 gap-4">
           {/* Left */}
           <Box className="flex items-center gap-4 flex-1">
             <img src={brand} alt="brand" className="w-[100px]" />
@@ -104,7 +104,7 @@ export default function Header() {
         </Box>
 
         {/* Mobile Search */}
-        <Box className="md:hidden px-4 pb-2">
+        <Box className="md:hidden  pb-2">
           <Box className="flex items-center border rounded-md px-3 py-2">
             <input
               type="text"
@@ -117,7 +117,7 @@ export default function Header() {
       </Container>
 
       {/* Navigation Section */}
-      <Container maxWidth>
+      <Container maxWidth="lg">
         <nav className="bg-white">
           {/* Desktop Nav */}
           <Box className="hidden md:flex justify-between items-center py-4 text-sm text-gray-600">
