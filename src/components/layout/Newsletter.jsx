@@ -1,8 +1,13 @@
 import { Box, Container } from "@mui/material";
 import { Input } from "antd";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
+import { Field, Form, Formik } from "formik";
 
 function Newsletter() {
+  const handleSubmit = (values, { resetForm }) => {
+    console.log(values);
+    resetForm();
+  };
   return (
     <Box className="py-20 bg-white">
       <Container maxWidth="lg">
@@ -18,16 +23,27 @@ function Newsletter() {
               newsletter
             </p>
 
-            <Box className="flex items-stretch gap-x-2">
-              <Input
-                className="min-w-[375px]"
-                size="large"
-                placeholder="Enter your email"
-                prefix={<EmailOutlinedIcon className="opacity-50" />}
-              />
-              <button className="bg-black text-white rounded-[10px] py-2 px-8 font-medium text-lg">
-                Subscribe
-              </button>
+            <Box>
+              <Formik
+                enableReinitialize
+                initialValues={{ email: "" }}
+                onSubmit={handleSubmit}
+              >
+                <Form className="flex items-stretch gap-x-2">
+                  <Field
+                    as={Input}
+                    name="email"
+                    className="min-w-[375px]"
+                    size="large"
+                    placeholder="Enter your email"
+                    prefix={<EmailOutlinedIcon className="opacity-20" />}
+                    required
+                  />
+                  <button className="bg-black text-white rounded-[10px] py-2 px-8 font-medium text-lg">
+                    Subscribe
+                  </button>
+                </Form>
+              </Formik>
             </Box>
 
             <p className="tracking-[4%] font-semibold opacity-60 text-center">
