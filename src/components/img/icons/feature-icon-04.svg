@@ -1,0 +1,10 @@
+<svg width="40" height="35" viewBox="0 0 40 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="40" height="35" transform="matrix(-1 0 0 1 40 0)" fill="white"/>
+<path d="M26 8C26 5.79086 24.2091 4 22 4H15C12.7909 4 11 5.79086 11 8V25H26V8Z" stroke="black" stroke-width="2"/>
+<path d="M33.5 16L31 13H26V25H36V19L33.5 16Z" stroke="black" stroke-width="2" stroke-linejoin="round"/>
+<path d="M36 19H26.5" stroke="black" stroke-width="2" stroke-linecap="round"/>
+<circle cx="4" cy="4" r="3" transform="matrix(-1 0 0 1 34 22)" fill="#F5F5F5" stroke="black" stroke-width="2"/>
+<circle cx="4" cy="4" r="3" transform="matrix(-1 0 0 1 22 22)" fill="#F5F5F5" stroke="black" stroke-width="2"/>
+<line x1="1" y1="-1" x2="13" y2="-1" transform="matrix(-1 0 0 1 17 11)" stroke="black" stroke-width="2" stroke-linecap="round"/>
+<line x1="1" y1="-1" x2="13" y2="-1" transform="matrix(-1 0 0 1 17 17)" stroke="black" stroke-width="2" stroke-linecap="round"/>
+</svg>

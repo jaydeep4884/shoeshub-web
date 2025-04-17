@@ -49,7 +49,7 @@ const Footer = () => {
       }}
     >
       <Container maxWidth="lg">
-        <Box className="py-16">
+        <Box className="py-10 sm:py-14">
           <Box className="flex flex-col lg:flex-row gap-10">
             {/* Footer Left */}
             <Box className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:w-[60%] gap-8 ">
