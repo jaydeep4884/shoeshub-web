@@ -6,11 +6,13 @@ import Review from "../components/layout/Review";
 import Feature from "../components/layout/Feature";
 import Brands from "../components/layout/Brands";
 import Gift from "../components/layout/Gift";
+import Hero from "../components/layout/Hero";
 
 function Home() {
   return (
     <>
       <Header />
+      <Hero />
       <Feature />
       <Gift />
       <Brands />
