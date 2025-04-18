@@ -31,7 +31,7 @@ function Feature() {
 
   return (
     <Container maxWidth="lg">
-      <Box className="py-10 sm:py-14">
+      <Box className="py-5 sm:py-14">
         {/* Updated Heading */}
         <Box className="flex flex-col lg:flex-row items-start gap-2  lg:gap-10 lg:justify-between mb-10 lg:mb-16">
           <h1 className="text-2xl sm:text-3xl font-medium lg:w-[40%]">

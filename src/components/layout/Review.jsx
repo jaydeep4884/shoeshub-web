@@ -18,7 +18,7 @@ function Review() {
   ];
 
   return (
-    <Box className="py-10 sm:py-14">
+    <Box className="py-5 sm:py-14">
       <Container maxWidth="lg">
         {/* Heading */}
         <Box className="flex justify-center mb-10">

@@ -5,7 +5,7 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 function Gift() {
   return (
-    <Box className="py-10 sm:py-14 bg-white">
+    <Box className="py-5 sm:py-14 bg-white">
       {/* CONTAINER: Keeps content centered and not full-width */}
       <Box className="mx-auto w-full">
         <Box className="flex flex-col md:flex-row items-center bg-black text-white rounded-lg overflow-hidden">

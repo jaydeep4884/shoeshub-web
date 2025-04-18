@@ -31,7 +31,7 @@ const cardVariants = {
 const Brands = () => {
   return (
     <Container maxWidth="lg">
-      <Box className="py-10 sm:py-14" > 
+      <Box className="py-5 sm:py-14" > 
         <h2 className="text-[24px] sm:text-[28px] lg:text-[30px] font-medium mb-8 sm:mb-10 inline-block border-b-2 border-[#827B7B]">
           Explore Top Brands
         </h2>
