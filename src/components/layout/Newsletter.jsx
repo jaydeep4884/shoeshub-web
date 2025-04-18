@@ -10,7 +10,7 @@ function Newsletter() {
   };
 
   return (
-    <Box className="py-10 sm:py-16 px-4 ">
+    <Box className="py-10 sm:py-14 px-4 ">
       <Container maxWidth="lg">
         <Box className="flex justify-center">
           <Box className="flex flex-col items-center gap-y-5 w-full md:w-[80%] lg:w-[60%] ">
