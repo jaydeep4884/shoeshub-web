@@ -11,7 +11,6 @@ function SignUp() {
   const navigate = useNavigate();
   const Token = useContext(token);
 
-  // metanike@gmail.com
   const initialValues = {
     name: "",
     email: "",
@@ -35,7 +34,9 @@ function SignUp() {
       toast.dismiss(loadingToastId); // Dismiss loading toast
       if (res.data.status === "success") {
         toast.success("User Created Successfully!");
-        navigate("/login");
+        setTimeout(() => {
+          navigate("/login");
+        }, 2000);
       } else {
         toast.error("Failed to create user. Please try again.");
       }

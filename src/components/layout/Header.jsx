@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useContext, useMemo, useState } from "react";
 import countryList from "react-select-country-list";
 import styled from "styled-components";
 import {
@@ -8,6 +8,11 @@ import {
   FormControl,
   NativeSelect,
   Badge,
+  IconButton,
+  Avatar,
+  Menu,
+  MenuItem,
+  Typography,
 } from "@mui/material";
 import { X } from "lucide-react";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -18,13 +23,44 @@ import orderIcon from "../img/icons/order-icon.svg";
 import cartIcon from "../img/icons/cart-icon.svg";
 import locationIcon from "../img/icons/location-icon.svg";
 import { Link } from "react-router";
+import { AuthContext } from "../../assets/contexts";
 
 const NAV_LINKS = ["Home", "Kids", "Men’s", "Women", "Couple"];
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [country, setCountry] = useState("IN");
-  const options = useMemo(() => countryList().getData(), []);
+
+  const options = useMemo(() => {
+    try {
+      const data = countryList().getData();
+      return Array.isArray(data) ? data : [];
+    } catch (error) {
+      console.error("Error loading country list:", error);
+      return [];
+    }
+  }, []);
+
+  const { isAuthenticated } = useContext(AuthContext);
+  const settings = [
+    {
+      name: "Profile",
+      link: "/",
+    },
+    {
+      name: "Log Out",
+      link: "/login",
+    },
+  ];
+  const [anchorElUser, setAnchorElUser] = useState(null);
+
+  const handleOpenUserMenu = (event) => {
+    setAnchorElUser(event.currentTarget);
+  };
+
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
 
   const CountrySelector = (
     <Box className="flex items-center gap-2">
@@ -45,16 +81,16 @@ export default function Header() {
   );
 
   const NavLinks = NAV_LINKS.map((link) => (
-    <a key={link} href="/" className="hover:text-blue-600 py-1">
+    <Link key={link} to="/" className="hover:text-blue-600 py-1">
       {link}
-    </a>
+    </Link>
   ));
 
   return (
     <header className="w-full bg-white shadow-sm sticky top-0 z-50">
       <Container maxWidth="lg">
         {/* Top Bar */}
-        <Box className="flex items-stretch !justify-between flex-wrap  py-3 md:pt-4 md:pb-0 gap-4">
+        <Box className="flex items-stretch !justify-between flex-wrap py-3 md:pt-4 md:pb-0 gap-4">
           {/* Left */}
           <Box className="flex items-center gap-4 flex-1">
             <img src={brand} alt="brand" className="w-[100px]" />
@@ -72,7 +108,7 @@ export default function Header() {
           </Box>
 
           {/* Right */}
-          <Box className="flex items-center  gap-5 text-sm text-gray-600">
+          <Box className="flex items-center gap-5 text-sm text-gray-600">
             <Box className="hidden lg:flex gap-4">
               {[
                 { icon: orderIcon, text: "Orders" },
@@ -89,11 +125,44 @@ export default function Header() {
                 Cart
               </Box>
             </Box>
-            <Link to="/login">
-              <button className="hidden md:flex px-4 py-1 border rounded-md hover:bg-slate-200">
-                Sign In
-              </button>
-            </Link>
+
+            {isAuthenticated ? (
+              <Box>
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar
+                    alt="Remy Sharp"
+                    src="https://images.unsplash.com/photo-1740252117044-2af197eea287?q=80&w=2500&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                  />
+                </IconButton>
+                <Menu
+                  sx={{ mt: "45px" }}
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{ vertical: "top", horizontal: "right" }}
+                  keepMounted
+                  transformOrigin={{ vertical: "top", horizontal: "right" }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
+                >
+                  {settings.map((setting) => (
+                    <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                      <Link to={setting.link}>
+                        <Typography sx={{ textAlign: "center" }}>
+                          {setting.name}
+                        </Typography>
+                      </Link>
+                    </MenuItem>
+                  ))}
+                </Menu>
+              </Box>
+            ) : (
+              <Link to="/login">
+                <button className="hidden md:flex px-4 py-1 border rounded-md hover:bg-slate-200">
+                  Sign In
+                </button>
+              </Link>
+            )}
+
             <button
               className="md:hidden"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -104,7 +173,7 @@ export default function Header() {
         </Box>
 
         {/* Mobile Search */}
-        <Box className="md:hidden  pb-2">
+        <Box className="md:hidden pb-2">
           <Box className="flex items-center border rounded-md px-3 py-2">
             <input
               type="text"
@@ -144,7 +213,11 @@ export default function Header() {
               <Button className="!flex !items-center !gap-2 !bg-[#4094F7] !text-white !rounded-md hover:!bg-[#357de1]">
                 <MenuIcon fontSize="small" /> Categories
               </Button>
-              <button className="w-full border rounded-md py-1">Sign In</button>
+              <Link to="/login">
+                <button className="w-full border rounded-md py-1">
+                  Sign In
+                </button>
+              </Link>
             </Box>
           )}
         </nav>
