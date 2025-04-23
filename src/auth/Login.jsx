@@ -65,7 +65,6 @@ function Login() {
                   <p className="text-end mt-6 text-[#A98240] cursor-pointer ">
                     Forgot Password?
                   </p>
-                  np
                 </Box>
 
                 <Field

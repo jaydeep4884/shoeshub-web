@@ -3,12 +3,15 @@ import { Field, Form, Formik } from "formik";
 import InputBox from "../components/ui/InputBox";
 import { Link, useNavigate } from "react-router";
 import axios from "axios";
+import toast, { Toaster } from "react-hot-toast";
+import { useContext } from "react";
+import { token } from "../assets/contexts";
 
 function SignUp() {
   const navigate = useNavigate();
-  const Token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3Zjc1YTc3YmYzMzczMGY5NjI0ZTFmMiIsImlhdCI6MTc0NDI2Mzc5OX0.1TIh6YZqgiekXJZ_qzns74n2HCIqD57idf1bJ_5rFZQ";
+  const Token = useContext(token);
 
+  // metanike@gmail.com
   const initialValues = {
     name: "",
     email: "",
@@ -17,23 +20,31 @@ function SignUp() {
 
   const handleSubmit = async (values, { resetForm }) => {
     console.log(values);
+    const loadingToastId = toast.loading("Creating user...");
+
     try {
-      await axios
-        .post("https://ecommerce-karv.onrender.com/", values, {
+      const res = await axios.post(
+        "https://ecommerce-karv.onrender.com/",
+        values,
+        {
           headers: {
             Authorization: Token,
           },
-        })
-        .then((res) => {
-          console.log(res.data);
-          navigate("/login");
-          alert("User Created Successfully !");
-        });
+        }
+      );
+      toast.dismiss(loadingToastId); // Dismiss loading toast
+      if (res.data.status === "success") {
+        toast.success("User Created Successfully!");
+        navigate("/login");
+      } else {
+        toast.error("Failed to create user. Please try again.");
+      }
     } catch (error) {
-      console.log(error);
+      toast.dismiss(loadingToastId);
+      toast.error("Something went wrong!");
+      console.error(error);
     }
 
-    // navigate("/");
     resetForm();
   };
 
@@ -98,6 +109,7 @@ function SignUp() {
           </Box>
         </Box>
       </Container>
+      <Toaster />
     </Box>
   );
 }
