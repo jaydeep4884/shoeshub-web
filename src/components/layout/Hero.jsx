@@ -22,7 +22,7 @@ function Hero() {
   };
 
   return (
-    <Box className="pb-5 sm:pb-9">
+    <Box>
       <Box className="w-full">
         <Slider {...settings}>
           {[slide1, slide2, slide3, slide4, slide5].map((slide, index) => (

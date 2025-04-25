@@ -15,6 +15,7 @@ function App() {
           <Route path="login" element={<Login />} />
         </Route>
       </Routes>
+      {/* <NotFound /> */}
     </Box>
   );
 }
