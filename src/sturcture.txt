@@ -1,0 +1,50 @@
+src/
+├── assets/
+│   ├── images/
+│   └── icons/
+│   └── contexts/
+│       └── contexts.jsx
+├── auth/
+│   ├── Login.jsx
+│   └── SignUp.jsx
+├── components/
+│   ├── layout/            // Layout-related components
+│   │   ├── Header.jsx
+│   │   ├── Footer.jsx
+│   │   ├── Banner.jsx
+│   │   ├── Hero.jsx
+│   │   ├── Newsletter.jsx
+│   │   └── NotFound.jsx
+│   ├── ui/                // Small reusable UI components
+│   │   └── InputBox.jsx
+│   ├── products/          // Product-related components
+│   │   ├── BestShoes.jsx
+│   │   ├── Brands.jsx
+│   │   ├── Feature.jsx
+│   │   ├── Gift.jsx
+│   │   └── Review.jsx
+│   └── common/            // Shared components like buttons, modals, cards etc.
+│       └── (optional based on future needs)
+├── pages/                 // Pages that combine many components
+│   ├── Home.jsx
+│   ├── ProductDetails.jsx
+│   ├── Cart.jsx
+│   ├── Checkout.jsx
+│   └── (etc.)
+├── routes/                // For defining all routes
+│   └── AppRoutes.jsx
+├── services/              // For API calls (axios, etc.)
+│   └── productService.js
+├── hooks/                 // Custom hooks
+│   └── useAuth.js
+├── utils/                 // Helper functions
+│   └── formatPrice.js
+├── App.jsx
+├── index.jsx
+├── App.css
+├── index.css
+├── constants/             // Static data like countries, brands
+│   └── countries.js
+├── config/                // Environment configs
+│   └── firebaseConfig.js
+└── README.md

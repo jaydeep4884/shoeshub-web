@@ -1,12 +1,11 @@
-import { Box, Container } from "@mui/material";
+import { Box, Container, Rating } from "@mui/material";
 import React from "react";
-import { Card, Rate } from "antd";
+import { Card } from "antd";
 import shoes1 from "../img/shoes/shoes-01.png";
-import like from "../img/icons/like-icon.svg";
-import save from "../img/icons/save-icon.svg";
+import FavoriteSharpIcon from "@mui/icons-material/FavoriteSharp";
+import BookmarkAddSharpIcon from "@mui/icons-material/BookmarkAddSharp";
 
 function Bestshoes() {
-  const { Meta } = Card;
   return (
     <>
       <Container maxWidth="lg">
@@ -18,60 +17,125 @@ function Bestshoes() {
             </h3>
 
             {/* Card */}
-            <Box className="relative w-[300px]">
-              {/* Icons */}
-              <Box className="absolute top-3 right-3 z-10">
-                <img src={like} alt="like-icon" />
-                <img src={save} alt="save-icon" />
+            <Box className="grid grid-cols-4 !gap-x-4">
+              <Box className="relative">
+                {/* Icons */}
+                <Box className="flex flex-col gap-y-1 absolute top-3 right-3 z-10">
+                  <FavoriteSharpIcon style={{ fill: "#B0BABF" }} />
+                  <BookmarkAddSharpIcon style={{ fill: "#B0BABF" }} />
+                </Box>
+
+                <Card
+                  className="shadow-lg w-full overflow-hidden rounded-2xl "
+                  hoverable
+                  cover={
+                    <img
+                      alt="Shoes"
+                      src={shoes1}
+                      className="w-full pt-16 object-cover h-[200px]"
+                    />
+                  }
+                >
+                  <p>Air Zoom Pegasus 37 Running Shoes</p>
+                  <h3 className="text-lg font-bold mb-1">$1,599</h3>
+                  <Rating
+                    name="read-only"
+                    defaultValue={3}
+                    size="small"
+                    readOnly
+                  />
+                </Card>
               </Box>
 
-              <Card
-                className="shadow-lg w-full overflow-hidden rounded-2xl pt-10"
-                hoverable
-                cover={
-                  <img
-                    alt="Shoes"
-                    src={shoes1}
-                    className="w-full pt-12 object-cover h-[200px]"
-                  />
-                }
-                actions={[
-                  <div style={{ fontWeight: "bold", fontSize: "20px" }}>
-                    $1,599
-                  </div>,
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "5px",
-                    }}
-                  >
-                    <Rate
-                      disabled
-                      defaultValue={5}
-                      style={{ fontSize: "14px", color: "#FACC15" }}
+              <Box className="relative">
+                {/* Icons */}
+                <Box className="flex flex-col gap-y-1 absolute top-3 right-3 z-10">
+                  <FavoriteSharpIcon style={{ fill: "#B0BABF" }} />
+                  <BookmarkAddSharpIcon style={{ fill: "#B0BABF" }} />
+                </Box>
+
+                <Card
+                  className="shadow-lg w-full overflow-hidden rounded-2xl "
+                  hoverable
+                  cover={
+                    <img
+                      alt="Shoes"
+                      src={shoes1}
+                      className="w-full pt-16
+ object-cover h-[200px]"
                     />
-                    <span style={{ fontSize: "14px", color: "#6B7280" }}>
-                      243
-                    </span>
-                  </div>,
-                ]}
-              >
-                <Meta
-                  title={
-                    <div
-                      style={{
-                        fontSize: "16px",
-                        fontWeight: "500",
-                        color: "#111827",
-                      }}
-                    >
-                      Air Zoom Pegasus 37 Running Shoes
-                    </div>
                   }
-                  description=""
-                />
-              </Card>
+                >
+                  <p>Air Zoom Pegasus 37 Running Shoes</p>
+                  <h3 className="text-lg font-bold mb-1">$1,599</h3>
+                  <Rating
+                    name="read-only"
+                    defaultValue={3}
+                    size="small"
+                    readOnly
+                  />
+                </Card>
+              </Box>
+
+              <Box className="relative">
+                {/* Icons */}
+                <Box className="flex flex-col gap-y-1 absolute top-3 right-3 z-10">
+                  <FavoriteSharpIcon style={{ fill: "#B0BABF" }} />
+                  <BookmarkAddSharpIcon style={{ fill: "#B0BABF" }} />
+                </Box>
+
+                <Card
+                  className="shadow-lg w-full overflow-hidden rounded-2xl "
+                  hoverable
+                  cover={
+                    <img
+                      alt="Shoes"
+                      src={shoes1}
+                      className="w-full pt-16
+ object-cover h-[200px]"
+                    />
+                  }
+                >
+                  <p>Air Zoom Pegasus 37 Running Shoes</p>
+                  <h3 className="text-lg font-bold mb-1">$1,599</h3>
+                  <Rating
+                    name="read-only"
+                    defaultValue={3}
+                    size="small"
+                    readOnly
+                  />
+                </Card>
+              </Box>
+
+              <Box className="relative">
+                {/* Icons */}
+                <Box className="flex flex-col gap-y-1 absolute top-3 right-3 z-10">
+                  <FavoriteSharpIcon style={{ fill: "#B0BABF" }} />
+                  <BookmarkAddSharpIcon style={{ fill: "#B0BABF" }} />
+                </Box>
+
+                <Card
+                  className="shadow-lg w-full overflow-hidden rounded-2xl "
+                  hoverable
+                  cover={
+                    <img
+                      alt="Shoes"
+                      src={shoes1}
+                      className="w-full pt-16
+ object-cover h-[200px]"
+                    />
+                  }
+                >
+                  <p>Air Zoom Pegasus 37 Running Shoes</p>
+                  <h3 className="text-lg font-bold mb-1">$1,599</h3>
+                  <Rating
+                    name="read-only"
+                    defaultValue={3}
+                    size="small"
+                    readOnly
+                  />
+                </Card>
+              </Box>
             </Box>
           </Box>
         </Box>
