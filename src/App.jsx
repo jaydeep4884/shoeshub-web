@@ -4,18 +4,20 @@ import { Route, Routes } from "react-router";
 import Login from "./auth/Login";
 import SignUp from "./auth/SignUp";
 import Home from "./pages/Home";
+import Cart from "./pages/Cart";
 
 function App() {
   return (
     <Box>
-      <Routes>
+      {/* <Routes>
         <Route path="/">
           <Route index element={<Home />} />
           <Route path="signup" element={<SignUp />} />
           <Route path="login" element={<Login />} />
         </Route>
-      </Routes>
+      </Routes> */}
       {/* <NotFound /> */}
+      <Cart />
     </Box>
   );
 }
