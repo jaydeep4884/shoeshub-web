@@ -4,7 +4,7 @@ import { Route, Routes } from "react-router";
 import Login from "./auth/Login";
 import SignUp from "./auth/SignUp";
 import Home from "./pages/Home";
-import Cart from "./pages/Cart";
+import ProductDetail from "./pages/ProductDetail";
 
 function App() {
   return (
@@ -17,7 +17,7 @@ function App() {
         </Route>
       </Routes> */}
       {/* <NotFound /> */}
-      <Cart />
+      <ProductDetail />
     </Box>
   );
 }
