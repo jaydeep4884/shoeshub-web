@@ -1,9 +1,8 @@
-import React, { useContext, useMemo, useState } from "react";
+import React, { useContext, useMemo, useState, useEffect } from "react";
 import countryList from "react-select-country-list";
 import styled from "styled-components";
 import {
   Box,
-  Button,
   Container,
   FormControl,
   NativeSelect,
@@ -14,7 +13,6 @@ import {
   MenuItem,
   Typography,
 } from "@mui/material";
-import { X } from "lucide-react";
 import MenuIcon from "@mui/icons-material/Menu";
 import brand from "../img/logo/brand.png";
 import search from "../img/icons/Search-icon.svg";
@@ -30,6 +28,8 @@ const NAV_LINKS = ["Home", "Kids", "Men’s", "Women", "Couple"];
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [country, setCountry] = useState("IN");
+  const [anchorElUser, setAnchorElUser] = useState(null);
+  const { isAuthenticated } = useContext(AuthContext);
 
   const options = useMemo(() => {
     try {
@@ -41,18 +41,10 @@ export default function Header() {
     }
   }, []);
 
-  const { isAuthenticated } = useContext(AuthContext);
   const settings = [
-    {
-      name: "Profile",
-      link: "/",
-    },
-    {
-      name: "Log Out",
-      link: "/login",
-    },
+    { name: "Profile", link: "/" },
+    { name: "Log Out", link: "/login" },
   ];
-  const [anchorElUser, setAnchorElUser] = useState(null);
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -61,6 +53,10 @@ export default function Header() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  useEffect(() => {
+    document.body.style.overflow = mobileMenuOpen ? "hidden" : "auto";
+  }, [mobileMenuOpen]);
 
   const CountrySelector = (
     <Box className="flex items-center gap-2">
@@ -90,13 +86,10 @@ export default function Header() {
     <header className="w-full bg-white shadow-sm sticky top-0 z-50">
       <Container maxWidth="lg">
         {/* Top Bar */}
-        <Box className="flex items-stretch !justify-between flex-wrap py-3 md:pt-4 md:pb-0 gap-4">
+        <Box className="flex items-stretch justify-between flex-wrap py-3 md:pt-4 md:pb-0 gap-4">
           {/* Left */}
           <Box className="flex items-center gap-4 flex-1">
             <img src={brand} alt="brand" className="w-[100px]" />
-            <Button className="hidden md:flex !items-center !gap-2 !bg-[#4094F7] !text-white !px-4 !py-2 !rounded-md hover:!bg-[#357de1]">
-              <MenuIcon fontSize="small" /> Categories
-            </Button>
             <Box className="hidden md:flex flex-1 items-center border rounded-md px-3 py-2">
               <input
                 type="text"
@@ -130,8 +123,8 @@ export default function Header() {
               <Box>
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   <Avatar
-                    alt="Remy Sharp"
-                    src="https://images.unsplash.com/photo-1740252117044-2af197eea287?q=80&w=2500&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                    alt="User"
+                    src="https://images.unsplash.com/photo-1740252117044-2af197eea287?q=80&w=2500&auto=format&fit=crop&ixlib=rb-4.0.3"
                   />
                 </IconButton>
                 <Menu
@@ -145,7 +138,7 @@ export default function Header() {
                   onClose={handleCloseUserMenu}
                 >
                   {settings.map((setting) => (
-                    <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                    <MenuItem key={setting.name} onClick={handleCloseUserMenu}>
                       <Link to={setting.link}>
                         <Typography sx={{ textAlign: "center" }}>
                           {setting.name}
@@ -163,11 +156,12 @@ export default function Header() {
               </Link>
             )}
 
+            {/* Mobile Menu Toggle */}
             <button
-              className="md:hidden"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden transition-all duration-300"
+              onClick={() => setMobileMenuOpen(true)}
             >
-              {mobileMenuOpen ? <X size={24} /> : <MenuIcon size={24} />}
+              <MenuIcon fontSize="small" />
             </button>
           </Box>
         </Box>
@@ -194,10 +188,38 @@ export default function Header() {
             <Box className="flex gap-x-16">{NavLinks}</Box>
             <p>Become a Seller</p>
           </Box>
+        </nav>
+      </Container>
 
-          {/* Mobile Nav */}
-          {mobileMenuOpen && (
-            <Box className="md:hidden flex flex-col gap-3 px-4 text-sm text-gray-700">
+      {/* Mobile Drawer */}
+      {mobileMenuOpen && (
+        <>
+          {/* Overlay */}
+          <div
+            className="fixed inset-0 bg-black bg-opacity-50 z-40"
+            onClick={() => setMobileMenuOpen(false)}
+          ></div>
+
+          {/* Slide Down Drawer */}
+          <Box
+            className="fixed top-0 left-0 right-0 bg-white z-50 flex flex-col gap-5 p-6 animate-slideDown"
+            sx={{
+              animation: "slideDown 0.3s ease forwards",
+            }}
+          >
+            {/* Close Button inside drawer (optional) */}
+            {/* You can add an X button inside if you want */}
+            <Box className="flex justify-end">
+              <button
+                className="text-gray-700 text-2xl"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                ✕
+              </button>
+            </Box>
+
+            {/* Drawer Contents */}
+            <div className="flex flex-col gap-4">
               {NavLinks}
               <Box className="flex gap-2 items-center">
                 <img src={orderIcon} alt="order" /> Orders
@@ -210,23 +232,20 @@ export default function Header() {
               </Box>
               {CountrySelector}
               <p className="text-gray-600">Become a Seller</p>
-              <Button className="!flex !items-center !gap-2 !bg-[#4094F7] !text-white !rounded-md hover:!bg-[#357de1]">
-                <MenuIcon fontSize="small" /> Categories
-              </Button>
               <Link to="/login">
-                <button className="w-full border rounded-md py-1">
+                <button className="w-full border rounded-md py-2 mt-2">
                   Sign In
                 </button>
               </Link>
-            </Box>
-          )}
-        </nav>
-      </Container>
+            </div>
+          </Box>
+        </>
+      )}
     </header>
   );
 }
 
-// Custom Select with no underline
+// Custom Select (styled)
 const CustomNativeSelect = styled((props) => (
   <NativeSelect {...props} disableUnderline IconComponent={() => null} />
 ))`

@@ -1,10 +1,11 @@
 import "./App.css";
 import { Box } from "@mui/material";
-import { Route, Routes } from "react-router";
-import Login from "./auth/Login";
-import SignUp from "./auth/SignUp";
-import Home from "./pages/Home";
-import ProductDetail from "./pages/ProductDetail";
+// import { Route, Routes } from "react-router";
+// import Login from "./auth/Login";
+// import SignUp from "./auth/SignUp";
+// import Home from "./pages/Home";
+// import ProductDetail from "./pages/ProductDetail";
+import Cart from "./pages/Cart";
 
 function App() {
   return (
@@ -17,7 +18,8 @@ function App() {
         </Route>
       </Routes> */}
       {/* <NotFound /> */}
-      <ProductDetail />
+      {/* <ProductDetail /> */}
+      <Cart />
     </Box>
   );
 }
