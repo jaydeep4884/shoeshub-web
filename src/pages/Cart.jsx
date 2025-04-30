@@ -175,12 +175,14 @@ function Cart() {
                 <span>Total:</span>
                 <span>${subtotal}</span>
               </Box>
-              <Button
-                variant="contained"
-                className="!capitalize w-full !text-white !font-medium !bg-[#DB4444] hover:!bg-[#cf7e7e] !rounded !px-5 !py-2 !shadow-none"
-              >
-                Proceed To Checkout
-              </Button>
+              <Link to="/checkout">
+                <Button
+                  variant="contained"
+                  className="!capitalize w-full !text-white !font-medium !bg-[#DB4444] hover:!bg-[#cf7e7e] !rounded !px-5 !py-2 !shadow-none"
+                >
+                  Proceed To Checkout
+                </Button>
+              </Link>
             </Box>
           </Box>
         </Box>

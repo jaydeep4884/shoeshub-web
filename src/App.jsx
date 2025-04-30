@@ -5,6 +5,7 @@ import SignUp from "./auth/SignUp";
 import Home from "./pages/Home";
 import ProductDetail from "./pages/ProductDetail";
 import Cart from "./pages/Cart";
+import Checkout from "./pages/Checkout";
 // import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
           <Route path="cart" element={<Cart />} />
           <Route path="signup" element={<SignUp />} />
           <Route path="productdetail" element={<ProductDetail />} />
+          <Route path="checkout" element={<Checkout />} />
         </Route>
       </Routes>
     </>
