@@ -29,7 +29,7 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [country, setCountry] = useState("IN");
   const [anchorElUser, setAnchorElUser] = useState(null);
-  const { isAuthenticated } = useContext(AuthContext);
+  const { isAuthenticated, logout } = useContext(AuthContext);
 
   const options = useMemo(() => {
     try {
@@ -43,7 +43,12 @@ export default function Header() {
 
   const settings = [
     { name: "Profile", link: "/" },
-    { name: "Log Out", link: "/login" },
+    {
+      name: "Log Out",
+      action: () => {
+        logout();
+      },
+    },
   ];
 
   const handleOpenUserMenu = (event) => {
@@ -104,16 +109,20 @@ export default function Header() {
           <Box className="flex items-center gap-5 text-sm text-gray-600">
             <Box className="hidden lg:flex gap-4">
               {[
-                { icon: orderIcon, text: "Orders" },
-                { icon: likeIcon, text: "Favorites" },
-              ].map(({ icon, text }) => (
-                <Box key={text} className="flex items-center gap-1">
-                  <img src={icon} alt={text} /> {text}
+                { icon: orderIcon, text: "Orders", link: "/" },
+                { icon: likeIcon, text: "Favorites", link: "/" },
+              ].map(({ icon, text, link }) => (
+                <Box key={text}>
+                  <Link className="flex items-center gap-1" to={link}>
+                    <img src={icon} alt={text} /> {text}
+                  </Link>
                 </Box>
               ))}
               <Box className="flex items-center gap-2">
                 <Badge badgeContent={1} color="primary">
-                  <img src={cartIcon} alt="cart" />
+                  <Link to="/cart">
+                    <img src={cartIcon} alt="cart" />
+                  </Link>
                 </Badge>
                 Cart
               </Box>
@@ -138,12 +147,16 @@ export default function Header() {
                   onClose={handleCloseUserMenu}
                 >
                   {settings.map((setting) => (
-                    <MenuItem key={setting.name} onClick={handleCloseUserMenu}>
-                      <Link to={setting.link}>
-                        <Typography sx={{ textAlign: "center" }}>
-                          {setting.name}
-                        </Typography>
-                      </Link>
+                    <MenuItem
+                      key={setting.name}
+                      onClick={() => {
+                        handleCloseUserMenu();
+                        if (setting.action) setting.action();
+                      }}
+                    >
+                      <Typography sx={{ textAlign: "center" }}>
+                        {setting.name}
+                      </Typography>
                     </MenuItem>
                   ))}
                 </Menu>

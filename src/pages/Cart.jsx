@@ -20,32 +20,38 @@ import {
   useTheme,
   InputBase,
 } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import { Link } from "react-router";
 import shoesThumb from "../components/img/shoes/shoes-01-01.png";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
 
-const cartItems = [
-  {
-    id: 1,
-    name: "Air Pegasus 37 Running Shoes",
-    price: 6500,
-    quantity: 1,
-    image: shoesThumb,
-  },
-];
-
 function Cart() {
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const [cartItem, setCartItem] = useState([
+    {
+      id: 1,
+      name: "Air Pegasus 37 Running Shoes",
+      price: 6500,
+      quantity: 1,
+      image: shoesThumb,
+    },
+  ]);
 
+  const handleQtyChange = (id, newQty) => {
+    setCartItem((preItems) =>
+      preItems.map((item) =>
+        item.id === id ? { ...item, quantity: newQty } : item
+      )
+    );
+  };
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const subtotal = cartItems.reduce(
+  const subtotal = cartItem?.reduce(
     (total, item) => total + item.price * item.quantity,
     0
   );
@@ -79,7 +85,7 @@ function Cart() {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {cartItems.map((item) => (
+                  {cartItem.map((item) => (
                     <TableRow key={item.id}>
                       <TableCell>{item.id}</TableCell>
                       <TableCell>
@@ -94,7 +100,13 @@ function Cart() {
                       </TableCell>
                       <TableCell align="right">${item.price}</TableCell>
                       <TableCell align="right">
-                        <Select value={item.quantity} size="small">
+                        <Select
+                          value={item.quantity}
+                          onChange={(e) =>
+                            handleQtyChange(item.id, parseInt(e.target.value))
+                          }
+                          size="small"
+                        >
                           {[1, 2, 3, 4, 5].map((qty) => (
                             <MenuItem value={qty} key={qty}>
                               {qty}
