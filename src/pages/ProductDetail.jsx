@@ -155,12 +155,14 @@ function Cart() {
               </Box>
 
               <Box className="flex flex-wrap gap-3 mb-6">
-                <Button
-                  variant="contained"
-                  className="!capitalize !bg-black !px-6 py-2 min-w-[140px]"
-                >
-                  <Link to="/cart">Add to Cart</Link>
-                </Button>
+                <Link to="/cart">
+                  <Button
+                    variant="contained"
+                    className="!capitalize !bg-black !px-6 py-2 min-w-[140px]"
+                  >
+                    Add to Cart
+                  </Button>
+                </Link>
                 <Box className="border border-fuchsia-300 rounded-md">
                   <Tooltip title="Favorite" placement="bottom">
                     <IconButton onClick={() => setLike(!like)}>

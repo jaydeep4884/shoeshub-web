@@ -86,9 +86,9 @@ export default function Header() {
     <header className="w-full bg-white shadow-sm sticky top-0 z-50">
       <Container maxWidth="lg">
         {/* Top Bar */}
-        <Box className="flex items-stretch justify-between flex-wrap py-3 md:pt-4 md:pb-0 gap-4">
+        <Box className="flex !items-stretch justify-between flex-wrap py-3 md:pt-4 md:pb-0 gap-4">
           {/* Left */}
-          <Box className="flex items-center gap-4 flex-1">
+          <Box className="flex !items-center gap-4 flex-1">
             <img src={brand} alt="brand" className="w-[100px]" />
             <Box className="hidden md:flex flex-1 items-center border rounded-md px-3 py-2">
               <input
@@ -150,7 +150,7 @@ export default function Header() {
               </Box>
             ) : (
               <Link to="/login">
-                <button className="hidden md:flex px-4 py-1 border rounded-md hover:bg-slate-200">
+                <button className="hidden md:flex px-4 py-2 border rounded-md hover:bg-slate-200">
                   Sign In
                 </button>
               </Link>
@@ -186,7 +186,6 @@ export default function Header() {
           <Box className="hidden md:flex justify-between items-center py-4 text-sm text-gray-600">
             {CountrySelector}
             <Box className="flex gap-x-16">{NavLinks}</Box>
-            <p>Become a Seller</p>
           </Box>
         </nav>
       </Container>
