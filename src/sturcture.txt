@@ -87,3 +87,11 @@ function App() {
 }
 
 export default App;
+
+
+
+ <Field as={Checkbox} name="permission" type="checkbox">
+                      <p className="text-gray-700 !text-sm font-normal">
+                        Save this information for faster check-out next time
+                      </p>
+                    </Field>

@@ -18,7 +18,6 @@ import {
   DialogActions,
   useMediaQuery,
   useTheme,
-  InputBase,
 } from "@mui/material";
 import React, { useState } from "react";
 import Header from "../components/layout/Header";
@@ -26,6 +25,8 @@ import Footer from "../components/layout/Footer";
 import { Link } from "react-router";
 import shoesThumb from "../components/img/shoes/shoes-01-01.png";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
+import Applycoup from "../components/ui/Applycoup";
+import Buttongroup from "../components/ui/Buttongroup";
 
 function Cart() {
   const [open, setOpen] = React.useState(false);
@@ -145,17 +146,8 @@ function Cart() {
           {/* Coupon + Cart Summary */}
           <Box className="flex flex-col lg:flex-row justify-between items-start gap-6 mt-10">
             {/* Coupon */}
-            <Box className="w-full lg:w-1/2 flex gap-3">
-              <InputBase
-                placeholder="Coupon Code"
-                className="flex-1 px-3 py-2 border border-gray-400 rounded placeholder-gray-500"
-              />
-              <Button
-                variant="contained"
-                className="!capitalize !text-white !font-medium !bg-[#DB4444] hover:!bg-[#cf7e7e] !rounded !px-5 !py-2 !shadow-none"
-              >
-                Apply Coupon
-              </Button>
+            <Box className="w-full lg:w-1/2">
+              <Applycoup />
             </Box>
 
             {/* Cart Total */}
@@ -176,12 +168,7 @@ function Cart() {
                 <span>${subtotal}</span>
               </Box>
               <Link to="/checkout">
-                <Button
-                  variant="contained"
-                  className="!capitalize w-full !text-white !font-medium !bg-[#DB4444] hover:!bg-[#cf7e7e] !rounded !px-5 !py-2 !shadow-none"
-                >
-                  Proceed To Checkout
-                </Button>
+                <Buttongroup name="Proceed To Checkout" />
               </Link>
             </Box>
           </Box>

@@ -154,11 +154,11 @@ function Cart() {
                 </ul>
               </Box>
 
-              <Box className="flex flex-wrap gap-3 mb-6">
+              <Box className="flex !items-center gap-3 mb-6">
                 <Link to="/cart">
                   <Button
                     variant="contained"
-                    className="!capitalize !bg-black !px-6 py-2 min-w-[140px]"
+                    className="!capitalize !bg-black !px-6 py-2"
                   >
                     Add to Cart
                   </Button>

@@ -6,3 +6,11 @@ body {
   font-family: "Poppins", sans-serif !important;
   background-color: #fcfcfc;
 }
+.custom-ant-checkbox .ant-checkbox-checked .ant-checkbox-inner {
+  background-color: #8e44ad; /* Checked background */
+  border-color: #8e44ad;     /* Checked border */
+}
+
+.custom-ant-checkbox .ant-checkbox-inner {
+  border-color: #8e44ad; /* Unchecked border */
+}
