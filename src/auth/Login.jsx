@@ -34,7 +34,7 @@ function Login() {
         toast.success("Login Successfully"); // USER_1 metanike@gmail.com
         setAuthToken(res.data.token);
         setIsAuthenticated(true);
-        setTimeout(() => navigate("/"), 2000);
+        setTimeout(() => navigate("/home"), 2000);
       }
     } catch (error) {
       toast.dismiss(loadingToastId);

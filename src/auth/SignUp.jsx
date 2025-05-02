@@ -35,7 +35,7 @@ function SignUp() {
       if (res.data.status === "success") {
         toast.success("User Created Successfully!");
         setTimeout(() => {
-          navigate("/login");
+          navigate("/");
         }, 2000);
       } else {
         toast.error("Failed to create user. Please try again.");

@@ -6,6 +6,8 @@ import {
   Checkbox,
   Container,
   FormControlLabel,
+  Radio,
+  RadioGroup,
   TextField,
   Typography,
 } from "@mui/material";
@@ -15,6 +17,9 @@ import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import Applycoup from "../components/ui/Applycoup";
 import Buttongroup from "../components/ui/Buttongroup";
+import cartImg from "../components/img/shoes/shoes-01-01.png";
+import visa from "../components/img/Visa.png";
+import paypal from "../components/img/PayPal.png";
 
 const Checkout = () => {
   const initialValues = {
@@ -129,7 +134,66 @@ const Checkout = () => {
               </Box>
 
               <Box className="w-full sm:w-2/3 lg:w-[45%]">
-                <Applycoup />
+                <Box className="p-6 border rounded-xl bg-white shadow-sm space-y-6">
+                  {/* Product Details */}
+                  <Box className="flex justify-between items-center">
+                    <Box className="flex items-center gap-4">
+                      <img
+                        src={cartImg} //
+                        alt="H1 Gamepad"
+                        className="w-16 h-16 object-contain"
+                      />
+                      <Typography className="font-medium">
+                        H1 Gamepad
+                      </Typography>
+                    </Box>
+                    <Typography className="font-semibold">$1100</Typography>
+                  </Box>
+
+                  {/* Pricing Summary */}
+                  <Box className="space-y-2 border-t pt-4">
+                    <Box className="flex justify-between">
+                      <Typography>Subtotal:</Typography>
+                      <Typography>$1750</Typography>
+                    </Box>
+                    <Box className="flex justify-between">
+                      <Typography>Shipping:</Typography>
+                      <Typography>Free</Typography>
+                    </Box>
+                    <Box className="flex justify-between border-t pt-2 font-semibold">
+                      <Typography>Total:</Typography>
+                      <Typography>$1750</Typography>
+                    </Box>
+                  </Box>
+
+                  {/* Payment Options */}
+                  <RadioGroup defaultValue="cod" className="space-y-2">
+                    <FormControlLabel
+                      value="bank"
+                      control={<Radio />}
+                      label="Bank"
+                    />
+                    <FormControlLabel
+                      value="cod"
+                      control={<Radio />}
+                      label="Cash on delivery"
+                    />
+                  </RadioGroup>
+
+                  {/* Payment Logos */}
+                  <Box className="flex gap-3 pt-2">
+                    <img src={visa} alt="visa" />
+                    <img src={paypal} alt="bkash" />
+                    <img src={visa} alt="visa" />
+                    <img src={paypal} alt="bkash" />
+                  </Box>
+
+                  {/* Coupon Section */}
+                  <Applycoup />
+
+                  {/* Place Order Button */}
+                  <Buttongroup name="Place Order" />
+                </Box>
               </Box>
             </Box>
           </Box>
