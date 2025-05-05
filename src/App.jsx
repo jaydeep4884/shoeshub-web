@@ -8,6 +8,7 @@ import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import Orders from "./pages/Orders";
 import Favorite from "./pages/Favorite";
+import Profile from "./pages/Profile";
 // import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
           <Route path="checkout" element={<Checkout />} />
           <Route path="orders" element={<Orders />} />
           <Route path="fav" element={<Favorite />} />
+          <Route path="profile" element={<Profile />} />
         </Route>
       </Routes>
     </>

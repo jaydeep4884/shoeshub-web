@@ -137,7 +137,7 @@ export default function Header() {
                 { icon: likeIcon, text: "Favorites", link: "/fav" },
                 { icon: cartIcon, text: "Cart", link: "/cart" },
               ].map(({ icon, text, link }) => (
-                <Link to={link} className="flex items-center gap-1">
+                <Link to={link} key={link} className="flex items-center gap-1">
                   <img src={icon} alt={text} /> {text}
                 </Link>
               ))}
