@@ -1,7 +1,6 @@
 import React from "react";
 import {
   Box,
-  Breadcrumbs,
   Checkbox,
   Container,
   FormControlLabel,
@@ -10,7 +9,6 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { Link } from "react-router";
 import { Field, Form, Formik } from "formik";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
@@ -23,6 +21,7 @@ import visaPay from "../components/img/payment logo/visa-pay.svg";
 import bkashPay from "../components/img/payment logo/bkash-pay.svg";
 import nagadPay from "../components/img/payment logo/nagad-pay.svg";
 import masterPay from "../components/img/payment logo/mastercard-pay.svg";
+import Breadcrumb from "../components/ui/Breadcrumb";
 
 const Checkout = () => {
   const inputFields = [
@@ -59,6 +58,13 @@ const Checkout = () => {
     bankProvider: "",
   };
 
+  const breadItems = [
+    { label: "Home", link: "/home" },
+    { label: "Product", link: "" },
+    { label: "View Cart", link: "/cart" },
+    { label: "CheckOut" },
+  ];
+
   const handleSubmit = (values, { resetForm }) => {
     if (values.paymentMethod === "bank" && !values.bankProvider) {
       toast.error("Please select a bank payment option.");
@@ -79,15 +85,7 @@ const Checkout = () => {
           transition={{ duration: 1 }}
         >
           <Box className="py-8 sm:py-10">
-            <Breadcrumbs className="!mb-6 text-sm md:text-base">
-              {["Account", "Product", "View Cart", "CheckOut"].map(
-                (label, i) => (
-                  <Link key={i} to="">
-                    <p>{label}</p>
-                  </Link>
-                )
-              )}
-            </Breadcrumbs>
+            <Breadcrumb items={breadItems} />
 
             <Box className="bg-white p-4 sm:p-6 md:p-10 border rounded-xl shadow-sm">
               <Typography variant="h4" className="font-semibold !mb-6">

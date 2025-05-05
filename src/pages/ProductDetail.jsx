@@ -1,12 +1,11 @@
 import {
   Box,
-  Breadcrumbs,
   Button,
   Container,
   IconButton,
   Rating,
 } from "@mui/material";
-import { Tooltip, Typography } from "antd";
+import { Tooltip } from "antd";
 import React, { useState } from "react";
 import { Link } from "react-router";
 import { motion } from "framer-motion";
@@ -26,6 +25,7 @@ import {
 } from "@mui/icons-material";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
+import Breadcrumb from "../components/ui/Breadcrumb";
 
 const productDetails = [
   { label: "Closure Type", value: "Lace-Up" },
@@ -53,6 +53,15 @@ const productFeatures = [
 ];
 
 function Cart() {
+  const breadItems = [
+    {
+      label: " Home",
+      link: "/home",
+    },
+    {
+      label: "ProductDetail",
+    },
+  ];
   const images = [
     { thumb: shoes1, main: shoes1Main },
     { thumb: shoes2, main: shoes2Main },
@@ -66,14 +75,7 @@ function Cart() {
       <Header />
       <Container maxWidth="lg">
         <Box className="py-5 sm:py-10">
-          <Breadcrumbs aria-label="breadcrumb" className="!mb-6 sm:!mb-10">
-            {["Home", "Product"].map((label, idx) => (
-              <Link key={idx} to="">
-                <Typography>{label}</Typography>
-              </Link>
-            ))}
-            <Typography>Breadcrumbs</Typography>
-          </Breadcrumbs>
+          <Breadcrumb items={breadItems} />
 
           {/* Product Detail  */}
           <Box className="flex flex-col lg:flex-row gap-10">

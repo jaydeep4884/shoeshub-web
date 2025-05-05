@@ -54,8 +54,8 @@ export default function Header() {
   };
 
   const settings = [
-    { name: "Profile", link: "/home" },
-    { name: "Log Out", link: "/login" },
+    { name: "Profile", link: "/profile" },
+    { name: "Log Out", link: "/" },
   ];
 
   const handleOpenUserMenu = (event) => {
@@ -118,7 +118,9 @@ export default function Header() {
         <Box className="flex !items-stretch justify-between flex-wrap py-3 md:pt-4 md:pb-0 gap-4">
           {/* Left */}
           <Box className="flex !items-center gap-4 flex-1">
-            <img src={brand} alt="brand" className="w-[100px]" />
+            <Link to="/home">
+              <img src={brand} alt="brand" className="w-[100px]" />
+            </Link>
             <Box className="hidden md:flex flex-1 items-center border rounded-md px-3 py-2">
               <input
                 type="text"
@@ -179,7 +181,7 @@ export default function Header() {
                 </Menu>
               </Box>
             ) : (
-              <Link to="/login">
+              <Link to="/">
                 <button className="hidden md:flex px-4 py-2 border rounded-md hover:bg-slate-200">
                   Sign In
                 </button>

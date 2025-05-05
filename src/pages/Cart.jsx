@@ -1,13 +1,11 @@
 import {
   Box,
-  Breadcrumbs,
   Container,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableRow,
-  Typography,
   Select,
   MenuItem,
   Button,
@@ -28,8 +26,19 @@ import shoesThumb from "../components/img/shoes/shoes-01-01.png";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
 import Applycoup from "../components/ui/Applycoup";
 import Buttongroup from "../components/ui/Buttongroup";
+import { Typography } from "antd";
+import Breadcrumb from "../components/ui/Breadcrumb";
 
 function Cart() {
+  const breadcrumbItems = [
+    {
+      label: "Home",
+      link: "/home",
+    },
+    {
+      label: "Cart",
+    },
+  ];
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
@@ -68,12 +77,7 @@ function Cart() {
           transition={{ duration: 1 }}
         >
           <Box className="py-5 sm:py-10">
-            <Breadcrumbs aria-label="breadcrumb" className="mb-6 sm:!mb-10">
-              <Link to="/">
-                <Typography>Home</Typography>
-              </Link>
-              <Typography className="text-black font-medium">Cart</Typography>
-            </Breadcrumbs>
+            <Breadcrumb items={breadcrumbItems} />
 
             {/* Cart Table */}
             <Box className="relative w-full overflow-x-auto rounded-xl shadow-md mb-7">

@@ -16,8 +16,10 @@ import {
   useTheme,
 } from "@mui/material";
 import { Option } from "antd/es/mentions";
+import Breadcrumb from "../components/ui/Breadcrumb";
 
 const Profile = () => {
+  const breadItems = [{ label: "Home", link: "/home" }, { label: "Profile" }];
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
@@ -40,6 +42,7 @@ const Profile = () => {
           transition={{ duration: 0.6 }}
         >
           <Box className="py-8 sm:py-10">
+            <Breadcrumb items={breadItems} />
             <Card className="rounded-2xl shadow-xl p-6 !w-full">
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center space-x-4">
