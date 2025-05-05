@@ -1,11 +1,7 @@
-import React, { useContext, useMemo, useState, useEffect } from "react";
-import countryList from "react-select-country-list";
-import styled from "styled-components";
+import React, { useContext, useState, useEffect } from "react";
 import {
   Box,
   Container,
-  FormControl,
-  NativeSelect,
   Badge,
   IconButton,
   Avatar,
@@ -22,24 +18,20 @@ import cartIcon from "../img/icons/cart-icon.svg";
 import locationIcon from "../img/icons/location-icon.svg";
 import { Link } from "react-router";
 import { AuthContext } from "../../assets/contexts";
+import Select from "react-select";
+import { countryOptions } from "../countries";
 
 const NAV_LINKS = ["Home", "Kids", "Men’s", "Women", "Couple"];
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [country, setCountry] = useState("IN");
+  const [selectedCountry, setSelectedCountry] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const { isAuthenticated } = useContext(AuthContext);
 
-  const options = useMemo(() => {
-    try {
-      const data = countryList().getData();
-      return Array.isArray(data) ? data : [];
-    } catch (error) {
-      console.error("Error loading country list:", error);
-      return [];
-    }
-  }, []);
+  const handleChange = (option) => {
+    setSelectedCountry(option);
+  };
 
   const settings = [
     { name: "Profile", link: "/" },
@@ -61,18 +53,31 @@ export default function Header() {
   const CountrySelector = (
     <Box className="flex items-center gap-2">
       <img src={locationIcon} alt="location" />
-      <FormControl fullWidth>
-        <CustomNativeSelect
-          value={country}
-          onChange={(e) => setCountry(e.target.value)}
-        >
-          {options.map(({ value, label }) => (
-            <option key={value} value={value}>
-              {label}
-            </option>
-          ))}
-        </CustomNativeSelect>
-      </FormControl>
+      <Select
+        options={countryOptions}
+        value={selectedCountry}
+        onChange={handleChange}
+        placeholder="Select a country"
+        className="text-black !border-none"
+        styles={{
+          control: (base) => ({
+            ...base,
+            border: "none",
+            boxShadow: "none",
+            backgroundColor: "transparent",
+            cursor: "pointer",
+          }),
+          input: (base) => ({
+            ...base,
+            margin: 0,
+            padding: 0,
+          }),
+          placeholder: (base) => ({
+            ...base,
+            color: "#888",
+          }),
+        }}
+      />
     </Box>
   );
 
@@ -243,24 +248,3 @@ export default function Header() {
     </header>
   );
 }
-
-// Custom Select (styled)
-const CustomNativeSelect = styled((props) => (
-  <NativeSelect {...props} disableUnderline IconComponent={() => null} />
-))`
-  background: none;
-  border: none;
-  padding-right: 8px;
-
-  select {
-    appearance: none;
-    border: none;
-    outline: none;
-    background: none;
-  }
-
-  &:before,
-  &:after {
-    display: none !important;
-  }
-`;
