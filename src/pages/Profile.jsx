@@ -1,5 +1,16 @@
-import React from "react";
-import { Card, Avatar, Input, Select, Button, Typography } from "antd";
+import React, { useState } from "react";
+import {
+  Card,
+  Avatar,
+  Input,
+  Select,
+  Button,
+  Typography,
+  Form,
+  Modal,
+  Row,
+  Col,
+} from "antd";
 import { motion } from "framer-motion";
 import Footer from "../components/layout/Footer";
 import Header from "../components/layout/Header";
@@ -12,13 +23,28 @@ import {
   DialogContentText,
   DialogTitle,
   IconButton,
+  TextField,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
 import { Option } from "antd/es/mentions";
 import Breadcrumb from "../components/ui/Breadcrumb";
+import { Field, Formik } from "formik";
+
+
+const { Option } = Select;
 
 const Profile = () => {
+  const [ini, setIni] = useState({
+    firstname: "",
+    lastname: "",
+    email: "",
+    password: "",
+    gender: "",
+    city: "",
+    mobile: "",
+    bio: "",
+  });
   const breadItems = [{ label: "Home", link: "/home" }, { label: "Profile" }];
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
@@ -30,6 +56,11 @@ const Profile = () => {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleSubmit = (values, { resetForm }) => {
+    console.log(values);
+    resetForm();
   };
 
   return (
@@ -108,31 +139,149 @@ const Profile = () => {
             </Card>
           </Box>
 
-          <Dialog
-            fullScreen={fullScreen}
+          {/* Dialogue Box  */}
+          <Modal
+            title="Edit Your Profile Data"
             open={open}
-            onClose={handleClose}
-            aria-labelledby="responsive-dialog-title"
+            onCancel={handleClose}
+            footer={null}
+            centered
+            width={700}
+            bodyStyle={{ padding: 24 }}
           >
-            <DialogTitle id="responsive-dialog-title">
-              {"Use Google's location service?"}
-            </DialogTitle>
-            <DialogContent>
-              <DialogContentText>
-                Let Google help apps determine location. This means sending
-                anonymous location data to Google, even when no apps are
-                running.
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button autoFocus onClick={handleClose}>
-                Disagree
-              </Button>
-              <Button onClick={handleClose} autoFocus>
-                Agree
-              </Button>
-            </DialogActions>
-          </Dialog>
+            <Formik
+              enableReinitialize
+              initialValues={ini}
+              onSubmit={(values, { resetForm }) => {
+                handleSubmit(values, { resetForm });
+                handleClose();
+              }}
+            >
+              {({ handleChange, setFieldValue, values }) => (
+                <Form>
+                  <Row gutter={[16, 16]}>
+                    <Col xs={24} sm={12}>
+                      <Field name="firstname">
+                        {() => (
+                          <Input
+                            placeholder="First Name *"
+                            value={values.firstname}
+                            onChange={handleChange("firstname")}
+                            size="large"
+                          />
+                        )}
+                      </Field>
+                    </Col>
+
+                    <Col xs={24} sm={12}>
+                      <Field name="lastname">
+                        {() => (
+                          <Input
+                            placeholder="Last Name *"
+                            value={values.lastname}
+                            onChange={handleChange("lastname")}
+                            size="large"
+                          />
+                        )}
+                      </Field>
+                    </Col>
+
+                    <Col xs={24} sm={12}>
+                      <Field name="email">
+                        {() => (
+                          <Input
+                            placeholder="Email *"
+                            value={values.email}
+                            onChange={handleChange("email")}
+                            size="large"
+                          />
+                        )}
+                      </Field>
+                    </Col>
+
+                    <Col xs={24} sm={12}>
+                      <Field name="password">
+                        {() => (
+                          <Input.Password
+                            placeholder="Password"
+                            value={values.password}
+                            onChange={handleChange("password")}
+                            size="large"
+                          />
+                        )}
+                      </Field>
+                    </Col>
+
+                    <Col xs={24} sm={12}>
+                      <Field name="gender">
+                        {() => (
+                          <Select
+                            placeholder="Select Gender"
+                            value={values.gender}
+                            onChange={(value) => setFieldValue("gender", value)}
+                            size="large"
+                            style={{ width: "100%" }}
+                          >
+                            <Option value="male">Male</Option>
+                            <Option value="female">Female</Option>
+                            <Option value="other">Other</Option>
+                          </Select>
+                        )}
+                      </Field>
+                    </Col>
+
+                    <Col xs={24} sm={12}>
+                      <Field name="city">
+                        {() => (
+                          <Input
+                            placeholder="City"
+                            value={values.city}
+                            onChange={handleChange("city")}
+                            size="large"
+                          />
+                        )}
+                      </Field>
+                    </Col>
+
+                    <Col xs={24} sm={12}>
+                      <Field name="mobile">
+                        {() => (
+                          <Input
+                            placeholder="Mobile"
+                            value={values.mobile}
+                            onChange={handleChange("mobile")}
+                            size="large"
+                          />
+                        )}
+                      </Field>
+                    </Col>
+
+                    <Col xs={24}>
+                      <Field name="bio">
+                        {() => (
+                          <Input.TextArea
+                            placeholder="Short Bio"
+                            rows={3}
+                            value={values.bio}
+                            onChange={handleChange("bio")}
+                          />
+                        )}
+                      </Field>
+                    </Col>
+
+                    <Col span={24} className="text-right mt-4">
+                      <Button onClick={handleClose} style={{ marginRight: 10 }}>
+                        Cancel
+                      </Button>
+                      <Button type="primary" htmlType="submit">
+                        Submit
+                      </Button>
+                    </Col>
+                  </Row>
+                </Form>
+              )}
+            </Formik>
+          </Modal>
         </motion.div>
       </Container>
       <Footer />
