@@ -2,7 +2,6 @@ import React, { useContext, useState, useEffect } from "react";
 import {
   Box,
   Container,
-  Badge,
   IconButton,
   Avatar,
   Menu,
@@ -21,7 +20,28 @@ import { AuthContext } from "../../assets/contexts";
 import Select from "react-select";
 import { countryOptions } from "../countries";
 
-const NAV_LINKS = ["Home", "Kids", "Men’s", "Women", "Couple"];
+const NAV_LINKS = [
+  {
+    pageName: "Home",
+    navLink: "/home",
+  },
+  {
+    pageName: "Kids",
+    navLink: "/kids",
+  },
+  {
+    pageName: "Men's",
+    navLink: "/men",
+  },
+  {
+    pageName: "Women",
+    navLink: "/women",
+  },
+  {
+    pageName: "Couple",
+    navLink: "/couple",
+  },
+];
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -34,7 +54,7 @@ export default function Header() {
   };
 
   const settings = [
-    { name: "Profile", link: "/" },
+    { name: "Profile", link: "/home" },
     { name: "Log Out", link: "/login" },
   ];
 
@@ -81,9 +101,13 @@ export default function Header() {
     </Box>
   );
 
-  const NavLinks = NAV_LINKS.map((link) => (
-    <Link key={link} to="/" className="hover:text-blue-600 py-1">
-      {link}
+  const NavLinks = NAV_LINKS.map((nav) => (
+    <Link
+      key={nav.navLink}
+      to={nav.navLink}
+      className="hover:text-blue-600 py-1"
+    >
+      {nav.pageName}
     </Link>
   ));
 
@@ -109,19 +133,20 @@ export default function Header() {
           <Box className="flex items-center gap-5 text-sm text-gray-600">
             <Box className="hidden lg:flex gap-4">
               {[
-                { icon: orderIcon, text: "Orders" },
-                { icon: likeIcon, text: "Favorites" },
-              ].map(({ icon, text }) => (
-                <Box key={text} className="flex items-center gap-1">
+                { icon: orderIcon, text: "Orders", link: "/orders" },
+                { icon: likeIcon, text: "Favorites", link: "/fav" },
+                { icon: cartIcon, text: "Cart", link: "/cart" },
+              ].map(({ icon, text, link }) => (
+                <Link to={link} className="flex items-center gap-1">
                   <img src={icon} alt={text} /> {text}
-                </Box>
+                </Link>
               ))}
-              <Box className="flex items-center gap-2">
+              {/* <Box className="flex items-center gap-2">
                 <Badge badgeContent={1} color="primary">
                   <img src={cartIcon} alt="cart" />
                 </Badge>
                 Cart
-              </Box>
+              </Box> */}
             </Box>
 
             {isAuthenticated ? (
