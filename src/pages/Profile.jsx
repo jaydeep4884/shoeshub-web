@@ -1,36 +1,11 @@
-import React, { useState } from "react";
-import {
-  Card,
-  Avatar,
-  Input,
-  Select,
-  Button,
-  Typography,
-  Form,
-  Modal,
-  Row,
-  Col,
-} from "antd";
+import React, { useRef, useState } from "react";
+import { Card, Avatar, Input, Select, Button, Typography, Modal } from "antd";
 import { motion } from "framer-motion";
 import Footer from "../components/layout/Footer";
 import Header from "../components/layout/Header";
-import {
-  Box,
-  Container,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  IconButton,
-  TextField,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
-import { Option } from "antd/es/mentions";
+import { Box, Container, IconButton } from "@mui/material";
 import Breadcrumb from "../components/ui/Breadcrumb";
-import { Field, Formik } from "formik";
-
+import { Field, Form, Formik } from "formik";
 
 const { Option } = Select;
 
@@ -40,15 +15,24 @@ const Profile = () => {
     lastname: "",
     email: "",
     password: "",
-    gender: "",
     city: "",
     mobile: "",
     bio: "",
+    profileImage: "",
   });
   const breadItems = [{ label: "Home", link: "/home" }, { label: "Profile" }];
   const [open, setOpen] = React.useState(false);
-  const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const [profileImage, setProfileImage] = useState(null);
+  const fileInputRef = useRef(null);
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => setProfileImage(reader.result);
+      reader.readAsDataURL(file);
+    }
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -60,7 +44,9 @@ const Profile = () => {
 
   const handleSubmit = (values, { resetForm }) => {
     console.log(values);
+    console.log("Form Submitted");
     resetForm();
+    handleClose();
   };
 
   return (
@@ -141,145 +127,132 @@ const Profile = () => {
 
           {/* Dialogue Box  */}
           <Modal
-            title="Edit Your Profile Data"
+            title={
+              <span className="text-xl font-semibold">Edit Your Profile</span>
+            }
             open={open}
             onCancel={handleClose}
             footer={null}
             centered
             width={700}
-            bodyStyle={{ padding: 24 }}
+            styles={{
+              body: {
+                padding: 24,
+                backgroundColor: "#f9fafb",
+                borderRadius: 12,
+              },
+            }}
           >
             <Formik
               enableReinitialize
               initialValues={ini}
-              onSubmit={(values, { resetForm }) => {
-                handleSubmit(values, { resetForm });
-                handleClose();
-              }}
+              onSubmit={handleSubmit}
             >
-              {({ handleChange, setFieldValue, values }) => (
-                <Form>
-                  <Row gutter={[16, 16]}>
-                    <Col xs={24} sm={12}>
-                      <Field name="firstname">
-                        {() => (
-                          <Input
-                            placeholder="First Name *"
-                            value={values.firstname}
-                            onChange={handleChange("firstname")}
-                            size="large"
-                          />
-                        )}
-                      </Field>
-                    </Col>
+              <Form className="animate-fadeIn">
+                {/* Profile Image Upload Section */}
+                <Box className="flex flex-col items-center mb-6">
+                  <img
+                    src={
+                      profileImage ||
+                      "https://images.unsplash.com/photo-1740252117044-2af197eea287?q=80&w=2500&auto=format&fit=crop&ixlib=rb-4.0.3"
+                    }
+                    alt="Profile"
+                    className="w-24 h-24 rounded-full object-cover shadow-md border-2 border-gray-200"
+                  />
+                  <label htmlFor="imageUpload" className="mt-3">
+                    <input
+                      id="imageUpload"
+                      name="profileImage"
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      className="hidden"
+                      ref={fileInputRef}
+                    />
+                    <Button
+                      type="default"
+                      className=" rounded-xl bg-gray-100 hover:bg-gray-200"
+                      onClick={() => fileInputRef.current?.click()}
+                    >
+                      Change Photo
+                    </Button>
+                  </label>
+                </Box>
 
-                    <Col xs={24} sm={12}>
-                      <Field name="lastname">
-                        {() => (
-                          <Input
-                            placeholder="Last Name *"
-                            value={values.lastname}
-                            onChange={handleChange("lastname")}
-                            size="large"
-                          />
-                        )}
-                      </Field>
-                    </Col>
+                {/* Form Fields */}
+                <Box className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                  <Field
+                    name="firstname"
+                    as={Input}
+                    placeholder="First Name *"
+                    size="large"
+                    className="rounded-xl"
+                  />
+                  <Field
+                    name="lastname"
+                    as={Input}
+                    placeholder="Last Name"
+                    size="large"
+                    className="rounded-xl"
+                  />
+                  <Field
+                    name="email"
+                    as={Input}
+                    type="email"
+                    placeholder="Email"
+                    size="large"
+                    className="rounded-xl"
+                  />
+                  <Field
+                    as={Input.Password}
+                    name="password"
+                    placeholder="Password"
+                    size="large"
+                    className="rounded-xl"
+                  />
+                  <Field
+                    name="city"
+                    as={Input}
+                    placeholder="City"
+                    size="large"
+                    className="rounded-xl"
+                  />
+                  <Field
+                    name="mobile"
+                    as={Input}
+                    maxLength={10}
+                    placeholder="Mobile No."
+                    size="large"
+                    className="rounded-xl"
+                  />
+                </Box>
 
-                    <Col xs={24} sm={12}>
-                      <Field name="email">
-                        {() => (
-                          <Input
-                            placeholder="Email *"
-                            value={values.email}
-                            onChange={handleChange("email")}
-                            size="large"
-                          />
-                        )}
-                      </Field>
-                    </Col>
+                <Field
+                  as={Input.TextArea}
+                  name="bio"
+                  placeholder="Tell us about yourself..."
+                  allowClear
+                  size="large"
+                  className="rounded-xl"
+                  autoSize={{ minRows: 2, maxRows: 4 }}
+                />
 
-                    <Col xs={24} sm={12}>
-                      <Field name="password">
-                        {() => (
-                          <Input.Password
-                            placeholder="Password"
-                            value={values.password}
-                            onChange={handleChange("password")}
-                            size="large"
-                          />
-                        )}
-                      </Field>
-                    </Col>
-
-                    <Col xs={24} sm={12}>
-                      <Field name="gender">
-                        {() => (
-                          <Select
-                            placeholder="Select Gender"
-                            value={values.gender}
-                            onChange={(value) => setFieldValue("gender", value)}
-                            size="large"
-                            style={{ width: "100%" }}
-                          >
-                            <Option value="male">Male</Option>
-                            <Option value="female">Female</Option>
-                            <Option value="other">Other</Option>
-                          </Select>
-                        )}
-                      </Field>
-                    </Col>
-
-                    <Col xs={24} sm={12}>
-                      <Field name="city">
-                        {() => (
-                          <Input
-                            placeholder="City"
-                            value={values.city}
-                            onChange={handleChange("city")}
-                            size="large"
-                          />
-                        )}
-                      </Field>
-                    </Col>
-
-                    <Col xs={24} sm={12}>
-                      <Field name="mobile">
-                        {() => (
-                          <Input
-                            placeholder="Mobile"
-                            value={values.mobile}
-                            onChange={handleChange("mobile")}
-                            size="large"
-                          />
-                        )}
-                      </Field>
-                    </Col>
-
-                    <Col xs={24}>
-                      <Field name="bio">
-                        {() => (
-                          <Input.TextArea
-                            placeholder="Short Bio"
-                            rows={3}
-                            value={values.bio}
-                            onChange={handleChange("bio")}
-                          />
-                        )}
-                      </Field>
-                    </Col>
-
-                    <Col span={24} className="text-right mt-4">
-                      <Button onClick={handleClose} style={{ marginRight: 10 }}>
-                        Cancel
-                      </Button>
-                      <Button type="primary" htmlType="submit">
-                        Submit
-                      </Button>
-                    </Col>
-                  </Row>
-                </Form>
-              )}
+                <Box className="flex justify-end gap-3 mt-6">
+                  <Button
+                    onClick={handleClose}
+                    className="rounded-xl border-gray-400"
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    htmlType="submit"
+                    type="primary"
+                    className="rounded-xl bg-blue-600 hover:bg-blue-700 text-white"
+                  >
+                    Save Changes
+                  </Button>
+                </Box>
+              </Form>
             </Formik>
           </Modal>
         </motion.div>
