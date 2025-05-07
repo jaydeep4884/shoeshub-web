@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { Card, Avatar, Input, Select, Button, Typography, Modal } from "antd";
+import { Card, Avatar, Input, Button, Typography, Modal } from "antd";
 import { motion } from "framer-motion";
 import Footer from "../components/layout/Footer";
 import Header from "../components/layout/Header";
@@ -7,19 +7,29 @@ import { Box, Container, IconButton } from "@mui/material";
 import Breadcrumb from "../components/ui/Breadcrumb";
 import { Field, Form, Formik } from "formik";
 
-const { Option } = Select;
-
 const Profile = () => {
   const [ini, setIni] = useState({
-    firstname: "",
-    lastname: "",
-    email: "",
-    password: "",
-    city: "",
-    mobile: "",
-    bio: "",
-    profileImage: "",
+    firstname: "Sagathiya",
+    lastname: "Jaydeep",
+    email: "jaydeep@gmail.com",
+    password: "Jakaas420",
+    city: "Surat",
+    mobile: "2211485698",
+    bio: "Passionated Developer",
+    profileImage:
+      "https://images.unsplash.com/photo-1740252117044-2af197eea287?q=80&w=2500&auto=format&fit=crop&ixlib=rb-4.0.3",
   });
+
+  const fields = [
+    { label: "First Name", name: "firstname" },
+    { label: "Last Name", name: "lastname" },
+    { label: "Email", name: "email" },
+    { label: "Password", name: "password" },
+    { label: "City", name: "city" },
+    { label: "Mobile No.", name: "mobile" },
+    { label: "Bio", name: "bio", isTextArea: true },
+  ];
+
   const breadItems = [{ label: "Home", link: "/home" }, { label: "Profile" }];
   const [open, setOpen] = React.useState(false);
   const [profileImage, setProfileImage] = useState(null);
@@ -44,6 +54,7 @@ const Profile = () => {
 
   const handleSubmit = (values, { resetForm }) => {
     console.log(values);
+    setIni(values);
     resetForm();
     handleClose();
   };
@@ -52,7 +63,7 @@ const Profile = () => {
     <>
       <Header />
       <Container maxWidth="lg">
-        <motion.div
+        <motion.Box
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
@@ -60,27 +71,24 @@ const Profile = () => {
           <Box className="py-8 sm:py-10">
             <Breadcrumb items={breadItems} />
             <Card className="rounded-2xl shadow-xl !w-full p-3 sm:p-5 ">
-              <div className="flex flex-wrap items-center justify-between mb-6">
-                <div className="flex items-center space-x-4">
+              <Box className="flex flex-wrap items-center justify-between mb-6">
+                <Box className="flex items-center space-x-4">
                   <IconButton sx={{ p: 0 }}>
                     <Avatar
                       size={64}
                       alt="User"
-                      src={
-                        profileImage ||
-                        "https://images.unsplash.com/photo-1740252117044-2af197eea287?q=80&w=2500&auto=format&fit=crop&ixlib=rb-4.0.3"
-                      }
+                      src={profileImage || ini.profileImage}
                     />
                   </IconButton>
-                  <div>
+                  <Box>
                     <Typography.Title level={3} className="!m-0">
-                      Sagathiya Jaydeep
+                      {ini.firstname} {ini.lastname}
                     </Typography.Title>
                     <Typography.Text type="secondary">
-                      jaydeep@gmail.com
+                      {ini.email}
                     </Typography.Text>
-                  </div>
-                </div>
+                  </Box>
+                </Box>
                 <Button
                   type="primary"
                   className="mt-4 sm:mt-0 !order-last"
@@ -88,49 +96,50 @@ const Profile = () => {
                 >
                   Update Profile
                 </Button>
-              </div>
+              </Box>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2  gap-4 mb-6">
-                <Input placeholder="First Name" size="large" disabled />
-                <Input placeholder="Last Name" size="large" disabled />
-                <Input placeholder="Email" size="large" type="email" disabled />
-                <Input
-                  placeholder="Password"
-                  size="large"
-                  type="password"
-                  disabled
-                />
-                <Input placeholder="City" size="large" disabled />
-                <Input placeholder="Mobile No." size="large" disabled />
-                <Input.TextArea
-                  placeholder="Tell us about yourself..."
-                  size="large"
-                  className="col-start-1 col-end-0 sm:col-start-1 sm:col-end-3 "
-                  autoSize={{ minRows: 2, maxRows: 4 }}
-                  disabled
-                />
-              </div>
+              <Box className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                {fields.map(({ label, name, isTextArea }) => (
+                  <Box
+                    className={`flex flex-col ${isTextArea ? "md:col-span-2" : ""}`}
+                  >
+                    <label className="mb-1 text-gray-600 text-sm md:text-base">
+                      {label}
+                    </label>
+                    {isTextArea ? (
+                      <Input.TextArea
+                        value={ini[name]}
+                        disabled
+                        size="large"
+                        autoSize={{ minRows: 2, maxRows: 4 }}
+                      />
+                    ) : (
+                      <Input value={ini[name]} size="large" disabled />
+                    )}
+                  </Box>
+                ))}
+              </Box>
 
-              <div className="mb-4">
+              <Box className="mb-4">
                 <Typography.Title level={5} className="mb-2">
                   My email Address
                 </Typography.Title>
-                <div className="flex flex-wrap items-center space-x-4">
+                <Box className="flex flex-wrap items-center space-x-4">
                   <Avatar size="small" style={{ backgroundColor: "#1890ff" }}>
                     ✓
                   </Avatar>
-                  <div>
+                  <Box>
                     <Typography.Text>alexarawles@gmail.com</Typography.Text>
-                    <div className="text-gray-500 text-sm">1 month ago</div>
-                  </div>
-                </div>
+                    <Box className="text-gray-500 text-sm">1 month ago</Box>
+                  </Box>
+                </Box>
                 <Button
                   type="dashed"
                   className="mt-4 text-blue-500 border-blue-500"
                 >
                   + Add Email Address
                 </Button>
-              </div>
+              </Box>
             </Card>
 
             {/* Dialogue Box  */}
@@ -188,62 +197,20 @@ const Profile = () => {
                   </Box>
 
                   {/* Form Fields */}
-                  <Box className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                    <Field
-                      name="firstname"
-                      as={Input}
-                      placeholder="First Name *"
-                      size="large"
-                      className="rounded-xl"
-                    />
-                    <Field
-                      name="lastname"
-                      as={Input}
-                      placeholder="Last Name"
-                      size="large"
-                      className="rounded-xl"
-                    />
-                    <Field
-                      name="email"
-                      as={Input}
-                      type="email"
-                      placeholder="Email"
-                      size="large"
-                      className="rounded-xl"
-                    />
-                    <Field
-                      as={Input.Password}
-                      name="password"
-                      placeholder="Password"
-                      size="large"
-                      className="rounded-xl"
-                    />
-                    <Field
-                      name="city"
-                      as={Input}
-                      placeholder="City"
-                      size="large"
-                      className="rounded-xl"
-                    />
-                    <Field
-                      name="mobile"
-                      as={Input}
-                      maxLength={10}
-                      placeholder="Mobile No."
-                      size="large"
-                      className="rounded-xl"
-                    />
-                  </Box>
-
-                  <Field
-                    as={Input.TextArea}
-                    name="bio"
-                    placeholder="Tell us about yourself..."
-                    allowClear
-                    size="large"
-                    className="rounded-xl"
-                    autoSize={{ minRows: 2, maxRows: 4 }}
-                  />
+                  {fields.map(({ label, name, isTextArea }) => (
+                    <Box key={name} className="flex flex-col mb-4">
+                      <label className="mb-1 text-gray-600">{label}</label>
+                      <Field
+                        name={name}
+                        as={isTextArea ? Input.TextArea : Input}
+                        placeholder={label}
+                        size="large"
+                        autoSize={
+                          isTextArea ? { minRows: 2, maxRows: 4 } : undefined
+                        }
+                      />
+                    </Box>
+                  ))}
 
                   <Box className="flex justify-end gap-3 mt-6">
                     <Button
@@ -264,9 +231,8 @@ const Profile = () => {
               </Formik>
             </Modal>
           </Box>
-        </motion.div>
+        </motion.Box>
       </Container>
-
       <Footer />
     </>
   );
