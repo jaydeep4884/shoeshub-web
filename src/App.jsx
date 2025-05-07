@@ -9,7 +9,10 @@ import Checkout from "./pages/Checkout";
 import Orders from "./pages/Orders";
 import Favorite from "./pages/Favorite";
 import Profile from "./pages/Profile";
-// import PrivateRoute from "./components/PrivateRoute";
+import Mens from "./pages/Mens";
+import Women from "./pages/Women";
+import Kids from "./pages/Kids";
+import Couple from "./pages/Couple";
 
 function App() {
   return (
@@ -25,6 +28,10 @@ function App() {
           <Route path="orders" element={<Orders />} />
           <Route path="fav" element={<Favorite />} />
           <Route path="profile" element={<Profile />} />
+          <Route path="men" element={<Mens />} />
+          <Route path="women" element={<Women />} />
+          <Route path="kids" element={<Kids />} />
+          <Route path="couple" element={<Couple />} />
         </Route>
       </Routes>
     </>

@@ -6,6 +6,7 @@ import footerBrand from "../img/logo/footer-brand.svg";
 import mastercard from "../img/Mastercard.png";
 import paypal from "../img/PayPal.png";
 import visa from "../img/Visa.png";
+import { Link } from "react-router";
 
 const footerLinks = [
   {
@@ -97,7 +98,9 @@ const Footer = () => {
               </Box>
 
               <Box className="flex justify-between sm:flex-row  md:flex-row  sm:items-center gap-6">
-                <img src={footerBrand} alt="Unisole Logo" />
+                <Link to="/home">
+                  <img src={footerBrand} alt="Unisole Logo" />
+                </Link>
                 <Box>
                   <p className="font-semibold mb-2 text-sm sm:text-base">
                     Payment Methods
