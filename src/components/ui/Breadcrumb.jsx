@@ -5,7 +5,7 @@ import { Link } from "react-router";
 
 function Breadcrumb({ items = [] }) {
   return (
-    <Breadcrumbs aria-label="breadcrumb" className="mb-4 sm:!mb-6">
+    <Breadcrumbs aria-label="breadcrumb" className="!mb-4 sm:!mb-6">
       {items.map((item, index) =>
         item.link ? (
           <Link key={index} to={item.link}>

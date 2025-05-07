@@ -101,7 +101,7 @@ function SignUp() {
 
                 <p className="text-center">
                   Already Have an Account?{" "}
-                  <Link to="/login" className="underline">
+                  <Link to="/" className="underline">
                     Login
                   </Link>
                 </p>

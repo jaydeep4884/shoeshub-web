@@ -42,7 +42,7 @@ function Bestshoes() {
           Best of Shoes
         </h3>
 
-        <Box className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <Box className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">
           {shoeData.map((shoe, index) => (
             <Box key={index} className="relative">
               {/* Icons */}
@@ -59,7 +59,7 @@ function Bestshoes() {
                   <img
                     alt={shoe.name}
                     src={shoe.image}
-                    className="w-full pt-16 object-cover h-[200px]"
+                    className="w-full pt-16 object-cover h-[150px] sm:h-[200px] "
                   />
                 }
               >
