@@ -59,7 +59,7 @@ const Profile = () => {
         >
           <Box className="py-8 sm:py-10">
             <Breadcrumb items={breadItems} />
-            <Card className="rounded-2xl shadow-xl !w-full">
+            <Card className="rounded-2xl shadow-xl !w-full p-3 sm:p-5 ">
               <div className="flex flex-wrap items-center justify-between mb-6">
                 <div className="flex items-center space-x-4">
                   <IconButton sx={{ p: 0 }}>
@@ -91,21 +91,24 @@ const Profile = () => {
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2  gap-4 mb-6">
-                <Input placeholder="Full Name" size="large" disabled />
-                <Input placeholder="Nick Name" size="large" disabled />
-                <Select placeholder="Gender" size="large" disabled>
-                  <Option value="male">Male</Option>
-                  <Option value="female">Female</Option>
-                </Select>
-                <Input placeholder="Country" size="large" disabled />
-                <Select placeholder="Language" size="large" disabled>
-                  <Option value="english">English</Option>
-                  <Option value="ukrainian">Ukrainian</Option>
-                </Select>
-                <Select placeholder="Time Zone" size="large" disabled>
-                  <Option value="gmt+2">GMT+2</Option>
-                  <Option value="gmt+3">GMT+3</Option>
-                </Select>
+                <Input placeholder="First Name" size="large" disabled />
+                <Input placeholder="Last Name" size="large" disabled />
+                <Input placeholder="Email" size="large" type="email" disabled />
+                <Input
+                  placeholder="Password"
+                  size="large"
+                  type="password"
+                  disabled
+                />
+                <Input placeholder="City" size="large" disabled />
+                <Input placeholder="Mobile No." size="large" disabled />
+                <Input.TextArea
+                  placeholder="Tell us about yourself..."
+                  size="large"
+                  className="col-start-1 col-end-0 sm:col-start-1 sm:col-end-3 "
+                  autoSize={{ minRows: 2, maxRows: 4 }}
+                  disabled
+                />
               </div>
 
               <div className="mb-4">
