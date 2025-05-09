@@ -13,6 +13,8 @@ import Mens from "./pages/Mens";
 import Women from "./pages/Women";
 import Kids from "./pages/Kids";
 import Couple from "./pages/Couple";
+// import AdminPanel from "./admin/AdminPanel";
+import NotFound from "./components/layout/Notfound";
 
 function App() {
   return (
@@ -32,8 +34,10 @@ function App() {
           <Route path="women" element={<Women />} />
           <Route path="kids" element={<Kids />} />
           <Route path="couple" element={<Couple />} />
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
+      {/* <AdminPanel /> */}
     </>
   );
 }
