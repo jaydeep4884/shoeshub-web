@@ -22,8 +22,10 @@ import bkashPay from "../components/img/payment logo/bkash-pay.svg";
 import nagadPay from "../components/img/payment logo/nagad-pay.svg";
 import masterPay from "../components/img/payment logo/mastercard-pay.svg";
 import Breadcrumb from "../components/ui/Breadcrumb";
+import { useNavigate } from "react-router";
 
 const Checkout = () => {
+  const navigate = useNavigate();
   const inputFields = [
     { name: "firstname", label: "First Name*", type: "text" },
     { name: "company", label: "Company Name", type: "text" },
@@ -71,6 +73,7 @@ const Checkout = () => {
       return;
     }
     toast.success("Order Placed Successfully 🎉🎂");
+    navigate("/orderplace");
     resetForm();
     console.log(values);
   };

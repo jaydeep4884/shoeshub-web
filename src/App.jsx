@@ -15,6 +15,7 @@ import Kids from "./pages/Kids";
 import Couple from "./pages/Couple";
 // import AdminPanel from "./admin/AdminPanel";
 import NotFound from "./components/layout/Notfound";
+import OrderPlaced from "./pages/OrderPlaced";
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
           <Route path="women" element={<Women />} />
           <Route path="kids" element={<Kids />} />
           <Route path="couple" element={<Couple />} />
+          <Route path="orderplace" element={<OrderPlaced />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
