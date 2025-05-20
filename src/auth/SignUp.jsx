@@ -19,11 +19,12 @@ function SignUp() {
 
   const handleSubmit = async (values, { resetForm }) => {
     console.log(values);
+    
     const loadingToastId = toast.loading("Creating user...");
 
     try {
       const res = await axios.post(
-        "https://ecommerce-karv.onrender.com/",
+        "https://generateapi.onrender.com/auth/signUp",
         values,
         {
           headers: {
@@ -32,13 +33,11 @@ function SignUp() {
         }
       );
       toast.dismiss(loadingToastId); // Dismiss loading toast
-      if (res.data.status === "success") {
+      if (res.data.Status === "Success") {
         toast.success("User Created Successfully!");
         setTimeout(() => {
           navigate("/");
         }, 2000);
-      } else {
-        toast.error("Failed to create user. Please try again.");
       }
     } catch (error) {
       toast.dismiss(loadingToastId);
@@ -61,16 +60,13 @@ function SignUp() {
                   const placeholders = {
                     name: "Andrews Stantham",
                     email: "you@example.com",
-                    password: "at least 8 characters",
+                    password: "Password",
                   };
                   const types = {
                     email: "email",
                     password: "password",
                   };
-                  const label =
-                    fieldName.charAt(0).toUpperCase() +
-                    fieldName.slice(1).replace("mobile", "Phone No.");
-
+                  const label = fieldName;
                   return (
                     <Box key={index}>
                       <label className="!text-black" htmlFor={fieldName}>

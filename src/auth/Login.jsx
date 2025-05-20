@@ -21,7 +21,7 @@ function Login() {
     const loadingToastId = toast.loading("Just Moments...");
     try {
       const res = await axios.post(
-        "https://ecommerce-karv.onrender.com/login",
+        "https://generateapi.onrender.com/auth/login",
         values,
         {
           headers: {
@@ -30,7 +30,7 @@ function Login() {
         }
       );
       toast.dismiss(loadingToastId);
-      if (res.data.status === "success") {
+      if (res.data.Status === "Success") {
         toast.success("Login Successfully"); // USER_1 metanike@gmail.com
         setAuthToken(res.data.token);
         setIsAuthenticated(true);
@@ -39,6 +39,7 @@ function Login() {
     } catch (error) {
       toast.dismiss(loadingToastId);
       toast.error("Email and Password Incorrect !!");
+      console.log(error);
     }
     resetForm();
   };

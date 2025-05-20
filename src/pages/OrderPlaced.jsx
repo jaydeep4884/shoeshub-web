@@ -18,7 +18,7 @@ function OrderPlaced() {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
         className="h-screen flex flex-col items-center justify-center space-y-6"
-      >
+      >s
         <Box className="text-center">
           <h1 className="text-4xl font-bold text-green-500">
             🎉 Order Placed Successfully!
@@ -37,7 +37,7 @@ function OrderPlaced() {
           <Button
             variant="solid"
             color="danger"
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/home")}
             className="p-5 text-lg"
           >
             Continue Shopping
