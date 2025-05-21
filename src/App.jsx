@@ -13,7 +13,7 @@ import Mens from "./pages/Mens";
 import Women from "./pages/Women";
 import Kids from "./pages/Kids";
 import Couple from "./pages/Couple";
-// import AdminPanel from "./admin/AdminPanel";
+import AdminPanel from "./admin/AdminPanel";
 import NotFound from "./components/layout/Notfound";
 import OrderPlaced from "./pages/OrderPlaced";
 
@@ -37,9 +37,9 @@ function App() {
           <Route path="couple" element={<Couple />} />
           <Route path="orderplace" element={<OrderPlaced />} />
           <Route path="*" element={<NotFound />} />
+          <Route path="admin" element={<AdminPanel />} />
         </Route>
       </Routes>
-      {/* <AdminPanel /> */}
     </>
   );
 }

@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Dropdown, Menu, Avatar } from "antd";
 import { MenuOutlined, UserOutlined, LogoutOutlined } from "@ant-design/icons";
 
-const HeaderBar = ({ toggleDrawer, toggleDarkMode }) => {
+const HeaderBar = ({ toggleDrawer }) => {
   const menu = (
     <Menu>
       <Menu.Item key="profile" icon={<UserOutlined />}>

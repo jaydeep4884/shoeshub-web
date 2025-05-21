@@ -1,6 +1,6 @@
 import { createContext, useState } from "react";
 
-export const token = createContext("yePKwez6u9GGwF4k");
+export const token = createContext("NCnoFvbTh352Cvyx");
 
 export const AuthContext = createContext();
 
