@@ -80,6 +80,33 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "4aMp3nobXg24Lqun",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://generateapi.onrender.com/auth/signUp",
+							"protocol": "https",
+							"host": [
+								"generateapi",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"auth",
+								"signUp"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -801,7 +828,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"user_id\": \"682d44dee2ce65c867672209\",\r\n    \"fullname\": \"Sagathiya Jaydeep\",\r\n    \"companyName\": \"Jakas pvt ltd.\",\r\n    \"streetAddress\": \"surat\",\r\n    \"apartment\": \"hariom\",\r\n    \"city\": \"surat\",\r\n    \"phone\": 1010101010,\r\n    \"email\": \"jaydeep@gmail.com\",\r\n    \"paymentMethod\": \"COD\",\r\n    \"paymentProvider\": \"COD\",\r\n    \"couponCode\": \"682d5f2478f9be60721ce1a0\",\r\n    \"saveForNextTime\": true\r\n}",
+							"raw": "{\r\n    \"user_id\": \"682d44dee2ce65c867672209\",\r\n    \"fullName\": \"Sagathiya Jaydeep\",\r\n    \"companyName\": \"Jakas pvt ltd.\",\r\n    \"streetAddress\": \"surat\",\r\n    \"apartment\": \"hariom\",\r\n    \"city\": \"surat\",\r\n    \"phone\": 1010101010,\r\n    \"email\": \"jaydeep@gmail.com\",\r\n    \"paymentMethod\": \"COD\",\r\n    \"paymentProvider\": \"COD\",\r\n    \"couponCode\": \"682d5f2478f9be60721ce1a0\",\r\n    \"saveForNextTime\": true,\r\n    \"cart_product\": \"682d611b78f9be60721ce1be\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -809,7 +836,7 @@
 							}
 						},
 						"url": {
-							"raw": "https://generateapi.onrender.com/api/Payment/682d67fb78f9be60721ce208",
+							"raw": "https://generateapi.onrender.com/api/Payment-Details/682d67fb78f9be60721ce208",
 							"protocol": "https",
 							"host": [
 								"generateapi",
@@ -818,7 +845,7 @@
 							],
 							"path": [
 								"api",
-								"Payment",
+								"Payment-Details",
 								"682d67fb78f9be60721ce208"
 							]
 						}
@@ -837,7 +864,7 @@
 							}
 						],
 						"url": {
-							"raw": "https://generateapi.onrender.com/api/Payment/:id",
+							"raw": "https://generateapi.onrender.com/api/Payment-Details/682e928d78f9be60721ce612",
 							"protocol": "https",
 							"host": [
 								"generateapi",
@@ -846,7 +873,186 @@
 							],
 							"path": [
 								"api",
-								"Payment",
+								"Payment-Details",
+								"682e928d78f9be60721ce612"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Orders",
+			"item": [
+				{
+					"name": "all",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "4aMp3nobXg24Lqun",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://generateapi.onrender.com/api/Order",
+							"protocol": "https",
+							"host": [
+								"generateapi",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"Order"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "4aMp3nobXg24Lqun",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://generateapi.onrender.com/api/Order",
+							"protocol": "https",
+							"host": [
+								"generateapi",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"Order"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "4aMp3nobXg24Lqun",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "user_id",
+									"value": "682d44dee2ce65c867672209",
+									"type": "text"
+								},
+								{
+									"key": "product_cart",
+									"value": "682d611b78f9be60721ce1be",
+									"type": "text"
+								},
+								{
+									"key": "payment_detail",
+									"value": "682e93b978f9be60721ce63b",
+									"type": "text"
+								},
+								{
+									"key": "subtotal",
+									"value": "5000",
+									"type": "text"
+								},
+								{
+									"key": "shippingCost",
+									"value": "1000",
+									"type": "text"
+								},
+								{
+									"key": "totalAmount",
+									"value": "30000",
+									"type": "text"
+								},
+								{
+									"key": "orderStatus",
+									"value": "pending",
+									"type": "text"
+								},
+								{
+									"key": "isDelivered",
+									"value": "false",
+									"type": "text"
+								},
+								{
+									"key": "deliveredAt",
+									"value": "Kerala",
+									"type": "text"
+								},
+								{
+									"key": "placedAt",
+									"value": "22-05-2023",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://generateapi.onrender.com/api/Order/682e9fab78f9be60721ce68f",
+							"protocol": "https",
+							"host": [
+								"generateapi",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"Order",
+								"682e9fab78f9be60721ce68f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "4aMp3nobXg24Lqun",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://generateapi.onrender.com/api/Order/:id",
+							"protocol": "https",
+							"host": [
+								"generateapi",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"Order",
 								":id"
 							],
 							"variable": [
