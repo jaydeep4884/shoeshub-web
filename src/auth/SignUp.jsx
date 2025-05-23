@@ -19,7 +19,7 @@ function SignUp() {
 
   const handleSubmit = async (values, { resetForm }) => {
     console.log(values);
-    
+
     const loadingToastId = toast.loading("Creating user...");
 
     try {
@@ -33,6 +33,8 @@ function SignUp() {
         }
       );
       toast.dismiss(loadingToastId); // Dismiss loading toast
+      console.log(res.data);
+
       if (res.data.Status === "Success") {
         toast.success("User Created Successfully!");
         setTimeout(() => {
@@ -112,3 +114,16 @@ function SignUp() {
 }
 
 export default SignUp;
+
+// USER = [
+//   {
+//     name: "test",
+//     email: "test@gmail.com",
+//     password: "test",
+//   },
+//   {
+//     name: "mansi",
+//     email: "mansi@gmail.com",
+//     password: "mansi",
+//   },
+// ];

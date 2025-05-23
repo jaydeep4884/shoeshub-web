@@ -4,13 +4,12 @@ import InputBox from "../components/ui/InputBox";
 import { Link, useNavigate } from "react-router";
 import axios from "axios";
 import { useContext } from "react";
-import { AuthContext, token } from "../assets/contexts";
+import { token } from "../assets/contexts";
 import toast, { Toaster } from "react-hot-toast";
 
 function Login() {
   const navigate = useNavigate();
   const Token = useContext(token);
-  const { setAuthToken, setIsAuthenticated } = useContext(AuthContext);
 
   const initialValues = {
     email: "",
@@ -18,6 +17,10 @@ function Login() {
   };
 
   const handleSubmit = async (values, { resetForm }) => {
+    const dataInsert = JSON.parse(localStorage.getItem("userId")) || [];
+    // localStorage.clear()
+    console.log(dataInsert);
+
     const loadingToastId = toast.loading("Just Moments...");
     try {
       const res = await axios.post(
@@ -31,9 +34,8 @@ function Login() {
       );
       toast.dismiss(loadingToastId);
       if (res.data.Status === "Success") {
-        toast.success("Login Successfully"); // USER_1 metanike@gmail.com
-        setAuthToken(res.data.token);
-        setIsAuthenticated(true);
+        toast.success("Login Successfully"); // USER_1 ram@gmail.com
+        localStorage.setItem("userId", JSON.stringify(res.data.data._id));
         setTimeout(() => navigate("/home"), 2000);
       }
     } catch (error) {

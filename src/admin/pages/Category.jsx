@@ -17,9 +17,21 @@ import {
 } from "@mui/material";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { Field, Form, Formik } from "formik";
+import { useState } from "react";
 
 export default function Category() {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [data, setData] = useState([]);
+  const [ini, setIni] = useState({
+    cat_name: "",
+  });
+
+  const handleSubmit = (values, { resetForm }) => {
+    console.log(values);
+    setData([...data, values]);
+    setOpen(false);
+    resetForm();
+  };
 
   return (
     <>
@@ -40,14 +52,14 @@ export default function Category() {
         fullWidth="true"
       >
         <DialogTitle className="!pb-2">Create New Category !!</DialogTitle>
-        <Formik>
+        <Formik enableReinitialize initialValues={ini} onSubmit={handleSubmit}>
           <Form>
             <DialogContent className="!pt-0">
               <Field
                 as={TextField}
                 autoFocus
                 required
-                name="email"
+                name="cat_name"
                 label="Category Name"
                 fullWidth
                 variant="standard"
@@ -89,14 +101,14 @@ export default function Category() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row, i) => (
+            {data.map((el, i) => (
               <TableRow
                 key={i}
                 className="hover:bg-gray-100 transition-all duration-200"
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell>{i + 1}</TableCell>
-                <TableCell>{row.calories}</TableCell>
+                <TableCell>{el.cat_name}</TableCell>
                 <TableCell align="center">
                   <Box className="flex justify-center gap-3">
                     <Button
@@ -122,16 +134,4 @@ export default function Category() {
       </TableContainer>
     </>
   );
-}
-
-const rows = [
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData("Eclair", 262, 16.0, 24, 6.0),
-  createData("Cupcake", 305, 3.7, 67, 4.3),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-];
-
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
 }
