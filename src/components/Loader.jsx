@@ -5,7 +5,7 @@ import { HashLoader } from "react-spinners";
 function Loader() {
   return (
     <>
-      <Box className="flex items-center justify-center h-screen">
+      <Box className="flex items-center justify-center !w-full">
         <HashLoader color="#a4a637" />
       </Box>
     </>

@@ -12,7 +12,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { Link } from "react-router";
 import Select from "react-select";
 import { motion, AnimatePresence } from "framer-motion";
-import { AuthContext } from "../../assets/contexts";
+import { AuthContext, token } from "../../assets/contexts";
 import { countryOptions } from "../countries";
 import brand from "../img/logo/brand.png";
 import search from "../img/icons/Search-icon.svg";
@@ -20,15 +20,9 @@ import likeIcon from "../img/icons/like-icon.svg";
 import orderIcon from "../img/icons/order-icon.svg";
 import cartIcon from "../img/icons/cart-icon.svg";
 import locationIcon from "../img/icons/location-icon.svg";
+import axios from "axios";
 
-const NAV_LINKS = [
-  { pageName: "Home", navLink: "/home" },
-  { pageName: "Kids", navLink: "/kids" },
-  { pageName: "Men's", navLink: "/men" },
-  { pageName: "Women", navLink: "/women" },
-  { pageName: "Couple", navLink: "/couple" },
-];
-
+// PAGE LINKS
 const PAGE_LINKS = [
   { pageName: "Orders", icon: orderIcon, pageLink: "/orders" },
   { pageName: "Favorite", icon: likeIcon, pageLink: "/fav" },
@@ -39,13 +33,6 @@ const settings = [
   { name: "Profile", link: "/profile" },
   { name: "Log Out", link: "/" },
 ];
-
-const NavLinks = () =>
-  NAV_LINKS.map(({ pageName, navLink }) => (
-    <Link key={navLink} to={navLink} className="hover:text-blue-600 py-1">
-      {pageName}
-    </Link>
-  ));
 
 const PageLinks = () =>
   PAGE_LINKS.map(({ pageName, icon, pageLink }) => (
@@ -83,16 +70,50 @@ export default function Header() {
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const { isAuthenticated } = useContext(AuthContext);
+  const [data, setData] = useState([]);
+  const Token = useContext(token);
+
+  const fetchCategories = async () => {
+    try {
+      const res = await axios.get(
+        "https://generateapi.onrender.com/api/category",
+        {
+          headers: {
+            Authorization: Token,
+          },
+        }
+      );
+      setData(Array.isArray(res.data.Data) ? res.data.Data : []);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCategories();
+    // eslint-disable-next-line
+  }, []);
 
   useEffect(() => {
     document.body.style.overflow = mobileMenuOpen ? "hidden" : "auto";
   }, [mobileMenuOpen]);
 
+  const NavLinks = () =>
+    data.map((category) => (
+      <Link
+        key={category._id || category.cat_name}
+        to={`/${category.cat_name.toLowerCase()}`}
+        className="hover:text-blue-600 py-1"
+      >
+        {category.cat_name}
+      </Link>
+    ));
+
   return (
     <header className="w-full bg-white shadow-sm sticky top-0 z-50">
       <Container maxWidth="lg">
-        <Box className="flex !items-stretch justify-between flex-wrap py-3 md:pt-4 md:pb-0 gap-4">
-          <Box className="flex !items-center gap-4 flex-1">
+        <Box className="flex items-stretch justify-between flex-wrap py-3 md:pt-4 md:pb-0 gap-4">
+          <Box className="flex items-center gap-4 flex-1">
             <Link to="/home">
               <img src={brand} alt="brand" className="w-[100px]" />
             </Link>

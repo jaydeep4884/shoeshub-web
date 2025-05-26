@@ -31,7 +31,7 @@ function App() {
           <Route path="orders" element={<Orders />} />
           <Route path="fav" element={<Favorite />} />
           <Route path="profile" element={<Profile />} />
-          <Route path="men" element={<Mens />} />
+          <Route path="mens" element={<Mens />} />
           <Route path="women" element={<Women />} />
           <Route path="kids" element={<Kids />} />
           <Route path="couple" element={<Couple />} />

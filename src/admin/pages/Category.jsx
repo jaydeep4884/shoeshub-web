@@ -1,12 +1,11 @@
-import * as React from "react";
-import TextField from "@mui/material/TextField";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Box,
   Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   Paper,
   Table,
   TableBody,
@@ -14,124 +13,173 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  TextField,
 } from "@mui/material";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import AddIcon from "@mui/icons-material/AddCircleOutline";
 import { Field, Form, Formik } from "formik";
-import { useState } from "react";
+import axios from "axios";
+import { token } from "../../assets/contexts";
+import Loader from "../../components/Loader";
+import toast, { Toaster } from "react-hot-toast";
 
-export default function Category() {
+const Category = () => {
   const [open, setOpen] = useState(false);
   const [data, setData] = useState([]);
-  const [ini, setIni] = useState({
-    cat_name: "",
-  });
+  const [loading, setLoading] = useState(false);
+  const Token = useContext(token);
+  const initialValues = { cat_name: "" };
 
-  const handleSubmit = (values, { resetForm }) => {
-    console.log(values);
-    setData([...data, values]);
-    setOpen(false);
-    resetForm();
+  const fetchCategories = async () => {
+    setLoading(true);
+    try {
+      const res = await axios.get(
+        "https://generateapi.onrender.com/api/category",
+        {
+          headers: { Authorization: Token },
+        }
+      );
+      setData(res.data?.Data || []);
+    } catch (err) {
+      console.error("Fetch error:", err);
+    } finally {
+      setLoading(false);
+    }
   };
+
+  const handleSubmit = async (values, { resetForm }) => {
+    setLoading(true);
+    values.user_id = JSON.parse(localStorage.getItem("userId")) || "";
+    try {
+      const res = await axios.post(
+        "https://generateapi.onrender.com/api/category",
+        values,
+        {
+          headers: { Authorization: Token },
+        }
+      );
+      setData((prev) => [...prev, res.data.Data]);
+      toast.success("Category Added!");
+      resetForm();
+      setOpen(false);
+    } catch (err) {
+      console.error("Submit error:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const deleteCategory = async (id) => {
+    try {
+      await axios.delete(
+        `https://generateapi.onrender.com/api/category/${id}`,
+        {
+          headers: { Authorization: Token },
+        }
+      );
+      toast.success("Category Deleted!");
+      fetchCategories();
+    } catch (err) {
+      console.error("Delete error:", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchCategories();
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <>
       <Button
-        className="gap-1 !capitalize !float-end !mb-5"
         variant="contained"
+        className="!capitalize !float-end !mb-5"
         onClick={() => setOpen(true)}
       >
-        <AddCircleOutlineIcon />
-        Create Category
+        <AddIcon /> Create Category
       </Button>
 
-      {/* Model  */}
       <Dialog
         open={open}
         onClose={() => setOpen(false)}
         maxWidth="sm"
-        fullWidth="true"
+        fullWidth
       >
-        <DialogTitle className="!pb-2">Create New Category !!</DialogTitle>
-        <Formik enableReinitialize initialValues={ini} onSubmit={handleSubmit}>
+        <DialogTitle className="!pb-2">Create New Category</DialogTitle>
+        <Formik
+          enableReinitialize
+          initialValues={initialValues}
+          onSubmit={handleSubmit}
+        >
           <Form>
             <DialogContent className="!pt-0">
-              <Field
-                as={TextField}
-                autoFocus
-                required
-                name="cat_name"
-                label="Category Name"
-                fullWidth
-                variant="standard"
-              />
-              <DialogActions className="!mt-4 ">
-                <Button
-                  variant="contained"
-                  className="!capitalize"
-                  onClick={() => setOpen(false)}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  type="submit"
-                  variant="contained"
-                  className="!capitalize"
-                  color="success"
-                >
-                  Add Category
-                </Button>
-              </DialogActions>
+              {loading ? (
+                <Box className="flex justify-center">
+                  <Loader />
+                </Box>
+              ) : (
+                <>
+                  <Field
+                    as={TextField}
+                    name="cat_name"
+                    label="Category Name"
+                    fullWidth
+                    required
+                    autoFocus
+                    variant="standard"
+                  />
+                  <DialogActions>
+                    <Button onClick={() => setOpen(false)}>Cancel</Button>
+                    <Button type="submit" color="success" variant="contained">
+                      Add Category
+                    </Button>
+                  </DialogActions>
+                </>
+              )}
             </DialogContent>
           </Form>
         </Formik>
       </Dialog>
 
-      {/* Table  */}
       <TableContainer component={Paper} className="shadow-lg rounded-xl">
-        <Table aria-label="simple table">
+        <Table>
           <TableHead>
             <TableRow className="bg-gray-100">
-              <TableCell className="font-semibold text-gray-700">No.</TableCell>
-              <TableCell className="font-semibold text-gray-700">
-                Category Name
-              </TableCell>
-              <TableCell className="font-semibold text-gray-700" align="center">
-                Actions
-              </TableCell>
+              <TableCell>No.</TableCell>
+              <TableCell>Category Name</TableCell>
+              <TableCell align="center">Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map((el, i) => (
-              <TableRow
-                key={i}
-                className="hover:bg-gray-100 transition-all duration-200"
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <TableCell>{i + 1}</TableCell>
-                <TableCell>{el.cat_name}</TableCell>
-                <TableCell align="center">
-                  <Box className="flex justify-center gap-3">
-                    <Button
-                      variant="contained"
-                      color="error"
-                      className="!capitalize "
-                    >
-                      Delete
-                    </Button>
-                    <Button
-                      variant="contained"
-                      color="success"
-                      className="!capitalize "
-                    >
-                      Update
-                    </Button>
-                  </Box>
-                </TableCell>
-              </TableRow>
-            ))}
+            {loading ? (
+              <Loader />
+            ) : (
+              data.map((item, i) => (
+                <TableRow key={item._id} className="hover:bg-gray-100">
+                  <TableCell>{i + 1}</TableCell>
+                  <TableCell>{item.cat_name}</TableCell>
+                  <TableCell align="center">
+                    <Box className="flex justify-center gap-3">
+                      <Button
+                        color="error"
+                        variant="contained"
+                        onClick={() => deleteCategory(item._id)}
+                      >
+                        Delete
+                      </Button>
+                      <Button color="success" variant="contained">
+                        Update
+                      </Button>
+                    </Box>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
           </TableBody>
         </Table>
       </TableContainer>
+      <Toaster />
     </>
   );
-}
+};
+
+export default Category;
