@@ -53,7 +53,7 @@ const ProductFormFields = () => (
       { name: "typeofheel", label: "Type Of Heel" },
       { name: "waterlevel", label: "Water Level" },
       { name: "material", label: "Material" },
-      { name: "images", label: "Product Image", type: "file" },
+      { name: "images", type: "file" },
       { name: "cat_name", label: "Category Name" },
     ].map(({ name, label, type = "text" }) => (
       <Grid item xs={12} sm={6} key={name}>
@@ -138,7 +138,7 @@ const Category = () => {
       <Dialog
         open={open}
         onClose={() => setOpen(false)}
-        fullWidth
+        
         maxWidth="sm"
         fullScreen={fullScreen}
       >
