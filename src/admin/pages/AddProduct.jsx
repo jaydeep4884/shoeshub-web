@@ -42,7 +42,7 @@ const Category = () => {
     typeofheel: "",
     waterlevel: "",
     material: "",
-    images: null,
+    images: "",
     cat_name: "",
   });
 
@@ -68,7 +68,6 @@ const Category = () => {
   // CREATE PRODUCT
   const handleSubmit = async (values, { resetForm }) => {
     const formData = new FormData();
-
     formData.append("pro_name", values.pro_name.trim());
     formData.append("pro_rating", parseFloat(values.pro_rating));
     formData.append("review", parseInt(values.review));
@@ -80,9 +79,10 @@ const Category = () => {
     formData.append("material", values.material || "");
     formData.append("cat_name", values.cat_name.trim());
 
+    // ✅ Check and append the image
     if (values.images instanceof File) {
-      const imgdata = formData.append("images", values.images);
-      console.log(imgdata);
+      console.log("Uploaded Img File:", values.images[0]);
+      formData.append("images", values.images[0]);
     } else {
       toast.error("Please select a valid image file.");
       return;
@@ -92,26 +92,29 @@ const Category = () => {
       "user_id",
       JSON.parse(localStorage.getItem("userId")) || ""
     );
-    // try {
-    //   const res = await axios.post(
-    //     "https://generateapi.onrender.com/api/product",
-    //     formData,
-    //     {
-    //       headers: {
-    //         Authorization: Token,
-    //         "Content-Type": "multipart/form-data",
-    //       },
-    //     }
-    //   );
-    //   setData((prev) => [...prev, res.data.Data]);
-    //   toast.success("Product Added !!");
-    //   resetForm();
-    //   setOpen(false);
-    //   fetchCategories();
-    // } catch (error) {
-    //   console.log(error);
-    // }
-    console.log("Product Data : ", values);
+
+    try {
+      const res = await axios.post(
+        "https://generateapi.onrender.com/api/product",
+        formData,
+        {
+          headers: {
+            Authorization: Token,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      setData((prev) => [...prev, res.data.Data]);
+      toast.success("Product Added !!");
+      resetForm();
+      setOpen(false);
+      fetchCategories();
+    } catch (error) {
+      console.error("Upload error:", error);
+      toast.error("Failed to add product.");
+    }
+
+    console.log("Product Data:", values);
   };
 
   // DELETE PRODUCT
@@ -122,10 +125,20 @@ const Category = () => {
           Authorization: Token,
         },
       });
-      toast.success("Category Deleted!");
       fetchCategories();
+      toast.success("Product Deleted !");
     } catch (err) {
       console.error("Delete error:", err);
+    }
+  };
+
+  // Get Image Address
+  const handleChangeImg = (event, setFieldValue) => {
+    const imgFile = event.currentTarget.files[0];
+    if (imgFile) {
+      console.log("imgFile : ", imgFile);
+
+      setFieldValue("images", imgFile);
     }
   };
 
@@ -171,9 +184,7 @@ const Category = () => {
           type="file"
           name="images"
           accept="image/*"
-          onChange={(event) => {
-            setFieldValue("images", event.currentTarget.files[0]);
-          }}
+          onChange={(e) => handleChangeImg(e, setFieldValue)}
         />
       </Box>
     </Box>
