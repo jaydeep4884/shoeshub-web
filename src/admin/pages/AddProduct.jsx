@@ -12,8 +12,15 @@ import {
   Select,
   Rate,
   Typography,
+  Dropdown,
+  Space,
 } from "antd";
-import { PlusOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import {
+  PlusOutlined,
+  DeleteOutlined,
+  EditOutlined,
+  DownOutlined,
+} from "@ant-design/icons";
 
 const { Option } = Select;
 
@@ -24,6 +31,11 @@ const Category = () => {
   const [loading, setLoading] = useState(false);
   const [id, setId] = useState(null);
   const Token = useContext(token);
+
+  const menuItems = catData.map((cat) => ({
+    key: cat._id,
+    label: cat.cat_name,
+  }));
 
   const [initialValues, setInitialValues] = useState({
     pro_name: "",
@@ -87,11 +99,15 @@ const Category = () => {
         );
         toast.success("Product Updated!");
       } else {
-        await axios.post(
-          "https://generateapi.onrender.com/api/product",
-          formData,
-          config
-        );
+        await axios
+          .post(
+            "https://generateapi.onrender.com/api/product",
+            formData,
+            config
+          )
+          .then((res) => {
+            console.log(res.data);
+          });
         toast.success("Product Added!");
       }
       resetForm();
@@ -216,15 +232,24 @@ const Category = () => {
   }, []);
 
   return (
-    <div className="p-4">
-      <Button
-        type="primary"
-        icon={<PlusOutlined />}
-        onClick={() => setOpen(true)}
-        className="mb-4 "
-      >
-        Add Product
-      </Button>
+    <div>
+      <div className="flex justify-between items-stretch">
+        <Button
+          type="primary"
+          icon={<PlusOutlined />}
+          onClick={() => setOpen(true)}
+          className="mb-4 "
+        >
+          Add Product
+        </Button>
+        <Dropdown menu={{ items: menuItems }}>
+          <Button>
+            <Space>
+              Categories <DownOutlined />
+            </Space>
+          </Button>
+        </Dropdown>
+      </div>
 
       {/* CARD  */}
       {loading ? (
@@ -250,19 +275,27 @@ const Category = () => {
                 allowHalf
                 style={{ fontSize: "15px" }}
               />
-              <Typography className="text-gray-600 text-sm">
-                {product.review} reviews
-              </Typography>
+
               <Typography className="text-base font-bold">
                 ${product.new_price}
                 <span className="line-through text-gray-400 ml-2">
                   ${product.old_price}
                 </span>
               </Typography>
+
+              <Typography className="text-gray-600 text-sm">
+                {product.review} reviews
+              </Typography>
+
+              <Typography className="text-gray-600 text-sm">
+                Category : {product.cat_name?.cat_name || "Unknown"}
+              </Typography>
+
               <div className="flex justify-between mt-3">
                 <Button
                   icon={<EditOutlined />}
                   onClick={() => updateProduct(product)}
+                  loading={loading}
                 >
                   Edit
                 </Button>
@@ -270,6 +303,7 @@ const Category = () => {
                   icon={<DeleteOutlined />}
                   danger
                   onClick={() => deleteProduct(product._id)}
+                  loading={loading}
                 >
                   Delete
                 </Button>
@@ -303,7 +337,7 @@ const Category = () => {
                 type="primary"
                 htmlType="submit"
                 className="w-full mt-4"
-                loading
+                loading={loading}
               >
                 {id ? "Update Product" : "Add Product"}
               </Button>
