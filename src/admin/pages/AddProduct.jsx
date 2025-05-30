@@ -1,40 +1,31 @@
 import React, { useContext, useEffect, useState } from "react";
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  CardMedia,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  IconButton,
-  MenuItem,
-  Rating,
-  TextField,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
-import AddIcon from "@mui/icons-material/AddCircleOutline";
 import { Field, Form, Formik } from "formik";
 import axios from "axios";
 import { token } from "../../assets/contexts";
 import Loader from "../../components/Loader";
 import toast, { Toaster } from "react-hot-toast";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
+import {
+  Modal,
+  Button,
+  Input,
+  InputNumber,
+  Select,
+  Rate,
+  Typography,
+} from "antd";
+import { PlusOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons";
+
+const { Option } = Select;
 
 const Category = () => {
   const [open, setOpen] = useState(false);
   const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [catData, setCatData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [id, setId] = useState(null);
   const Token = useContext(token);
-  const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
-  const [ini, setIni] = useState({
+
+  const [initialValues, setInitialValues] = useState({
     pro_name: "",
     pro_rating: "",
     review: "",
@@ -48,285 +39,281 @@ const Category = () => {
     cat_name: "",
   });
 
-  const fetchProducts = async () => {
+  // GET CATEGORY AND PRODUCT DATA
+  const fetchData = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(
-        "https://generateapi.onrender.com/api/product",
-        {
+      const [products, categories] = await Promise.all([
+        axios.get("https://generateapi.onrender.com/api/product", {
           headers: { Authorization: Token },
-        }
-      );
-      setData(res.data?.Data || []);
+        }),
+        axios.get("https://generateapi.onrender.com/api/category", {
+          headers: { Authorization: Token },
+        }),
+      ]);
+      setData(products.data?.Data || []);
+      setCatData(categories.data?.Data || []);
       setLoading(false);
     } catch (err) {
-      console.error("Fetch error:", err);
-      setLoading(false);
+      toast.error("Failed to load data.");
+      console.log(err);
     }
   };
 
+  // CREATE AND UPDATE PRODUCT
   const handleSubmit = async (values, { resetForm }) => {
     const formData = new FormData();
-    formData.append("pro_name", values.pro_name.trim());
-    formData.append("pro_rating", parseFloat(values.pro_rating));
-    formData.append("review", parseInt(values.review));
-    formData.append("new_price", parseFloat(values.new_price));
-    formData.append("old_price", parseFloat(values.old_price));
-    formData.append("type", values.type || "");
-    formData.append("typeofheel", values.typeofheel || "");
-    formData.append("waterlevel", values.waterlevel || "");
-    formData.append("material", values.material || "");
-    formData.append("cat_name", values.cat_name);
-    formData.append(
-      "user_id",
-      JSON.parse(localStorage.getItem("userId")) || ""
-    );
-
-    if (Array.isArray(values.images) && values.images.length > 0) {
-      values.images.forEach((file) => {
-        formData.append("images", file);
-      });
-    } else {
-      toast.error("Please select at least one image.");
-      return;
-    }
+    Object.entries(values).forEach(([key, val]) => {
+      if (key === "images" && Array.isArray(val)) {
+        val.forEach((img) => formData.append("images", img));
+      } else {
+        formData.append(key, val);
+      }
+    });
+    formData.append("user_id", JSON.parse(localStorage.getItem("userId")));
 
     try {
-      await axios
-        .post("https://generateapi.onrender.com/api/product", formData, {
-          headers: {
-            Authorization: Token,
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then(() => {
-          toast.success("Product Added !!");
-          resetForm();
-          setOpen(false);
-          fetchProducts();
-        });
+      const config = {
+        headers: {
+          Authorization: Token,
+          "Content-Type": "multipart/form-data",
+        },
+      };
+      if (id) {
+        await axios.patch(
+          `https://generateapi.onrender.com/api/product/${id}`,
+          formData,
+          config
+        );
+        toast.success("Product Updated!");
+      } else {
+        await axios.post(
+          "https://generateapi.onrender.com/api/product",
+          formData,
+          config
+        );
+        toast.success("Product Added!");
+      }
+      resetForm();
+      setOpen(false);
+      setId(null);
+      fetchData();
     } catch (error) {
-      console.error("Upload error:", error);
-      toast.error("Failed to add product.");
+      toast.error("Failed to save product.");
+      console.log(error);
     }
-    console.log(values);
+  };
+
+  // UPDATE PRODUCT
+  const updateProduct = (product) => {
+    setInitialValues({
+      pro_name: product.pro_name,
+      pro_rating: product.pro_rating,
+      review: product.review,
+      new_price: product.new_price,
+      old_price: product.old_price,
+      type: product.type,
+      typeofheel: product.typeofheel,
+      waterlevel: product.waterlevel,
+      material: product.material,
+      images: product.images,
+      cat_name: product.cat_name,
+    });
+    setId(product._id);
+    setOpen(true);
   };
 
   // DELETE PRODUCT
-  const deleteCategory = async (id) => {
+  const deleteProduct = async (productId) => {
     try {
-      await axios.delete(`https://generateapi.onrender.com/api/product/${id}`, {
-        headers: { Authorization: Token },
-      });
-      fetchProducts();
-      toast.success("Product Deleted !");
-    } catch (err) {
-      console.error("Delete error:", err);
-    }
-  };
-
-  const handleChangeImg = (event, setFieldValue) => {
-    const files = Array.from(event.currentTarget.files);
-    if (files.length > 0) {
-      setFieldValue("images", files);
-    }
-  };
-
-  // GET ALL CATEGORY
-  const fetchCategories = async () => {
-    setLoading(true);
-    try {
-      const res = await axios.get(
-        "https://generateapi.onrender.com/api/category",
+      await axios.delete(
+        `https://generateapi.onrender.com/api/product/${productId}`,
         {
           headers: { Authorization: Token },
         }
       );
-      setCatData(res.data?.Data || []);
-    } catch (err) {
-      console.error("Fetch error:", err);
-    } finally {
-      setLoading(false);
+      toast.success("Product Deleted!");
+      fetchData();
+    } catch (error) {
+      toast.error("Failed to delete.");
+      console.log(error);
     }
   };
 
+  // PRODUCT FIELD
+  const ProductFormFields = ({ setFieldValue, values }) => {
+    const fields = [
+      { name: "pro_name", placeholder: "Product Name" },
+      { name: "type", placeholder: "Product Type" },
+      { name: "typeofheel", placeholder: "Type of Heel" },
+      { name: "waterlevel", placeholder: "Water Level" },
+      { name: "material", placeholder: "Material" },
+    ];
+
+    const numbers = [
+      { name: "pro_rating", min: 0, max: 5, placeholder: "Rating" },
+      { name: "review", min: 0, placeholder: "Reviews" },
+      { name: "new_price", min: 0, placeholder: "New Price" },
+      { name: "old_price", min: 0, placeholder: "Old Price" },
+    ];
+
+    return (
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {fields.map(({ name, placeholder }) => (
+          <Field key={name} name={name}>
+            {({ field }) => (
+              <Input {...field} placeholder={placeholder} required />
+            )}
+          </Field>
+        ))}
+        {numbers.map(({ name, min, max, placeholder }) => (
+          <Field key={name} name={name}>
+            {({ field }) => (
+              <InputNumber
+                {...field}
+                min={min}
+                max={max}
+                className="w-full"
+                placeholder={placeholder}
+                onChange={(val) => setFieldValue(name, val)}
+              />
+            )}
+          </Field>
+        ))}
+        <Select
+          placeholder="Select Category"
+          onChange={(val) => setFieldValue("cat_name", val)}
+          value={values.cat_name}
+          className="w-full"
+        >
+          {catData.map((cat) => (
+            <Option key={cat._id} value={cat._id}>
+              {cat.cat_name}
+            </Option>
+          ))}
+        </Select>
+        <div className="col-span-1 sm:col-span-2">
+          <p className="text-sm mb-1">Upload Images</p>
+          <input
+            type="file"
+            multiple
+            accept="image/*"
+            onChange={(e) =>
+              setFieldValue("images", Array.from(e.target.files))
+            }
+          />
+          <p className="text-xs text-gray-500 mt-1">
+            {values.images.length} image(s) selected
+          </p>
+        </div>
+      </div>
+    );
+  };
+
   useEffect(() => {
-    fetchProducts();
-    fetchCategories();
+    fetchData();
     // eslint-disable-next-line
   }, []);
 
-  const ProductFormFields = ({ setFieldValue, values }) => (
-    <Box className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      {[
-        { name: "pro_name", label: "Product Name" },
-        { name: "pro_rating", label: "Product Rating", type: "number" },
-        { name: "review", label: "Review Count", type: "number" },
-        { name: "new_price", label: "New Price", type: "number" },
-        { name: "old_price", label: "Original Price", type: "number" },
-        { name: "type", label: "Product Type" },
-        { name: "typeofheel", label: "Type Of Heel" },
-        { name: "waterlevel", label: "Water Level" },
-        { name: "material", label: "Material" },
-      ].map(({ name, label, type = "text" }) => (
-        <Field
-          key={name}
-          as={TextField}
-          name={name}
-          label={label}
-          type={type}
-          fullWidth
-          required={
-            name !== "type" && name !== "typeofheel" && name !== "material"
-          }
-          variant="standard"
-        />
-      ))}
-
-      {/* Category Select Field */}
-      <Field name="cat_name">
-        {({ field }) => (
-          <TextField
-            {...field}
-            select
-            fullWidth
-            label="Category Name"
-            variant="standard"
-            required
-          >
-            {catData.map((el, i) => (
-              <MenuItem key={i} value={el._id}>
-                {el.cat_name}
-              </MenuItem>
-            ))}
-          </TextField>
-        )}
-      </Field>
-
-      {/* Multiple Image Upload */}
-      <Box>
-        <Typography variant="body2" className="!mb-1">
-          Product Images
-        </Typography>
-        <input
-          type="file"
-          name="images"
-          accept="image/*"
-          multiple
-          onChange={(e) => handleChangeImg(e, setFieldValue)}
-        />
-        <Typography variant="caption">
-          {values.images.length} file(s) selected
-        </Typography>
-      </Box>
-    </Box>
-  );
-
   return (
-    <>
-      <Box className="flex justify-end !mb-5">
-        <Button
-          variant="contained"
-          className="!capitalize"
-          onClick={() => setOpen(true)}
-        >
-          <AddIcon /> &nbsp;New Product
-        </Button>
-      </Box>
-
-      <Dialog
-        open={open}
-        onClose={() => setOpen(false)}
-        maxWidth="sm"
-        fullScreen={fullScreen}
+    <div className="p-4">
+      <Button
+        type="primary"
+        icon={<PlusOutlined />}
+        onClick={() => setOpen(true)}
+        className="mb-4 "
       >
-        <DialogTitle className="!pb-2">Create New Product</DialogTitle>
-        {loading ? (
-          <Loader />
-        ) : (
-          <Formik initialValues={ini} onSubmit={handleSubmit}>
-            {({ setFieldValue, values }) => (
-              <Form>
-                <DialogContent className="!pt-0">
-                  <ProductFormFields
-                    setFieldValue={setFieldValue}
-                    values={values}
-                  />
-                </DialogContent>
-                <DialogActions>
-                  <Button
-                    variant="contained"
-                    color="error"
-                    className="!capitalize"
-                    onClick={() => setOpen(false)}
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    className="!capitalize"
-                    type="submit"
-                    color="warning"
-                    variant="contained"
-                  >
-                    Add Product
-                  </Button>
-                </DialogActions>
-              </Form>
-            )}
-          </Formik>
-        )}
-      </Dialog>
+        Add Product
+      </Button>
 
+      {/* CARD  */}
       {loading ? (
         <Loader />
+      ) : data.length === 0 ? (
+        <Typography>No products found.</Typography>
       ) : (
-        <Box className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">
-          {data.map((item, i) => (
-            <Card
-              key={i}
-              className="!shadow-lg border border-[#ddd] !rounded-md"
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {data.map((product) => (
+            <div
+              key={product._id}
+              className="border rounded-lg p-2 bg-white shadow"
             >
-              <CardMedia
-                component="img"
-                className="w-full object-contain h-[150px] sm:h-[240px]"
-                image={
-                  Array.isArray(item.images) && item.images.length > 0
-                    ? item.images[0]
-                    : item.images
-                }
-                alt={item.pro_name}
+              <img
+                src={product.images?.[0] || "https://via.placeholder.com/150"}
+                alt={product.pro_name}
+                className="w-full h-40 object-cover rounded mb-2"
               />
-              <CardContent className="!p-3">
-                <Typography className="!text-sm">{item.pro_name}</Typography>
-                <Typography className="text-base !font-semibold">
-                  {item.new_price}
-                </Typography>
-                <Rating
-                  name="read-only"
-                  value={item.pro_rating}
-                  size="small"
-                  readOnly
-                />
-                <Box className="flex gap-1 justify-end">
-                  <IconButton
-                    aria-label="delete"
-                    className="!p-1"
-                    onClick={() => deleteCategory(item._id)}
-                  >
-                    <DeleteIcon className="text-gray-400" />
-                  </IconButton>
-                  <IconButton aria-label="edit" className="!p-1">
-                    <EditIcon className="text-gray-400" />
-                  </IconButton>
-                </Box>
-              </CardContent>
-            </Card>
+              <h3 className="text-lg font-semibold">{product.pro_name}</h3>
+              <Rate
+                disabled
+                defaultValue={product.pro_rating}
+                allowHalf
+                style={{ fontSize: "15px" }}
+              />
+              <Typography className="text-gray-600 text-sm">
+                {product.review} reviews
+              </Typography>
+              <Typography className="text-base font-bold">
+                ${product.new_price}
+                <span className="line-through text-gray-400 ml-2">
+                  ${product.old_price}
+                </span>
+              </Typography>
+              <div className="flex justify-between mt-3">
+                <Button
+                  icon={<EditOutlined />}
+                  onClick={() => updateProduct(product)}
+                >
+                  Edit
+                </Button>
+                <Button
+                  icon={<DeleteOutlined />}
+                  danger
+                  onClick={() => deleteProduct(product._id)}
+                >
+                  Delete
+                </Button>
+              </div>
+            </div>
           ))}
-        </Box>
+        </div>
       )}
 
-      <Toaster />
-    </>
+      {/* MODEL  */}
+      <Modal
+        title={id ? "Update Product" : "Add Product"}
+        open={open}
+        onCancel={() => setOpen(false)}
+        footer={null}
+        destroyOnClose
+        centered
+      >
+        <Formik
+          initialValues={initialValues}
+          enableReinitialize
+          onSubmit={handleSubmit}
+        >
+          {({ setFieldValue, values }) => (
+            <Form>
+              <ProductFormFields
+                setFieldValue={setFieldValue}
+                values={values}
+              />
+              <Button
+                type="primary"
+                htmlType="submit"
+                className="w-full mt-4"
+                loading
+              >
+                {id ? "Update Product" : "Add Product"}
+              </Button>
+            </Form>
+          )}
+        </Formik>
+      </Modal>
+
+      <Toaster position="top-center" />
+    </div>
   );
 };
 
