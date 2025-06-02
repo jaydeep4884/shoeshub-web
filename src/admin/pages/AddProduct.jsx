@@ -30,12 +30,8 @@ const Category = () => {
   const [catData, setCatData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [id, setId] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState(null);
   const Token = useContext(token);
-
-  const menuItems = catData.map((cat) => ({
-    key: cat._id,
-    label: cat.cat_name,
-  }));
 
   const [initialValues, setInitialValues] = useState({
     pro_name: "",
@@ -51,7 +47,6 @@ const Category = () => {
     cat_name: "",
   });
 
-  // GET CATEGORY AND PRODUCT DATA
   const fetchData = async () => {
     setLoading(true);
     try {
@@ -66,13 +61,11 @@ const Category = () => {
       setData(products.data?.Data || []);
       setCatData(categories.data?.Data || []);
       setLoading(false);
-    } catch (err) {
+    } catch {
       toast.error("Failed to load data.");
-      console.log(err);
     }
   };
 
-  // CREATE AND UPDATE PRODUCT
   const handleSubmit = async (values, { resetForm }) => {
     const formData = new FormData();
     Object.entries(values).forEach(([key, val]) => {
@@ -91,36 +84,22 @@ const Category = () => {
           "Content-Type": "multipart/form-data",
         },
       };
-      if (id) {
-        await axios.patch(
-          `https://generateapi.onrender.com/api/product/${id}`,
-          formData,
-          config
-        );
-        toast.success("Product Updated!");
-      } else {
-        await axios
-          .post(
-            "https://generateapi.onrender.com/api/product",
-            formData,
-            config
-          )
-          .then((res) => {
-            console.log(res.data);
-          });
-        toast.success("Product Added!");
-      }
+      const url = id
+        ? `https://generateapi.onrender.com/api/product/${id}`
+        : "https://generateapi.onrender.com/api/product";
+      const method = id ? axios.patch : axios.post;
+
+      await method(url, formData, config);
+      toast.success(id ? "Product Updated!" : "Product Added!");
       resetForm();
       setOpen(false);
       setId(null);
       fetchData();
-    } catch (error) {
+    } catch {
       toast.error("Failed to save product.");
-      console.log(error);
     }
   };
 
-  // UPDATE PRODUCT
   const updateProduct = (product) => {
     setInitialValues({
       pro_name: product.pro_name,
@@ -133,32 +112,27 @@ const Category = () => {
       waterlevel: product.waterlevel,
       material: product.material,
       images: product.images,
-      cat_name: product.cat_name,
+      cat_name: product.cat_name?._id || "",
     });
     setId(product._id);
     setOpen(true);
   };
 
-  // DELETE PRODUCT
   const deleteProduct = async (productId) => {
     try {
       await axios.delete(
         `https://generateapi.onrender.com/api/product/${productId}`,
-        {
-          headers: { Authorization: Token },
-        }
+        { headers: { Authorization: Token } }
       );
       toast.success("Product Deleted!");
       fetchData();
-    } catch (error) {
-      toast.error("Failed to delete.");
-      console.log(error);
+    } catch {
+      toast.error("Failed to delete product.");
     }
   };
 
-  // PRODUCT FIELD
   const ProductFormFields = ({ setFieldValue, values }) => {
-    const fields = [
+    const textFields = [
       { name: "pro_name", placeholder: "Product Name" },
       { name: "type", placeholder: "Product Type" },
       { name: "typeofheel", placeholder: "Type of Heel" },
@@ -166,7 +140,7 @@ const Category = () => {
       { name: "material", placeholder: "Material" },
     ];
 
-    const numbers = [
+    const numberFields = [
       { name: "pro_rating", min: 0, max: 5, placeholder: "Rating" },
       { name: "review", min: 0, placeholder: "Reviews" },
       { name: "new_price", min: 0, placeholder: "New Price" },
@@ -175,14 +149,12 @@ const Category = () => {
 
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {fields.map(({ name, placeholder }) => (
+        {textFields.map(({ name, placeholder }) => (
           <Field key={name} name={name}>
-            {({ field }) => (
-              <Input {...field} placeholder={placeholder} required />
-            )}
+            {({ field }) => <Input {...field} placeholder={placeholder} />}
           </Field>
         ))}
-        {numbers.map(({ name, min, max, placeholder }) => (
+        {numberFields.map(({ name, min, max, placeholder }) => (
           <Field key={name} name={name}>
             {({ field }) => (
               <InputNumber
@@ -226,48 +198,64 @@ const Category = () => {
     );
   };
 
+  const handleCategorySelect = ({ key }) => {
+    setSelectedCategory(key === "all" ? null : key);
+  };
+
   useEffect(() => {
     fetchData();
     // eslint-disable-next-line
   }, []);
 
+  const filteredProducts = selectedCategory
+    ? data.filter((product) => product.cat_name?.cat_name === selectedCategory)
+    : data;
+
+  const menuItems = [
+    { key: "all", label: "All Categories" },
+    ...catData.map((cat) => ({
+      key: cat.cat_name,
+      label: cat.cat_name,
+    })),
+  ];
+
   return (
     <div>
-      <div className="flex justify-between items-stretch">
+      <div className="flex justify-between items-stretch mb-4">
         <Button
           type="primary"
           icon={<PlusOutlined />}
           onClick={() => setOpen(true)}
-          className="mb-4 "
         >
           Add Product
         </Button>
-        <Dropdown menu={{ items: menuItems }}>
+        <Dropdown menu={{ items: menuItems, onClick: handleCategorySelect }}>
           <Button>
             <Space>
-              Categories <DownOutlined />
+              {selectedCategory || "All Categories"} <DownOutlined />
             </Space>
           </Button>
         </Dropdown>
       </div>
 
-      {/* CARD  */}
       {loading ? (
         <Loader />
-      ) : data.length === 0 ? (
-        <Typography>No products found.</Typography>
+      ) : filteredProducts.length === 0 ? (
+        <Typography className="text-center">No products found.</Typography>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {data.map((product) => (
+          {filteredProducts.map((product) => (
             <div
               key={product._id}
               className="border rounded-lg p-2 bg-white shadow"
             >
-              <img
-                src={product.images?.[0] || "https://via.placeholder.com/150"}
-                alt={product.pro_name}
-                className="w-full h-40 object-cover rounded mb-2"
-              />
+              <div className="bg-[#DDD]">
+                <img
+                  src={product.images?.[0]}
+                  alt={product.pro_name}
+                  className="w-full  h-[15rem] sm:h-40 object-cover rounded mb-2"
+                />
+              </div>
               <h3 className="text-lg font-semibold">{product.pro_name}</h3>
               <Rate
                 disabled
@@ -275,27 +263,22 @@ const Category = () => {
                 allowHalf
                 style={{ fontSize: "15px" }}
               />
-
               <Typography className="text-base font-bold">
                 ${product.new_price}
                 <span className="line-through text-gray-400 ml-2">
                   ${product.old_price}
                 </span>
               </Typography>
-
               <Typography className="text-gray-600 text-sm">
                 {product.review} reviews
               </Typography>
-
               <Typography className="text-gray-600 text-sm">
-                Category : {product.cat_name?.cat_name || "Unknown"}
+                Category: {product.cat_name?.cat_name || "Unknown"}
               </Typography>
-
               <div className="flex justify-between mt-3">
                 <Button
                   icon={<EditOutlined />}
                   onClick={() => updateProduct(product)}
-                  loading={loading}
                 >
                   Edit
                 </Button>
@@ -303,7 +286,6 @@ const Category = () => {
                   icon={<DeleteOutlined />}
                   danger
                   onClick={() => deleteProduct(product._id)}
-                  loading={loading}
                 >
                   Delete
                 </Button>
@@ -313,7 +295,6 @@ const Category = () => {
         </div>
       )}
 
-      {/* MODEL  */}
       <Modal
         title={id ? "Update Product" : "Add Product"}
         open={open}

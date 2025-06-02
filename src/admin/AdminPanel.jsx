@@ -46,7 +46,7 @@ const AdminPanel = () => {
     <Layout>
       {/* Sidebar for Desktop */}
       {isDesktop && (
-        <Sider width={250} className="bg-gray-200 dark:bg-gray-900">
+        <Sider width={256} className="bg-gray-200 dark:bg-gray-900">
           <Sidebar
             selectedKey={selectedKey}
             setSelectedKey={setSelectedKey}
@@ -61,7 +61,7 @@ const AdminPanel = () => {
         <HeaderBar toggleDrawer={() => setDrawerVisible(true)} />
 
         {/* Content */}
-        <Content className="p-4">
+        <Content>
           <PageContainer>{renderPage()}</PageContainer>
         </Content>
       </Layout>

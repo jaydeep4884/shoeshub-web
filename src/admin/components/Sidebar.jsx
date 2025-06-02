@@ -27,7 +27,7 @@ const menuItems = [
 
 const Sidebar = ({ selectedKey, setSelectedKey, closeDrawer, isDesktop }) => (
   <div
-    className={`bg-white shadow h-[100vh] ${isDesktop ? "hidden lg:block w-64" : ""}`}
+    className={`bg-white shadow  ${isDesktop ? "hidden lg:block w-64" : ""}`}
   >
     <div className="px-4 py-2.5 border-b">
       <img src={logo} alt="" />
