@@ -1,88 +1,72 @@
-import React, { useState } from "react";
-import { Layout, Drawer } from "antd";
+import React, { useState, useEffect } from "react";
+import { Outlet, useLocation, useNavigate } from "react-router";
+import { Drawer } from "antd";
 import Sidebar from "./components/Sidebar";
 import HeaderBar from "./components/Header";
 import PageContainer from "./components/PageContainer";
-import Dashboard from "./pages/Dashboard";
-import Products from "./pages/Products";
-import AddProduct from "./pages/AddProduct";
-import Orders from "./pages/Orders";
-import Users from "./pages/Users";
-import Contacts from "./pages/Contacts";
-import Settings from "./pages/Settings";
-import Category from "./pages/Category";
-
-const { Content, Sider } = Layout;
 
 const AdminPanel = () => {
-  const [selectedKey, setSelectedKey] = useState("dashboard");
   const [drawerVisible, setDrawerVisible] = useState(false);
-  const isDesktop = window.innerWidth >= 1024;
+  const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1024);
+  const location = useLocation();
+  const navigate = useNavigate();
 
-  const renderPage = () => {
-    switch (selectedKey) {
-      case "dashboard":
-        return <Dashboard />;
-      case "create-category":
-        return <Category />;
-      case "products":
-        return <Products />;
-      case "create-product":
-        return <AddProduct />;
-      case "orders":
-        return <Orders />;
-      case "users":
-        return <Users />;
-      case "contacts":
-        return <Contacts />;
-      case "settings":
-        return <Settings />;
-      default:
-        return <Dashboard />;
-    }
+  // Extract last segment of path for selectedKey
+  const selectedKey = location.pathname.split("/").pop();
+
+  useEffect(() => {
+    const handleResize = () => setIsDesktop(window.innerWidth >= 1024);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const handleSetSelectedKey = (key) => {
+    navigate(`/admin/${key}`);
+    if (!isDesktop) setDrawerVisible(false);
   };
 
   return (
-    <Layout>
-      {/* Sidebar for Desktop */}
+    <div className="flex h-screen overflow-hidden">
+      {/* Sidebar */}
       {isDesktop && (
-        <Sider width={256} className="bg-gray-200 dark:bg-gray-900">
+        <div className="fixed top-0 left-0 w-64 h-full z-20 bg-white shadow">
           <Sidebar
             selectedKey={selectedKey}
-            setSelectedKey={setSelectedKey}
-            isDesktop={isDesktop}
+            setSelectedKey={handleSetSelectedKey}
+            isDesktop={true}
           />
-        </Sider>
+        </div>
       )}
 
-      {/* Main Layout */}
-      <Layout>
-        {/* Header */}
-        <HeaderBar toggleDrawer={() => setDrawerVisible(true)} />
+      {/* Main Content */}
+      <div className={`flex flex-col flex-1 ${isDesktop ? "lg:ml-64" : ""}`}>
+        <div className="fixed top-0 left-0 right-0 z-10 bg-white lg:ml-64">
+          <HeaderBar toggleDrawer={() => setDrawerVisible(true)} />
+        </div>
 
-        {/* Content */}
-        <Content>
-          <PageContainer>{renderPage()}</PageContainer>
-        </Content>
-      </Layout>
+        <div className="pt-20 px-4 overflow-auto h-full">
+          <PageContainer>
+            <Outlet />
+          </PageContainer>
+        </div>
+      </div>
 
-      {/* Sidebar for Mobile */}
+      {/* Mobile Drawer */}
       {!isDesktop && (
         <Drawer
           visible={drawerVisible}
           onClose={() => setDrawerVisible(false)}
           placement="left"
-          style={{ padding: 0 }}
+          bodyStyle={{ padding: 0 }}
         >
           <Sidebar
             selectedKey={selectedKey}
-            setSelectedKey={setSelectedKey}
-            closeDrawer={() => setDrawerVisible(false)}
+            setSelectedKey={handleSetSelectedKey}
             isDesktop={false}
           />
         </Drawer>
       )}
-    </Layout>
+    </div>
   );
 };
 
