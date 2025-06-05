@@ -25,7 +25,8 @@ import Contacts from "./admin/pages/Contacts";
 import Settings from "./admin/pages/Settings";
 import Category from "./admin/pages/Category";
 import AdminLogin from "./admin/components/AdminLogin";
-import PrivateRoutes from "./utils/PrivateRoutes";
+// import PrivateRoutes from "./utils/PrivateRoutes";
+import ContactUs from "./pages/ContactUs";
 
 function App() {
   const isAdminAuthenticated = true; // Replace with token/localStorage check
@@ -47,13 +48,14 @@ function App() {
       <Route path="kids" element={<Kids />} />
       <Route path="couple" element={<Couple />} />
       <Route path="orderplace" element={<OrderPlaced />} />
+      <Route path="contact" element={<ContactUs />} />
       <Route path="*" element={<NotFound />} />
 
       {/* Admin Login */}
-      {/* <Route path="/admin/login" element={<AdminLogin />} /> */}
+      <Route path="/admin/login" element={<AdminLogin />} />
 
       {/* Admin  Routes */}
-      {/* {isAdminAuthenticated && (
+      {isAdminAuthenticated && (
         <Route path="/admin" element={<AdminPanel />}>
           <Route index element={<AdminPanel />} />
           <Route path="dashboard" element={<Dashboard />} />
@@ -64,18 +66,35 @@ function App() {
           <Route path="contacts" element={<Contacts />} />
           <Route path="settings" element={<Settings />} />
         </Route>
-      )} */}
+      )}
 
-      <Route element={<PrivateRoutes />}>
-        <Route index element={<AdminPanel />} />
-        <Route path="admin" element={<AdminPanel />} exact />
-        <Route path="dashboard" element={<Dashboard />} exact />
-      </Route>
-      <Route element={<AdminLogin />} path="/admin/login" />
+      {/* <Route index element={<AdminPanel />} />
+      <Route
+        path="admin"
 
-      {/* {!isAdminAuthenticated && (
+        element={
+          <PrivateRoutes>
+            {" "}
+            <AdminPanel />
+          </PrivateRoutes>
+        }
+        exact
+      />
+      <Route
+        path="dashboard"
+        element={
+          <PrivateRoutes>
+            {" "}
+            <Dashboard />
+          </PrivateRoutes>
+        }
+        exact
+      />
+      <Route element={<AdminLogin />} path="/admin/login" /> */}
+
+      {!isAdminAuthenticated && (
         <Route path="/admin/*" element={<Navigate to="/admin/login" />} />
-      )} */}
+      )}
     </Routes>
   );
 }
