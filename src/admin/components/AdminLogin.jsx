@@ -6,6 +6,7 @@ import { token } from "../../assets/contexts";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router";
+import Loader from "../../components/Loader";
 
 const AdminLogin = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -36,7 +37,7 @@ const AdminLogin = () => {
       if (res.data.Status === "Success") {
         toast.success("Login Successfully"); // USER_1 ram@gmail.com
         localStorage.setItem("userId", JSON.stringify(res.data.data._id));
-        navigate("/dashboard");
+        navigate("/admin/dashboard");
         setLoading(false);
       }
     } catch (error) {
@@ -109,7 +110,7 @@ const AdminLogin = () => {
               type="submit"
               className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition duration-200 font-medium"
             >
-              Login
+              {Loading ? <Loader /> : "Login"}
             </button>
           </Form>
         </Formik>

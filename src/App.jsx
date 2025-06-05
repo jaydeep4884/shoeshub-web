@@ -25,6 +25,7 @@ import Contacts from "./admin/pages/Contacts";
 import Settings from "./admin/pages/Settings";
 import Category from "./admin/pages/Category";
 import AdminLogin from "./admin/components/AdminLogin";
+import PrivateRoutes from "./utils/PrivateRoutes";
 
 function App() {
   const isAdminAuthenticated = true; // Replace with token/localStorage check
@@ -49,12 +50,12 @@ function App() {
       <Route path="*" element={<NotFound />} />
 
       {/* Admin Login */}
-      <Route path="/admin/login" element={<AdminLogin />} />
+      {/* <Route path="/admin/login" element={<AdminLogin />} /> */}
 
-      {/* Admin Protected Routes */}
-      {isAdminAuthenticated && (
-        <Route path="/admin" element={<AdminLogin />}>
-          <Route index element={<Dashboard />} />
+      {/* Admin  Routes */}
+      {/* {isAdminAuthenticated && (
+        <Route path="/admin" element={<AdminPanel />}>
+          <Route index element={<AdminPanel />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="category" element={<Category />} />
           <Route path="products" element={<AddProduct />} />
@@ -63,12 +64,18 @@ function App() {
           <Route path="contacts" element={<Contacts />} />
           <Route path="settings" element={<Settings />} />
         </Route>
-      )}
+      )} */}
 
-      {/* If not authenticated, redirect to login */}
-      {!isAdminAuthenticated && (
+      <Route element={<PrivateRoutes />}>
+        <Route index element={<AdminPanel />} />
+        <Route path="admin" element={<AdminPanel />} exact />
+        <Route path="dashboard" element={<Dashboard />} exact />
+      </Route>
+      <Route element={<AdminLogin />} path="/admin/login" />
+
+      {/* {!isAdminAuthenticated && (
         <Route path="/admin/*" element={<Navigate to="/admin/login" />} />
-      )}
+      )} */}
     </Routes>
   );
 }

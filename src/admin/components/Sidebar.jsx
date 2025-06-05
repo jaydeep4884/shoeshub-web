@@ -6,7 +6,6 @@ import {
   DollarCircleOutlined,
   UserOutlined,
   MessageOutlined,
-  SettingOutlined,
   LogoutOutlined,
   DatabaseOutlined,
 } from "@ant-design/icons";
@@ -19,14 +18,11 @@ const menuItems = [
   { key: "orders", icon: <DollarCircleOutlined />, label: "Orders" },
   { key: "users", icon: <UserOutlined />, label: "Users" },
   { key: "contacts", icon: <MessageOutlined />, label: "Contacts" },
-  { key: "settings", icon: <SettingOutlined />, label: "Settings" },
-  { key: "adminlogin", icon: <LogoutOutlined />, label: "Logout" },
+  { key: "login", icon: <LogoutOutlined />, label: "Logout" },
 ];
 
 const Sidebar = ({ selectedKey, setSelectedKey, closeDrawer, isDesktop }) => (
-  <div
-    className={`bg-white  ${isDesktop ? "hidden lg:block w-64" : ""}`}
-  >
+  <div className={`bg-white  ${isDesktop ? "hidden lg:block w-64" : ""}`}>
     <div className="px-4 py-2.5 border-b">
       <img src={logo} alt="" />
     </div>

@@ -1,8 +1,10 @@
 import React from "react";
 import { Button, Dropdown, Menu, Avatar } from "antd";
 import { MenuOutlined, UserOutlined, LogoutOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router";
 
 const HeaderBar = ({ toggleDrawer }) => {
+  const navigate = useNavigate();
   const menu = (
     <Menu>
       <Menu.Item key="profile" icon={<UserOutlined />}>
@@ -11,7 +13,7 @@ const HeaderBar = ({ toggleDrawer }) => {
       <Menu.Item
         key="logout"
         icon={<LogoutOutlined />}
-        onClick={() => alert("Logout")}
+        onClick={() => navigate("/admin/login")}
       >
         Logout
       </Menu.Item>
