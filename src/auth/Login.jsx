@@ -19,14 +19,16 @@ function Login() {
   };
 
   const handleSubmit = async (values, { resetForm }) => {
-    const dataInsert = JSON.parse(localStorage.getItem("userId")) || [];
+    const payload = {
+      ...values,
+      user_id: JSON.parse(localStorage.getItem("userId")) || "",
+    };
     setLoading(true);
-    console.log(dataInsert);
 
     try {
       const res = await axios.post(
         "https://generateapi.onrender.com/auth/login",
-        values,
+        payload,
         {
           headers: {
             Authorization: Token,
@@ -35,7 +37,6 @@ function Login() {
       );
       if (res.data.Status === "Success") {
         toast.success("Login Successfully"); // USER_1 ram@gmail.com
-        localStorage.setItem("userId", JSON.stringify(res.data.data._id));
         navigate("/home");
         setLoading(false);
       }
@@ -48,7 +49,7 @@ function Login() {
 
   return (
     <>
-      <Box className="bg-[#FFF8F8] py-6">
+      <Box className="bg-[#FFF8F8] flex items-center h-screen">
         <Container maxWidth="sm">
           <Box className="bg-white shadow-xl px-6 sm:px-10 py-10 sm:py-10 rounded-3xl">
             <Box className="mb-10 text-center">
@@ -112,7 +113,6 @@ function Login() {
                   className="!bg-black !py-3 !text-white !rounded-xl !text-lg"
                 >
                   {Loading ? <Loader /> : "Login"}
-       
                 </Field>
 
                 <Typography className="text-center text-sm text-gray-600">

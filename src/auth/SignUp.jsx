@@ -4,12 +4,14 @@ import InputBox from "../components/ui/InputBox";
 import { Link, useNavigate } from "react-router";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { token } from "../assets/contexts";
+import Loader from "../components/Loader";
 
 function SignUp() {
   const navigate = useNavigate();
   const Token = useContext(token);
+  const [Loading, setLoading] = useState(false);
 
   const initialValues = {
     name: "",
@@ -18,10 +20,8 @@ function SignUp() {
   };
 
   const handleSubmit = async (values, { resetForm }) => {
+    setLoading(true);
     console.log(values);
-
-    const loadingToastId = toast.loading("Creating user...");
-
     try {
       const res = await axios.post(
         "https://generateapi.onrender.com/auth/signUp",
@@ -32,17 +32,13 @@ function SignUp() {
           },
         }
       );
-      toast.dismiss(loadingToastId); // Dismiss loading toast
-      console.log(res.data);
-
       if (res.data.Status === "Success") {
         toast.success("User Created Successfully!");
-        setTimeout(() => {
-          navigate("/");
-        }, 2000);
+        setLoading(false);
+        navigate("/");
       }
     } catch (error) {
-      toast.dismiss(loadingToastId);
+      setLoading(false)
       toast.error("Something went wrong!");
       console.error(error);
     }
@@ -51,7 +47,7 @@ function SignUp() {
   };
 
   return (
-    <Box className="bg-[#FFF8F8]">
+    <Box className="bg-[#FFF8F8] flex items-center h-screen">
       <Container maxWidth>
         <Box className="flex justify-center items-center min-h-screen">
           <Box className="bg-white p-12 shadow-xl rounded-[40px]">
@@ -94,7 +90,7 @@ function SignUp() {
                   variant="contained"
                   type="submit"
                 >
-                  Sign Up
+                  {Loading ? <Loader /> : "Sign Up"}
                 </Field>
 
                 <p className="text-center">
