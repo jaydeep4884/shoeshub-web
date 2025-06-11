@@ -32,6 +32,9 @@ const Sidebar = ({ selectedKey, setSelectedKey, closeDrawer, isDesktop }) => (
       onClick={(e) => {
         setSelectedKey(e.key);
         if (!isDesktop && closeDrawer) closeDrawer();
+        if (e.key === "login") {
+          localStorage.removeItem("token");
+        }
       }}
       items={menuItems}
     />

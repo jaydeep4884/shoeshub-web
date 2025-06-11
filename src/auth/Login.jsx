@@ -19,6 +19,7 @@ function Login() {
   };
 
   const handleSubmit = async (values, { resetForm }) => {
+    localStorage.setItem("token", Token);
     const payload = {
       ...values,
       user_id: JSON.parse(localStorage.getItem("userId")) || "",

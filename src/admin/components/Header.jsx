@@ -5,16 +5,16 @@ import { useNavigate } from "react-router";
 
 const HeaderBar = ({ toggleDrawer }) => {
   const navigate = useNavigate();
-  const menu = (
+  const LogoutAdmin = () => {
+    localStorage.removeItem("token");
+    navigate("/admin/login");
+  };
+  const Profilemenu = (
     <Menu>
       <Menu.Item key="profile" icon={<UserOutlined />}>
         View Profile
       </Menu.Item>
-      <Menu.Item
-        key="logout"
-        icon={<LogoutOutlined />}
-        onClick={() => navigate("/admin/login")}
-      >
+      <Menu.Item key="logout" icon={<LogoutOutlined />} onClick={LogoutAdmin}>
         Logout
       </Menu.Item>
     </Menu>
@@ -38,7 +38,7 @@ const HeaderBar = ({ toggleDrawer }) => {
       {/* Profile Section */}
       <div className="flex items-center space-x-3">
         {/* Avatar and Profile Dropdown */}
-        <Dropdown overlay={menu} trigger={["click"]}>
+        <Dropdown overlay={Profilemenu} trigger={["click"]}>
           <Button
             className="flex items-center space-x-2 p-0 border-0 bg-transparent hover:bg-transparent"
             style={{ padding: "0", marginLeft: "12px" }}

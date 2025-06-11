@@ -1,18 +1,10 @@
 import React, { useContext, useState, useEffect } from "react";
-import {
-  Box,
-  Container,
-  IconButton,
-  Avatar,
-  Menu,
-  MenuItem,
-  Typography,
-} from "@mui/material";
+import { Box, Container, Avatar } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import Select from "react-select";
 import { motion, AnimatePresence } from "framer-motion";
-import { AuthContext, token } from "../../assets/contexts";
+import { token } from "../../assets/contexts";
 import { countryOptions } from "../countries";
 import brand from "../img/logo/brand.png";
 import search from "../img/icons/Search-icon.svg";
@@ -21,17 +13,18 @@ import orderIcon from "../img/icons/order-icon.svg";
 import cartIcon from "../img/icons/cart-icon.svg";
 import locationIcon from "../img/icons/location-icon.svg";
 import axios from "axios";
+import {
+  UserOutlined,
+  LogoutOutlined,
+  SettingOutlined,
+} from "@ant-design/icons";
+import { Dropdown, Menu, Space } from "antd";
 
 // PAGE LINKS
 const PAGE_LINKS = [
   { pageName: "Orders", icon: orderIcon, pageLink: "/orders" },
   { pageName: "Favorite", icon: likeIcon, pageLink: "/fav" },
   { pageName: "Cart", icon: cartIcon, pageLink: "/cart" },
-];
-
-const settings = [
-  { name: "Profile", link: "/profile" },
-  { name: "Log Out", link: "/" },
 ];
 
 const PageLinks = () =>
@@ -68,10 +61,10 @@ const CountrySelector = ({ selected, onChange }) => (
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState(null);
-  const [anchorElUser, setAnchorElUser] = useState(null);
-  const { isAuthenticated } = useContext(AuthContext);
   const [data, setData] = useState([]);
   const Token = useContext(token);
+  const isAuthenticated = localStorage.getItem("token") ? true : false;
+  const navigate = useNavigate();
 
   const fetchCategories = async () => {
     try {
@@ -109,6 +102,25 @@ export default function Header() {
       </Link>
     ));
 
+  const LogoutAdmin = () => {
+    localStorage.removeItem("token");
+    navigate("/");
+  };
+  const menu = (
+    <Menu>
+      <Menu.Item key="profile" icon={<UserOutlined />}>
+        <Link to="/profile">Profile</Link>
+      </Menu.Item>
+      <Menu.Item key="settings" icon={<SettingOutlined />}>
+        <Link to="/settings">Settings</Link>
+      </Menu.Item>
+      <Menu.Divider />
+      <Menu.Item key="logout" icon={<LogoutOutlined />} danger>
+        <Link onClick={LogoutAdmin}>Logout</Link>
+      </Menu.Item>
+    </Menu>
+  );
+
   return (
     <header className="w-full bg-white shadow-sm sticky top-0 z-50">
       <Container maxWidth="lg">
@@ -133,33 +145,16 @@ export default function Header() {
             </Box>
 
             {isAuthenticated ? (
-              <>
-                <IconButton
-                  onClick={(e) => setAnchorElUser(e.currentTarget)}
-                  sx={{ p: 0 }}
-                >
+              <Dropdown overlay={menu} trigger={["click"]}>
+                <Space>
                   <Avatar
-                    alt="User"
+                    className="cursor-pointer"
+                    size="large"
+                    icon={<UserOutlined />}
                     src="https://images.unsplash.com/photo-1740252117044-2af197eea287?q=80&w=2500&auto=format&fit=crop&ixlib=rb-4.0.3"
                   />
-                </IconButton>
-                <Menu
-                  sx={{ mt: "45px" }}
-                  anchorEl={anchorElUser}
-                  open={Boolean(anchorElUser)}
-                  onClose={() => setAnchorElUser(null)}
-                  anchorOrigin={{ vertical: "top", horizontal: "right" }}
-                  transformOrigin={{ vertical: "top", horizontal: "right" }}
-                >
-                  {settings.map(({ name, link }) => (
-                    <MenuItem key={name} onClick={() => setAnchorElUser(null)}>
-                      <Link to={link}>
-                        <Typography textAlign="center">{name}</Typography>
-                      </Link>
-                    </MenuItem>
-                  ))}
-                </Menu>
-              </>
+                </Space>
+              </Dropdown>
             ) : (
               <Link to="/">
                 <button className="hidden md:flex px-4 py-2 border rounded-md hover:bg-slate-200">
@@ -236,6 +231,7 @@ export default function Header() {
                   selected={selectedCountry}
                   onChange={setSelectedCountry}
                 />
+
                 <Link to="/">
                   <button className="w-full border rounded-md py-2 mt-2">
                     Sign In

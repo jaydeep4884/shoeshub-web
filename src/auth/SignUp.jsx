@@ -111,15 +111,3 @@ function SignUp() {
 
 export default SignUp;
 
-// USER = [
-//   {
-//     name: "test",
-//     email: "test@gmail.com",
-//     password: "test",
-//   },
-//   {
-//     name: "mansi",
-//     email: "mansi@gmail.com",
-//     password: "mansi",
-//   },
-// ];

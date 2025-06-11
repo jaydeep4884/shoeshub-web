@@ -29,7 +29,8 @@ import AdminLogin from "./admin/components/AdminLogin";
 import ContactUs from "./pages/ContactUs";
 
 function App() {
-  const isAdminAuthenticated = true; // Replace with token/localStorage check
+  const isAdminAuthenticated = localStorage.getItem("token") ? true : false; // Replace with token/localStorage check
+  console.log("isAdminAuthenticated :", isAdminAuthenticated);
 
   return (
     <Routes>

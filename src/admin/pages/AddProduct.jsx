@@ -78,23 +78,40 @@ const Category = () => {
     formData.append("user_id", JSON.parse(localStorage.getItem("userId")));
 
     try {
-      const config = {
-        headers: {
-          Authorization: Token,
-          "Content-Type": "multipart/form-data",
-        },
-      };
-      const url = id
-        ? `https://generateapi.onrender.com/api/product/${id}`
-        : "https://generateapi.onrender.com/api/product";
-      const method = id ? axios.patch : axios.post;
-
-      await method(url, formData, config);
-      toast.success(id ? "Product Updated!" : "Product Added!");
-      resetForm();
-      setOpen(false);
-      setId(null);
-      fetchData();
+      if (id) {
+        await axios
+          .patch(
+            `https://generateapi.onrender.com/api/product/${id}`,
+            formData,
+            {
+              headers: {
+                Authorization: Token,
+                "Content-Type": "multipart/form-data",
+              },
+            }
+          )
+          .then(() => {
+            toast.success("Product Updated!");
+            setId(null);
+            fetchData();
+            handleModelClose();
+          });
+      } else {
+        await axios
+          .post("https://generateapi.onrender.com/api/product/", formData, {
+            headers: {
+              Authorization: Token,
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then(() => {
+            toast.success("Product Added !");
+            fetchData();
+            setOpen(false);
+            handleModelClose();
+          });
+        resetForm();
+      }
     } catch {
       toast.error("Failed to save product.");
     }
@@ -219,6 +236,23 @@ const Category = () => {
     })),
   ];
 
+  const handleModelClose = () => {
+    setOpen(false);
+    setInitialValues({
+      pro_name: "",
+      pro_rating: "",
+      review: "",
+      new_price: "",
+      old_price: "",
+      type: "",
+      typeofheel: "",
+      waterlevel: "",
+      material: "",
+      images: [],
+      cat_name: "",
+    });
+  };
+
   return (
     <div>
       <div className="flex justify-between items-stretch mb-4">
@@ -298,7 +332,7 @@ const Category = () => {
       <Modal
         title={id ? "Update Product" : "Add Product"}
         open={open}
-        onCancel={() => setOpen(false)}
+        onCancel={handleModelClose}
         footer={null}
         destroyOnClose
         centered

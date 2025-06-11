@@ -20,14 +20,17 @@ const AdminLogin = () => {
   };
 
   const handleSubmit = async (values, { resetForm }) => {
-    const dataInsert = JSON.parse(localStorage.getItem("userId")) || [];
+    localStorage.setItem("token", Token);
+    const payload = {
+      ...values,
+      user_id: JSON.parse(localStorage.getItem("userId")) || "",
+    };
     setLoading(true);
-    console.log(dataInsert);
 
     try {
       const res = await axios.post(
         "https://generateapi.onrender.com/auth/login",
-        values,
+        payload,
         {
           headers: {
             Authorization: Token,
@@ -35,13 +38,12 @@ const AdminLogin = () => {
         }
       );
       if (res.data.Status === "Success") {
-        toast.success("Login Successfully"); // USER_1 ram@gmail.com
-        localStorage.setItem("userId", JSON.stringify(res.data.data._id));
+        toast.success("Admin Login Successfully"); // USER_1 ram@gmail.com
         navigate("/admin/dashboard");
         setLoading(false);
       }
     } catch (error) {
-      toast.error("Email and Password Incorrect !!");
+      toast.error("Email and Password InValid !!");
       console.log(error);
     }
     resetForm();
