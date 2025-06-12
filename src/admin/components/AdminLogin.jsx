@@ -39,7 +39,7 @@ const AdminLogin = () => {
       );
       if (res.data.Status === "Success") {
         toast.success("Admin Login Successfully"); // USER_1 ram@gmail.com
-        navigate("/admin/dashboard");
+        navigate("/admin/dashboard/");
         setLoading(false);
       }
     } catch (error) {

@@ -1,4 +1,4 @@
-import { Box, Container } from "@mui/material";
+import {  Container } from "@mui/material";
 import React from "react";
 import Header from "../components/layout/Header";
 import { motion } from "framer-motion";
@@ -13,15 +13,15 @@ function Kids() {
       {/* Banner section  */}
       <PageBanner path={KidsBanner} />
       <Container maxWidth="lg">
-        <Box className="py-8 sm:py-10">
-          <motion.Box
+        <div className="py-8 sm:py-10">
+          <motion.div
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
             <p>Kids Page</p>
-          </motion.Box>
-        </Box>
+          </motion.div>
+        </div>
       </Container>
       <Footer />
     </>

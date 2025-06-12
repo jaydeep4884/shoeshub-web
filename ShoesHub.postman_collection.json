@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "39d641fe-d5ca-48f5-98fb-6c33402efb5a",
+		"_postman_id": "13815923-17bd-4002-afdb-dd5985eb2192",
 		"name": "ShoesHub",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "42136873"
@@ -16,7 +16,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "yePKwez6u9GGwF4k",
+								"value": "4aMp3nobXg24Lqun",
 								"type": "text"
 							}
 						],
@@ -52,7 +52,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "yePKwez6u9GGwF4k",
+								"value": "4aMp3nobXg24Lqun",
 								"type": "text"
 							}
 						],
@@ -80,33 +80,6 @@
 						}
 					},
 					"response": []
-				},
-				{
-					"name": "New Request",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "4aMp3nobXg24Lqun",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "https://generateapi.onrender.com/auth/signUp",
-							"protocol": "https",
-							"host": [
-								"generateapi",
-								"onrender",
-								"com"
-							],
-							"path": [
-								"auth",
-								"signUp"
-							]
-						}
-					},
-					"response": []
 				}
 			]
 		},
@@ -123,7 +96,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "yePKwez6u9GGwF4k",
+								"value": "4aMp3nobXg24Lqun",
 								"type": "text"
 							}
 						],
@@ -154,7 +127,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "yePKwez6u9GGwF4k",
+								"value": "4aMp3nobXg24Lqun",
 								"type": "text"
 							}
 						],
@@ -190,7 +163,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "yePKwez6u9GGwF4k",
+								"value": "4aMp3nobXg24Lqun",
 								"type": "text"
 							}
 						],
@@ -227,7 +200,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "yePKwez6u9GGwF4k",
+								"value": "4aMp3nobXg24Lqun",
 								"type": "text"
 							}
 						],
@@ -260,7 +233,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "yePKwez6u9GGwF4k",
+								"value": "4aMp3nobXg24Lqun",
 								"type": "text"
 							}
 						],
@@ -811,6 +784,9 @@
 									"language": "json"
 								}
 							}
+						},
+						"url": {
+							"raw": ""
 						}
 					},
 					"response": []
@@ -1053,6 +1029,290 @@
 							"path": [
 								"api",
 								"Order",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "contact",
+			"item": [
+				{
+					"name": "all",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "4aMp3nobXg24Lqun",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://generateapi.onrender.com/api/contact",
+							"protocol": "https",
+							"host": [
+								"generateapi",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"contact"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "4aMp3nobXg24Lqun",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user_id\": \"67cc2c0961bee872e4b5a974\",\r\n    \"name\": \"Jaydeep\",\r\n    \"email\": \"Jaydeep@gmail.com\",\r\n    \"messege\": \"Good Service\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://generateapi.onrender.com/api/contact/6847a2dd70f0d7aaf0c0b692",
+							"protocol": "https",
+							"host": [
+								"generateapi",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"contact",
+								"6847a2dd70f0d7aaf0c0b692"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "4aMp3nobXg24Lqun",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://generateapi.onrender.com/api/contact/:id",
+							"protocol": "https",
+							"host": [
+								"generateapi",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"contact",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "4aMp3nobXg24Lqun",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user_id\": \"6830b56670f0d7aaf0c04b8e\",\r\n    \"name\": \"Sample Text\",\r\n    \"email\": \"Sample Text\",\r\n    \"messege\": \"Sample Text\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://generateapi.onrender.com/api/contact",
+							"protocol": "https",
+							"host": [
+								"generateapi",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"contact"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Wishlist",
+			"item": [
+				{
+					"name": "all",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "4aMp3nobXg24Lqun",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://generateapi.onrender.com/api/wishlist",
+							"protocol": "https",
+							"host": [
+								"generateapi",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"wishlist"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "4aMp3nobXg24Lqun",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user_id\": \"6830b56670f0d7aaf0c04b8e\",\r\n    \"product_id\": \"6837edec70f0d7aaf0c066dc\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://generateapi.onrender.com/api/wishlist",
+							"protocol": "https",
+							"host": [
+								"generateapi",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"wishlist"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "4aMp3nobXg24Lqun",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user_id\": \"67cc2c0961bee872e4b5a974\",\r\n    \"product_id\": \"67cc2c0961bee872e4b5a974\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://generateapi.onrender.com/api/wishlist/:id",
+							"protocol": "https",
+							"host": [
+								"generateapi",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"wishlist",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "4aMp3nobXg24Lqun",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://generateapi.onrender.com/api/wishlist/:id",
+							"protocol": "https",
+							"host": [
+								"generateapi",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"wishlist",
 								":id"
 							],
 							"variable": [
