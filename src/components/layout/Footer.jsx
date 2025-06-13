@@ -11,26 +11,43 @@ import { Link } from "react-router";
 const footerLinks = [
   {
     title: "Company",
-    links: ["About", "Security", "Privacy", "Charges", "Terms"],
+    FooterData: [
+      { name: "About", link: "/home" },
+      { name: "Security", link: "/home" },
+      { name: "Privacy", link: "/home" },
+      { name: "Charges", link: "/home" },
+      { name: "Terms", link: "/home" },
+    ],
   },
   {
     title: "Product",
-    links: [
-      "Men’s Shoes",
-      "Men’s Slipper",
-      "Women Shoes",
-      "Women Slipper",
-      "Kid’s Shoes",
-      "Pricing",
+    FooterData: [
+      { name: "Men’s Shoes", link: "/home" },
+      { name: "Men’s Slipper", link: "/home" },
+      { name: "Women Shoes", link: "/home" },
+      { name: "Women Slipper", link: "/home" },
+      { name: "Kid’s Shoes", link: "/home" },
+      { name: "Pricing", link: "/home" },
     ],
   },
   {
     title: "Customer Policies",
-    links: ["Contact Us", "FAQ", "T&C", "Terms Of Use", "Shipping"],
+    FooterData: [
+      { name: "Contact Us", link: "/contact" },
+      { name: "FAQ", link: "/home" },
+      { name: "T&C", link: "/home" },
+      { name: "Terms Of Use", link: "/home" },
+      { name: "Shipping", link: "/home" },
+    ],
   },
   {
     title: "My Unisole",
-    links: ["My account", "My order", "My shopping Bag", "My wishlist"],
+    FooterData: [
+      { name: "My account", link: "/home" },
+      { name: "My order", link: "/home" },
+      { name: "My shopping Bag", link: "/home" },
+      { name: "My wishlist", link: "/home" },
+    ],
   },
 ];
 
@@ -60,14 +77,14 @@ const Footer = () => {
                     {section.title}
                   </h3>
                   <ul className="space-y-2">
-                    {section.links.map((link, idx) => (
+                    {section.FooterData.map((el, idx) => (
                       <li key={idx}>
-                        <a
-                          href="/"
+                        <Link
+                          to={el.link}
                           className="text-gray-400 hover:text-black transition-colors sm:text-base text-sm duration-200 "
                         >
-                          {link}
-                        </a>
+                          {el.name}
+                        </Link>
                       </li>
                     ))}
                   </ul>

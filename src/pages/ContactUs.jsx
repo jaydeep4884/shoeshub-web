@@ -11,6 +11,7 @@ import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
+import Feature from "../components/layout/Feature";
 import Loader from "../components/Loader";
 import { token } from "../assets/contexts";
 
@@ -65,7 +66,7 @@ const ContactUs = () => {
   return (
     <>
       <Header />
-      <div className="min-h-screen bg-gray-50 p-4 md:p-10">
+      <div className="bg-gray-50 p-4 md:p-10">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
@@ -130,6 +131,7 @@ const ContactUs = () => {
           </div>
         </motion.div>
       </div>
+      <Feature />
       <Footer />
       <Toaster />
     </>

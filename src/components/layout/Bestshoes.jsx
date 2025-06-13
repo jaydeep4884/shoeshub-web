@@ -30,6 +30,8 @@ function Bestshoes() {
   };
 
   const toggleLike = (id) => {
+    console.log(id);
+
     setLikedProducts((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
