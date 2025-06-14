@@ -20,7 +20,6 @@ const AdminLogin = () => {
   };
 
   const handleSubmit = async (values, { resetForm }) => {
-    localStorage.setItem("token", Token);
     const payload = {
       ...values,
       user_id: JSON.parse(localStorage.getItem("userId")) || "",
@@ -39,6 +38,7 @@ const AdminLogin = () => {
       );
       if (res.data.Status === "Success") {
         toast.success("Admin Login Successfully"); // USER_1 ram@gmail.com
+        localStorage.setItem("token", Token);
         navigate("/admin/dashboard/");
         setLoading(false);
       }

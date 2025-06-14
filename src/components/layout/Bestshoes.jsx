@@ -7,6 +7,7 @@ import {
   FavoriteBorder as FavoriteBorderIcon,
   Favorite as FavoriteIcon,
 } from "@mui/icons-material";
+import toast, { Toaster } from "react-hot-toast";
 
 function Bestshoes() {
   const [data, setData] = useState([]);
@@ -29,10 +30,39 @@ function Bestshoes() {
     }
   };
 
-  const toggleLike = (id) => {
-    console.log(id);
+  const toggleLike = async (product) => {
+    console.log(product);
+    const isLiked = likedProducts[product._id];
+    setLikedProducts((prev) => ({ ...prev, [product._id]: !isLiked }));
+    const payload = {
+      product_id: product._id,
+      user_id: JSON.parse(localStorage.getItem("userId")) || "",
+    };
 
-    setLikedProducts((prev) => ({ ...prev, [id]: !prev[id] }));
+    try {
+      if (!isLiked) {
+        await axios
+          .post("https://generateapi.onrender.com/api/wishlist", payload, {
+            headers: { Authorization: Token },
+          })
+          .then((res) => {
+            console.log(res.data);
+            toast.success("Product Added in Wishlist !!");
+          });
+      } else {
+        await axios
+          .delete(
+            `https://generateapi.onrender.com/api/wishlist/${payload.product_id}`,
+            { headers: { Authorization: Token } }
+          )
+          .then((res) => {
+            console.log(res.data);
+            toast.success("Product Remove from Wishlist !!");
+          });
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const getRandomProducts = (arr, count) =>
@@ -61,7 +91,7 @@ function Bestshoes() {
                 <Tooltip title="Add to Favorite" placement="bottom">
                   <IconButton
                     size="small"
-                    onClick={() => toggleLike(product._id)}
+                    onClick={() => toggleLike(product)}
                     className="bg-white border rounded-full"
                   >
                     {likedProducts[product._id] ? (
@@ -116,6 +146,7 @@ function Bestshoes() {
           ))}
         </div>
       </Box>
+      <Toaster />
     </Container>
   );
 }

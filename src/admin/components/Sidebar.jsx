@@ -18,6 +18,7 @@ const menuItems = [
   { key: "orders", icon: <DollarCircleOutlined />, label: "Orders" },
   { key: "users", icon: <UserOutlined />, label: "Users" },
   { key: "contacts", icon: <MessageOutlined />, label: "Contacts" },
+  { key: "wishlist", icon: <FileAddOutlined />, label: "WishList" },
   { key: "login", icon: <LogoutOutlined />, label: "Logout" },
 ];
 

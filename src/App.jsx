@@ -27,9 +27,10 @@ import Category from "./admin/pages/Category";
 import AdminLogin from "./admin/components/AdminLogin";
 // import PrivateRoutes from "./utils/PrivateRoutes";
 import ContactUs from "./pages/ContactUs";
+import Wishlist from "./admin/pages/Wishlist";
 
 function App() {
-  const isAdminAuthenticated = localStorage.getItem("token") ? true : false; 
+  const isAdminAuthenticated = localStorage.getItem("token") ? true : false;
   return (
     <Routes>
       {/* Public Routes */}
@@ -60,36 +61,13 @@ function App() {
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="category" element={<Category />} />
           <Route path="products" element={<AddProduct />} />
+          <Route path="wishlist" element={<Wishlist />} />
           <Route path="orders" element={<AdminOrders />} />
           <Route path="users" element={<Users />} />
           <Route path="contacts" element={<Contacts />} />
           <Route path="settings" element={<Settings />} />
         </Route>
       )}
-
-      {/* <Route index element={<AdminPanel />} />
-      <Route
-        path="admin"
-
-        element={
-          <PrivateRoutes>
-            {" "}
-            <AdminPanel />
-          </PrivateRoutes>
-        }
-        exact
-      />
-      <Route
-        path="dashboard"
-        element={
-          <PrivateRoutes>
-            {" "}
-            <Dashboard />
-          </PrivateRoutes>
-        }
-        exact
-      />
-      <Route element={<AdminLogin />} path="/admin/login" /> */}
 
       {!isAdminAuthenticated && (
         <Route path="/admin/*" element={<Navigate to="/admin/login" />} />

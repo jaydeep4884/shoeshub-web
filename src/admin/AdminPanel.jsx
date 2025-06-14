@@ -10,7 +10,7 @@ const AdminPanel = () => {
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1024);
   const location = useLocation();
   const navigate = useNavigate();
-
+  const isAdminAuthenticated = localStorage.getItem("token") ? true : false;
   // Extract last segment of path for selectedKey
   const selectedKey = location.pathname.split("/").pop();
 
@@ -24,6 +24,13 @@ const AdminPanel = () => {
     navigate(`/admin/${key}`);
     if (!isDesktop) setDrawerVisible(false);
   };
+
+  useEffect(() => {
+    isAdminAuthenticated
+      ? navigate("/admin/dashboard")
+      : navigate("/admin/login");
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <div className="flex h-screen overflow-hidden">

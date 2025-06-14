@@ -3,7 +3,7 @@ import { Field, Form, Formik } from "formik";
 import InputBox from "../components/ui/InputBox";
 import { Link, useNavigate } from "react-router";
 import axios from "axios";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { token } from "../assets/contexts";
 import toast, { Toaster } from "react-hot-toast";
 import Loader from "../components/Loader";
@@ -12,6 +12,7 @@ function Login() {
   const navigate = useNavigate();
   const Token = useContext(token);
   const [Loading, setLoading] = useState(false);
+  const isAuthenticated = localStorage.getItem("token") ? true : false;
 
   const initialValues = {
     email: "",
@@ -19,7 +20,6 @@ function Login() {
   };
 
   const handleSubmit = async (values, { resetForm }) => {
-    localStorage.setItem("token", Token);
     const payload = {
       ...values,
       user_id: JSON.parse(localStorage.getItem("userId")) || "",
@@ -38,15 +38,24 @@ function Login() {
       );
       if (res.data.Status === "Success") {
         toast.success("Login Successfully"); // USER_1 ram@gmail.com
+        localStorage.setItem("token", Token);
         navigate("/home");
         setLoading(false);
       }
     } catch (error) {
       toast.error("Email and Password Incorrect !!");
       console.log(error);
+      setLoading(false);
     }
     resetForm();
   };
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/home");
+    }
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <>

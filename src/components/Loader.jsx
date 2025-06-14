@@ -6,7 +6,7 @@ function Loader() {
   return (
     <>
       <Box className="flex items-center justify-center !w-full">
-        <HashLoader color="#a4a637" size={35} />
+        <HashLoader color="#73946B" size={30} />
       </Box>
     </>
   );
