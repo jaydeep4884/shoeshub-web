@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Field, Form, Formik } from "formik";
 import axios from "axios";
 import { token } from "../../assets/contexts";
-import Loader from "../../components/Loader";
+import Loader from "../../components/ui/Loader";
 import toast, { Toaster } from "react-hot-toast";
 import {
   Modal,

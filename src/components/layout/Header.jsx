@@ -1,11 +1,11 @@
 import React, { useContext, useState, useEffect } from "react";
-import { Box, Container, Avatar } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import { Link, useNavigate } from "react-router";
+import { Link } from "react-router";
 import Select from "react-select";
 import { motion, AnimatePresence } from "framer-motion";
 import { token } from "../../assets/contexts";
-import { countryOptions } from "../countries";
+import { countryOptions } from "../ui/countries";
 import brand from "../img/logo/brand.png";
 import search from "../img/icons/Search-icon.svg";
 import likeIcon from "../img/icons/like-icon.svg";
@@ -13,50 +13,7 @@ import orderIcon from "../img/icons/order-icon.svg";
 import cartIcon from "../img/icons/cart-icon.svg";
 import locationIcon from "../img/icons/location-icon.svg";
 import axios from "axios";
-import {
-  UserOutlined,
-  LogoutOutlined,
-  SettingOutlined,
-} from "@ant-design/icons";
-import { Dropdown, Menu, Space } from "antd";
-
-// PAGE LINKS
-const PAGE_LINKS = [
-  { pageName: "Orders", icon: orderIcon, pageLink: "/orders" },
-  { pageName: "Favorite", icon: likeIcon, pageLink: "/fav" },
-  { pageName: "Cart", icon: cartIcon, pageLink: "/cart" },
-];
-
-const PageLinks = () =>
-  PAGE_LINKS.map(({ pageName, icon, pageLink }) => (
-    <Link to={pageLink} key={pageLink} className="flex items-center gap-1">
-      <img src={icon} alt={pageName} /> {pageName}
-    </Link>
-  ));
-
-const CountrySelector = ({ selected, onChange }) => (
-  <Box className="flex items-center gap-2">
-    <img src={locationIcon} alt="location" />
-    <Select
-      options={countryOptions}
-      value={selected}
-      onChange={onChange}
-      placeholder="Select a country"
-      className="text-black !border-none"
-      styles={{
-        control: (base) => ({
-          ...base,
-          border: "none",
-          boxShadow: "none",
-          backgroundColor: "transparent",
-          cursor: "pointer",
-        }),
-        input: (base) => ({ ...base, margin: 0, padding: 0 }),
-        placeholder: (base) => ({ ...base, color: "#888" }),
-      }}
-    />
-  </Box>
-);
+import UserMenu from "../ui/UserMenu";
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -64,7 +21,6 @@ export default function Header() {
   const [data, setData] = useState([]);
   const Token = useContext(token);
   const isAuthenticated = localStorage.getItem("token") ? true : false;
-  const navigate = useNavigate();
 
   const fetchCategories = async () => {
     try {
@@ -82,15 +38,6 @@ export default function Header() {
     }
   };
 
-  useEffect(() => {
-    fetchCategories();
-    // eslint-disable-next-line
-  }, []);
-
-  useEffect(() => {
-    document.body.style.overflow = mobileMenuOpen ? "hidden" : "auto";
-  }, [mobileMenuOpen]);
-
   const NavLinks = () =>
     data.map((category) => (
       <Link
@@ -102,24 +49,51 @@ export default function Header() {
       </Link>
     ));
 
-  const LogoutAdmin = () => {
-    localStorage.removeItem("token");
-    navigate("/");
-  };
-  const menu = (
-    <Menu>
-      <Menu.Item key="profile" icon={<UserOutlined />}>
-        <Link to="/profile">Profile</Link>
-      </Menu.Item>
-      <Menu.Item key="settings" icon={<SettingOutlined />}>
-        <Link to="/settings">Settings</Link>
-      </Menu.Item>
-      <Menu.Divider />
-      <Menu.Item key="logout" icon={<LogoutOutlined />} danger>
-        <Link onClick={LogoutAdmin}>Logout</Link>
-      </Menu.Item>
-    </Menu>
+  const PAGE_LINKS = [
+    { pageName: "Orders", icon: orderIcon, pageLink: "/orders" },
+    { pageName: "Favorite", icon: likeIcon, pageLink: "/fav" },
+    { pageName: "Cart", icon: cartIcon, pageLink: "/cart" },
+  ];
+
+  const PageLinks = () =>
+    PAGE_LINKS.map(({ pageName, icon, pageLink }) => (
+      <Link to={pageLink} key={pageLink} className="flex items-center gap-1">
+        <img src={icon} alt={pageName} /> {pageName}
+      </Link>
+    ));
+
+  const CountrySelector = ({ selected, onChange }) => (
+    <Box className="flex items-center gap-2">
+      <img src={locationIcon} alt="location" />
+      <Select
+        options={countryOptions}
+        value={selected}
+        onChange={onChange}
+        placeholder="Select a country"
+        className="text-black !border-none"
+        styles={{
+          control: (base) => ({
+            ...base,
+            border: "none",
+            boxShadow: "none",
+            backgroundColor: "transparent",
+            cursor: "pointer",
+          }),
+          input: (base) => ({ ...base, margin: 0, padding: 0 }),
+          placeholder: (base) => ({ ...base, color: "#888" }),
+        }}
+      />
+    </Box>
   );
+
+  useEffect(() => {
+    fetchCategories();
+    // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = mobileMenuOpen ? "hidden" : "auto";
+  }, [mobileMenuOpen]);
 
   return (
     <header className="w-full bg-white shadow-sm sticky top-0 z-50">
@@ -139,22 +113,15 @@ export default function Header() {
             </Box>
           </Box>
 
+          {/* Page Link : Order,Favorite,Cart  */}
           <Box className="flex items-center gap-5 text-sm text-gray-600">
             <Box className="hidden lg:flex gap-4">
               <PageLinks />
             </Box>
 
+            {/* UserMenu  */}
             {isAuthenticated ? (
-              <Dropdown overlay={menu} trigger={["click"]}>
-                <Space>
-                  <Avatar
-                    className="cursor-pointer"
-                    size="large"
-                    icon={<UserOutlined />}
-                    src="https://images.unsplash.com/photo-1740252117044-2af197eea287?q=80&w=2500&auto=format&fit=crop&ixlib=rb-4.0.3"
-                  />
-                </Space>
-              </Dropdown>
+              <UserMenu />
             ) : (
               <Link to="/">
                 <button className="hidden md:flex px-4 py-2 border rounded-md hover:bg-slate-200">
@@ -172,6 +139,7 @@ export default function Header() {
           </Box>
         </Box>
 
+        {/* Mobile View Seach Bar  */}
         <Box className="md:hidden pb-2">
           <Box className="flex items-center border rounded-md px-3 py-2">
             <input
@@ -184,6 +152,7 @@ export default function Header() {
         </Box>
       </Container>
 
+      {/* Country Selection  */}
       <Container maxWidth="lg">
         <nav className="bg-white">
           <Box className="hidden md:flex justify-between items-center py-4 text-sm text-gray-600">
@@ -198,6 +167,7 @@ export default function Header() {
         </nav>
       </Container>
 
+      {/* Mobile View  */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <>
@@ -231,12 +201,6 @@ export default function Header() {
                   selected={selectedCountry}
                   onChange={setSelectedCountry}
                 />
-
-                <Link to="/">
-                  <button className="w-full border rounded-md py-2 mt-2">
-                    Sign In
-                  </button>
-                </Link>
               </div>
             </motion.div>
           </>

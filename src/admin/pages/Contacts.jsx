@@ -4,7 +4,7 @@ import { PlusCircleOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 import { Field, Form, Formik } from "formik";
 import axios from "axios";
 import { token } from "../../assets/contexts";
-import Loader from "../../components/Loader";
+import Loader from "../../components/ui/Loader";
 import toast, { Toaster } from "react-hot-toast";
 
 const Contacts = () => {

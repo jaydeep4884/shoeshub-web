@@ -8,7 +8,7 @@ import {
 import { Field, Form, Formik } from "formik";
 import axios from "axios";
 import { token } from "../../assets/contexts";
-import Loader from "../../components/Loader";
+import Loader from "../../components/ui/Loader";
 
 const Category = () => {
   const [open, setOpen] = useState(false);

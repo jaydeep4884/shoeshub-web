@@ -12,7 +12,7 @@ import axios from "axios";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import Feature from "../components/layout/Feature";
-import Loader from "../components/Loader";
+import Loader from "../components/ui/Loader";
 import { token } from "../assets/contexts";
 
 const inputs = [

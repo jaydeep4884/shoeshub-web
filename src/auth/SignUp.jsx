@@ -1,17 +1,17 @@
-import { Box, Button, Container } from "@mui/material";
+import React, { useContext, useState } from "react";
+import { Button, Input, Typography } from "antd";
+import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import { Field, Form, Formik } from "formik";
-import InputBox from "../components/ui/InputBox";
-import { Link, useNavigate } from "react-router";
+import { useNavigate, Link } from "react-router";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
-import { useContext, useState } from "react";
 import { token } from "../assets/contexts";
-import Loader from "../components/Loader";
+import Loader from "../components/ui/Loader";
 
 function SignUp() {
   const navigate = useNavigate();
   const Token = useContext(token);
-  const [Loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const initialValues = {
     name: "",
@@ -21,7 +21,6 @@ function SignUp() {
 
   const handleSubmit = async (values, { resetForm }) => {
     setLoading(true);
-    console.log(values);
     try {
       const res = await axios.post(
         "https://generateapi.onrender.com/auth/signUp",
@@ -32,82 +31,117 @@ function SignUp() {
           },
         }
       );
+
       if (res.data.Status === "Success") {
         toast.success("User Created Successfully!");
-        setLoading(false);
         navigate("/");
+      } else {
+        toast.error("Sign up failed.");
       }
     } catch (error) {
-      setLoading(false)
       toast.error("Something went wrong!");
       console.error(error);
+    } finally {
+      setLoading(false);
+      resetForm();
     }
-
-    resetForm();
   };
 
   return (
-    <Box className="bg-[#FFF8F8] flex items-center h-screen">
-      <Container maxWidth>
-        <Box className="flex justify-center items-center min-h-screen">
-          <Box className="bg-white p-12 shadow-xl rounded-[40px]">
-            <h2 className="text-3xl font-bold mb-8">Welcome to ShoesHub 👋</h2>
-            <Formik initialValues={initialValues} onSubmit={handleSubmit}>
-              <Form className="flex flex-col gap-y-5">
-                {["name", "email", "password"].map((fieldName, index) => {
-                  const placeholders = {
-                    name: "Andrews Stantham",
-                    email: "you@example.com",
-                    password: "Password",
-                  };
-                  const types = {
-                    email: "email",
-                    password: "password",
-                  };
-                  const label = fieldName;
-                  return (
-                    <Box key={index}>
-                      <label className="!text-black" htmlFor={fieldName}>
-                        {label}
-                      </label>
-                      <Field name={fieldName}>
-                        {({ field, form }) => (
-                          <InputBox
-                            field={field}
-                            form={form}
-                            placeholder={placeholders[fieldName]}
-                            type={types[fieldName] || "text"}
-                          />
-                        )}
-                      </Field>
-                    </Box>
-                  );
-                })}
+    <div className="bg-[#FFF8F8] flex items-center justify-center min-h-screen px-4">
+      <div className="w-full max-w-md bg-white p-5 sm:p-8 rounded-[20px] shadow-xl">
+        <div className="text-center mb-8">
+          <h2 className="text-xl sm:text-2xl font-bold">
+            Welcome to ShoesHub 👋
+          </h2>
+        </div>
 
-                <Field
-                  as={Button}
-                  className="!bg-black !rounded-xl !py-[10px] !capitalize !text-lg"
-                  variant="contained"
-                  type="submit"
-                >
-                  {Loading ? <Loader /> : "Sign Up"}
-                </Field>
+        <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+          <Form className="flex flex-col gap-5">
+            <div>
+              <label
+                htmlFor="name"
+                className="block mb-1 font-medium text-gray-700"
+              >
+                Name
+              </label>
+              <Field name="name">
+                {({ field }) => (
+                  <Input
+                    {...field}
+                    placeholder="Andrews Stantham"
+                    size="large"
+                  />
+                )}
+              </Field>
+            </div>
 
-                <p className="text-center">
-                  Already Have an Account?{" "}
-                  <Link to="/" className="underline">
-                    Login
-                  </Link>
-                </p>
-              </Form>
-            </Formik>
-          </Box>
-        </Box>
-      </Container>
-      <Toaster />
-    </Box>
+            <div>
+              <label
+                htmlFor="email"
+                className="block mb-1 font-medium text-gray-700"
+              >
+                Email
+              </label>
+              <Field name="email">
+                {({ field }) => (
+                  <Input
+                    {...field}
+                    type="email"
+                    placeholder="you@example.com"
+                    size="large"
+                    required
+                  />
+                )}
+              </Field>
+            </div>
+
+            <div>
+              <label
+                htmlFor="password"
+                className="block mb-1 font-medium text-gray-700"
+              >
+                Password
+              </label>
+              <Field name="password">
+                {({ field }) => (
+                  <Input.Password
+                    {...field}
+                    placeholder="Password"
+                    iconRender={(visible) =>
+                      visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+                    }
+                    size="large"
+                  />
+                )}
+              </Field>
+            </div>
+
+            <Button
+              htmlType="submit"
+              size="large"
+              className="bg-black text-white rounded-xl"
+              block
+              disabled={loading}
+            >
+              {loading ? <Loader /> : "Sign Up"}
+            </Button>
+
+            <Typography.Text className="text-center text-sm text-gray-600">
+              Already have an account?{" "}
+              <Link
+                to="/"
+                className="text-[#A98240] underline hover:text-[#8a6c34]"
+              >
+                Login
+              </Link>
+            </Typography.Text>
+          </Form>
+        </Formik>
+        <Toaster />
+      </div>
+    </div>
   );
 }
 
 export default SignUp;
-

@@ -2,7 +2,7 @@ import { Popconfirm, Rate, Typography } from "antd";
 import React, { useContext, useEffect, useState } from "react";
 import { token } from "../../assets/contexts";
 import axios from "axios";
-import Loader from "../../components/Loader";
+import Loader from "../../components/ui/Loader";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { motion } from "framer-motion";

@@ -5,16 +5,23 @@ import { useNavigate } from "react-router";
 
 const HeaderBar = ({ toggleDrawer }) => {
   const navigate = useNavigate();
+
   const LogoutAdmin = () => {
     localStorage.removeItem("token");
     navigate("/admin/login");
   };
+
   const Profilemenu = (
     <Menu>
       <Menu.Item key="profile" icon={<UserOutlined />}>
         View Profile
       </Menu.Item>
-      <Menu.Item key="logout" icon={<LogoutOutlined />} onClick={LogoutAdmin}>
+      <Menu.Item
+        key="logout"
+        icon={<LogoutOutlined />}
+        onClick={LogoutAdmin}
+        danger
+      >
         Logout
       </Menu.Item>
     </Menu>
@@ -39,11 +46,11 @@ const HeaderBar = ({ toggleDrawer }) => {
       <div className="flex items-center space-x-3">
         {/* Avatar and Profile Dropdown */}
         <Dropdown overlay={Profilemenu} trigger={["click"]}>
-          <Button
-            className="flex items-center space-x-2 p-0 border-0 bg-transparent hover:bg-transparent"
-            style={{ padding: "0", marginLeft: "12px" }}
-          >
-            <Avatar icon={<UserOutlined />} size="large" />
+          <Button className="flex items-center space-x-2 p-0 border-0 bg-transparent hover:bg-transparent">
+            <Avatar
+              src="https://api.dicebear.com/7.x/miniavs/svg?seed=1"
+              size="large"
+            />
           </Button>
         </Dropdown>
       </div>

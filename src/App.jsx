@@ -38,12 +38,12 @@ function App() {
       <Route path="signup" element={<SignUp />} />
       <Route path="home" element={<Home />} />
       <Route path="cart" element={<Cart />} />
-      <Route path="productdetail" element={<ProductDetail />} />
+      <Route path="/product/:id" element={<ProductDetail />} />
       <Route path="checkout" element={<Checkout />} />
       <Route path="orders" element={<Orders />} />
       <Route path="fav" element={<Favorite />} />
       <Route path="profile" element={<Profile />} />
-      <Route path="mens" element={<Mens />} />
+      <Route path="men" element={<Mens />} />
       <Route path="women" element={<Women />} />
       <Route path="kids" element={<Kids />} />
       <Route path="couple" element={<Couple />} />
@@ -57,7 +57,7 @@ function App() {
       {/* Admin  Routes */}
       {isAdminAuthenticated && (
         <Route path="/admin" element={<AdminPanel />}>
-          <Route index element={<AdminPanel />} />
+          <Route index element={<Dashboard />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="category" element={<Category />} />
           <Route path="products" element={<AddProduct />} />
