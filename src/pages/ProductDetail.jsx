@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Box, Button, Container, IconButton, Rating } from "@mui/material";
 import { Tooltip } from "antd";
-import { useParams, Link } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { motion } from "framer-motion";
 import {
   LocalOffer,
@@ -15,16 +15,50 @@ import axios from "axios";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import Breadcrumb from "../components/ui/Breadcrumb";
-import { token } from "../assets/contexts";
+import { Context, token } from "../assets/contexts";
 import Loader from "../components/ui/Loader";
+import Review from "../components/layout/Review";
+import Gift from "../components/layout/Gift";
+import { Form, Formik } from "formik";
 
 function ProductDetail() {
-  const { id } = useParams();
-  const Token = useContext(token);
   const [product, setProduct] = useState(null);
   const [selectedImage, setSelectedImage] = useState("");
   const [like, setLike] = useState(false);
   const [loading, setLoading] = useState(true);
+  const { coupon } = useContext(Context);
+  const Token = useContext(token);
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const initialValues = {
+    user_id: JSON.parse(localStorage.getItem("userId")),
+    product_item: id,
+    coupon: coupon,
+    quantity: 1,
+  };
+
+  const handleCart = async (values) => {
+    console.log(values);
+    setLoading(true);
+    try {
+      await axios
+        .post("https://generateapi.onrender.com/api/Cart", values, {
+          headers: {
+            Authorization: Token,
+          },
+        })
+        .then((res) => {
+          console.log(res.data);
+          if (res.data.Status === "Success") {
+            setLoading(false);
+            navigate("/cart");
+          }
+        });
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
+  };
 
   const breadItems = [
     { label: "Home", link: "/home" },
@@ -52,7 +86,7 @@ function ProductDetail() {
   const fetchProduct = async () => {
     try {
       const res = await axios.get(
-        `https://generateapi.onrender.com/api/product/`,
+        `https://generateapi.onrender.com/api/Product-Detail/`,
         { headers: { Authorization: Token } }
       );
       const productData = res.data.Data;
@@ -105,7 +139,7 @@ function ProductDetail() {
                   key={selectedImage}
                   src={selectedImage}
                   alt="Selected"
-                  className="w-full max-h-[360px] sm:max-h-auto object-cover"
+                  className="w-full max-h-[360px] sm:max-h-auto object-contain"
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.5 }}
@@ -169,27 +203,31 @@ function ProductDetail() {
                 </Box>
 
                 {/* Actions */}
-                <Box className="flex items-center gap-3 mb-6">
-                  <Link to="/cart">
-                    <Button
-                      variant="contained"
-                      className="!capitalize !bg-black !px-6 py-2"
-                    >
-                      Add to Cart
-                    </Button>
-                  </Link>
-                  <Box className="border border-gray-300 rounded-md">
-                    <Tooltip title="Favorite" placement="bottom">
-                      <IconButton onClick={() => setLike(!like)}>
-                        {like ? (
-                          <Favorite style={{ fill: "black" }} />
-                        ) : (
-                          <FavoriteBorder />
-                        )}
-                      </IconButton>
-                    </Tooltip>
-                  </Box>
-                </Box>
+                <Formik initialValues={initialValues} onSubmit={handleCart}>
+                  <Form>
+                    <Box className="flex items-center gap-3 mb-6">
+                      <Button
+                        type="submit"
+                        variant="contained"
+                        className="!capitalize !bg-black !px-6 py-2"
+                      >
+                        {loading ? <Loader /> : "Add to Cart"}
+                      </Button>
+
+                      <Box className="border border-gray-300 rounded-md">
+                        <Tooltip title="Favorite" placement="bottom">
+                          <IconButton onClick={() => setLike(!like)}>
+                            {like ? (
+                              <Favorite style={{ fill: "black" }} />
+                            ) : (
+                              <FavoriteBorder />
+                            )}
+                          </IconButton>
+                        </Tooltip>
+                      </Box>
+                    </Box>
+                  </Form>
+                </Formik>
 
                 {/* Features */}
                 <Box className="space-y-4">
@@ -205,6 +243,8 @@ function ProductDetail() {
           )}
         </Box>
       </Container>
+      <Review />
+      <Gift />
       <Footer />
     </>
   );

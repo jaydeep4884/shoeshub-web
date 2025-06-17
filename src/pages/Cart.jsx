@@ -18,7 +18,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { motion } from "framer-motion";
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import { Link } from "react-router";
@@ -28,20 +28,28 @@ import Applycoup from "../components/ui/Applycoup";
 import Buttongroup from "../components/ui/Buttongroup";
 import { Typography } from "antd";
 import Breadcrumb from "../components/ui/Breadcrumb";
+import axios from "axios";
+import { token } from "../assets/contexts";
+import Loader from "../components/ui/Loader";
+
+const breadcrumbItems = [
+  {
+    label: "Home",
+    link: "/home",
+  },
+  {
+    label: "Cart",
+  },
+];
 
 function Cart() {
-  const breadcrumbItems = [
-    {
-      label: "Home",
-      link: "/home",
-    },
-    {
-      label: "Cart",
-    },
-  ];
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const Token = useContext(token);
+  const [cartData, setCartData] = useState([]);
+
   const [cartItem, setCartItem] = useState([
     {
       id: 1,
@@ -52,13 +60,34 @@ function Cart() {
     },
   ]);
 
+  const GetCartItems = async () => {
+    setLoading(true);
+    try {
+      await axios
+        .get("https://generateapi.onrender.com/api/Cart", {
+          headers: {
+            Authorization: Token,
+          },
+        })
+        .then((res) => {
+          setLoading(false);
+          console.log(res.data?.Data);
+          setCartData(res.data?.Data);
+        });
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
+  };
+
   const handleQtyChange = (id, newQty) => {
-    setCartItem((preItems) =>
-      preItems.map((item) =>
+    setCartData((prevItems) =>
+      prevItems.map((item) =>
         item.id === id ? { ...item, quantity: newQty } : item
       )
     );
   };
+
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -67,6 +96,10 @@ function Cart() {
     0
   );
 
+  useEffect(() => {
+    GetCartItems();
+    // eslint-disable-next-line
+  }, []);
   return (
     <>
       <Header />
@@ -95,50 +128,61 @@ function Cart() {
                       <TableCell align="center">Action</TableCell>
                     </TableRow>
                   </TableHead>
-                  <TableBody>
-                    {cartItem.map((item) => (
-                      <TableRow key={item.id}>
-                        <TableCell>{item.id}</TableCell>
-                        <TableCell>
-                          <Box className="flex items-center gap-4">
-                            <img
-                              src={item.image}
-                              alt={item.name}
-                              className="w-16 h-16 object-contain"
-                            />
-                            <Typography>{item.name}</Typography>
-                          </Box>
-                        </TableCell>
-                        <TableCell align="right">${item.price}</TableCell>
-                        <TableCell align="right">
-                          <Select
-                            value={item.quantity}
-                            onChange={(e) =>
-                              handleQtyChange(item.id, parseInt(e.target.value))
-                            }
-                            size="small"
-                          >
-                            {[1, 2, 3, 4, 5].map((qty) => (
-                              <MenuItem value={qty} key={qty}>
-                                {qty}
-                              </MenuItem>
-                            ))}
-                          </Select>
-                        </TableCell>
-                        <TableCell align="center">
-                          <Button
-                            variant="contained"
-                            color="secondary"
-                            startIcon={<LocalMallIcon />}
-                            onClick={handleClickOpen}
-                            className="!capitalize font-medium"
-                          >
-                            Buy Now
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
+                  {loading ? (
+                    <Loader />
+                  ) : (
+                    <TableBody>
+                      {cartData.map((item, idx) => (
+                        <TableRow key={item.id}>
+                          <TableCell>{idx + 1}.</TableCell>
+                          <TableCell>
+                            <Box className="flex items-center gap-4">
+                              <img
+                                src={item.product_item.images[0]}
+                                alt={item.product_item.pro_name}
+                                className="w-16 h-16 object-contain"
+                              />
+                              <Typography>
+                                {item.product_item.pro_name}
+                              </Typography>
+                            </Box>
+                          </TableCell>
+                          <TableCell align="right">
+                            ${item.product_item.new_price}
+                          </TableCell>
+                          <TableCell align="right">
+                            <Select
+                              value={item.quantity}
+                              onChange={(e) =>
+                                handleQtyChange(
+                                  item.id,
+                                  parseInt(e.target.value)
+                                )
+                              }
+                              size="small"
+                            >
+                              {[1, 2, 3, 4, 5].map((qty) => (
+                                <MenuItem value={qty} key={qty}>
+                                  {qty}
+                                </MenuItem>
+                              ))}
+                            </Select>
+                          </TableCell>
+                          <TableCell align="center">
+                            <Button
+                              variant="contained"
+                              color="secondary"
+                              startIcon={<LocalMallIcon />}
+                              onClick={handleClickOpen}
+                              className="!capitalize font-medium"
+                            >
+                              Buy Now
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  )}
                 </Table>
               </Box>
             </Box>

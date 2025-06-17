@@ -45,13 +45,14 @@ const Category = () => {
     material: "",
     images: [],
     cat_name: "",
+    quantity: "",
   });
 
   const fetchData = async () => {
     setLoading(true);
     try {
       const [products, categories] = await Promise.all([
-        axios.get("https://generateapi.onrender.com/api/product", {
+        axios.get("https://generateapi.onrender.com/api/Product-Detail", {
           headers: { Authorization: Token },
         }),
         axios.get("https://generateapi.onrender.com/api/category", {
@@ -81,7 +82,7 @@ const Category = () => {
       if (id) {
         await axios
           .patch(
-            `https://generateapi.onrender.com/api/product/${id}`,
+            `https://generateapi.onrender.com/api/Product-Detail/${id}`,
             formData,
             {
               headers: {
@@ -98,12 +99,16 @@ const Category = () => {
           });
       } else {
         await axios
-          .post("https://generateapi.onrender.com/api/product/", formData, {
-            headers: {
-              Authorization: Token,
-              "Content-Type": "multipart/form-data",
-            },
-          })
+          .post(
+            "https://generateapi.onrender.com/api/Product-Detail/",
+            formData,
+            {
+              headers: {
+                Authorization: Token,
+                "Content-Type": "multipart/form-data",
+              },
+            }
+          )
           .then(() => {
             toast.success("Product Added !");
             fetchData();
@@ -130,6 +135,7 @@ const Category = () => {
       material: product.material,
       images: product.images,
       cat_name: product.cat_name?._id || "",
+      quantity: product.quantity,
     });
     setId(product._id);
     setOpen(true);
@@ -138,7 +144,7 @@ const Category = () => {
   const deleteProduct = async (productId) => {
     try {
       await axios.delete(
-        `https://generateapi.onrender.com/api/product/${productId}`,
+        `https://generateapi.onrender.com/api/Product-Detail/${productId}`,
         { headers: { Authorization: Token } }
       );
       toast.success("Product Deleted!");
@@ -162,6 +168,7 @@ const Category = () => {
       { name: "review", min: 0, placeholder: "Reviews" },
       { name: "new_price", min: 0, placeholder: "New Price" },
       { name: "old_price", min: 0, placeholder: "Old Price" },
+      { name: "quantity", min: 0, placeholder: "Quantity" },
     ];
 
     return (
@@ -250,6 +257,7 @@ const Category = () => {
       material: "",
       images: [],
       cat_name: "",
+      quantity: "",
     });
   };
 
@@ -290,7 +298,9 @@ const Category = () => {
                   className="w-full  h-[15rem] sm:h-40 object-cover rounded mb-2"
                 />
               </div>
-              <h3 className="text-lg font-semibold">{product.pro_name}</h3>
+              <h3 className="text-lg font-semibold line-clamp-1">
+                {product.pro_name}
+              </h3>
               <Rate
                 disabled
                 defaultValue={product.pro_rating}
@@ -303,12 +313,17 @@ const Category = () => {
                   ${product.old_price}
                 </span>
               </Typography>
-              <Typography className="text-gray-600 text-sm">
-                {product.review} reviews
-              </Typography>
+              <div className="flex justify-between">
+                <Typography className="text-gray-600 text-sm">
+                  {product.review} reviews
+                </Typography>
+                <Typography className="text-gray-600 text-sm">
+                  Quantity: {product.quantity}
+                </Typography>
+              </div>
               <Typography className="text-gray-600 text-sm">
                 Category: {product.cat_name?.cat_name || "Unknown"}
-              </Typography>
+              </Typography>{" "}
               <div className="flex justify-between mt-3">
                 <Button
                   icon={<EditOutlined />}
