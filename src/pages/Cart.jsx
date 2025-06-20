@@ -1,105 +1,141 @@
-import {
-  Box,
-  Container,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Select,
-  MenuItem,
-  Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
-import { motion } from "framer-motion";
 import React, { useContext, useEffect, useState } from "react";
+import {
+  Table,
+  Select,
+  Button,
+  Typography,
+  Modal,
+  Row,
+  Col,
+  Divider,
+  Spin,
+} from "antd";
+import { Link } from "react-router";
+import { ShoppingOutlined } from "@ant-design/icons";
+import { motion } from "framer-motion";
+import axios from "axios";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
-import { Link } from "react-router";
-import shoesThumb from "../components/img/shoes/shoes-01-01.png";
-import LocalMallIcon from "@mui/icons-material/LocalMall";
 import Applycoup from "../components/ui/Applycoup";
 import Buttongroup from "../components/ui/Buttongroup";
-import { Typography } from "antd";
-import Breadcrumb from "../components/ui/Breadcrumb";
-import axios from "axios";
 import { token } from "../assets/contexts";
-import Loader from "../components/ui/Loader";
+import Breadcrumb from "../components/ui/Breadcrumb";
+import { Container } from "@mui/material";
 
-const breadcrumbItems = [
-  {
-    label: "Home",
-    link: "/home",
-  },
-  {
-    label: "Cart",
-  },
-];
+const { Option } = Select;
+
+const breadItems = [{ label: "Home", link: "/home" }, { label: "Cart" }];
 
 function Cart() {
-  const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
-  const Token = useContext(token);
   const [cartData, setCartData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const Token = useContext(token);
 
-  const [cartItem, setCartItem] = useState([
-    {
-      id: 1,
-      name: "Air Pegasus 37 Running Shoes",
-      price: 6500,
-      quantity: 1,
-      image: shoesThumb,
-    },
-  ]);
-
-  const GetCartItems = async () => {
+  const fetchCartItems = async () => {
     setLoading(true);
     try {
-      await axios
-        .get("https://generateapi.onrender.com/api/Cart", {
-          headers: {
-            Authorization: Token,
-          },
-        })
-        .then((res) => {
-          setLoading(false);
-          console.log(res.data?.Data);
-          setCartData(res.data?.Data);
-        });
+      const res = await axios.get("https://generateapi.onrender.com/api/Cart", {
+        headers: { Authorization: Token },
+      });
+      setCartData(res.data?.Data || []);
     } catch (error) {
-      console.log(error);
+      console.error("Cart fetch failed:", error);
+    } finally {
       setLoading(false);
     }
   };
 
-  const handleQtyChange = (id, newQty) => {
-    setCartData((prevItems) =>
-      prevItems.map((item) =>
-        item.id === id ? { ...item, quantity: newQty } : item
+  const handleQtyChange = (itemId, newQty) => {
+    setCartData((prev) =>
+      prev.map((item) =>
+        item._id === itemId ? { ...item, quantity: newQty } : item
       )
     );
   };
 
-  const handleClickOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const subtotal = cartData.reduce((sum, item) => {
+    const price = item?.product_item?.new_price || 0;
+    const quantity = item?.quantity || 1;
+    return sum + price * quantity;
+  }, 0);
 
-  const subtotal = cartItem?.reduce(
-    (total, item) => total + item.price * item.quantity,
-    0
-  );
+  const columns = [
+    {
+      title: "No.",
+      dataIndex: "index",
+      key: "index",
+      render: (_, __, idx) => idx + 1,
+      responsive: ["xs", "sm", "md", "lg"],
+    },
+    {
+      title: "Product",
+      key: "product",
+      render: (_, record) => (
+        <div className="flex items-center gap-4 min-w-[200px] max-w-[300px]">
+          <img
+            src={record.product_item.images?.[0]}
+            alt={record.product_item.pro_name}
+            className="w-14 h-14 object-contain rounded"
+          />
+          <Typography.Text
+            style={{
+              whiteSpace: "normal",
+              wordWrap: "break-word",
+              fontWeight: 500,
+            }}
+          >
+            {record.product_item.pro_name}
+          </Typography.Text>
+        </div>
+      ),
+    },
+    {
+      title: "Price",
+      dataIndex: ["product_item", "new_price"],
+      key: "price",
+      align: "right",
+      render: (price) => <Typography.Text strong>${price}</Typography.Text>,
+    },
+    {
+      title: "Quantity",
+      key: "quantity",
+      align: "right",
+      render: (record) => (
+        <Select
+          value={record.quantity}
+          onChange={(value) => handleQtyChange(record._id, value)}
+          size="small"
+        >
+          {[1, 2, 3, 4, 5].map((val) => (
+            <Option key={val} value={val}>
+              {val}
+            </Option>
+          ))}
+        </Select>
+      ),
+    },
+    {
+      title: "Action",
+      key: "action",
+      align: "center",
+      render: () => (
+        <Button
+          icon={<ShoppingOutlined />}
+          type="primary"
+          onClick={() => setModalVisible(true)}
+        >
+          Buy Now
+        </Button>
+      ),
+    },
+  ];
 
   useEffect(() => {
-    GetCartItems();
+    fetchCartItems();
     // eslint-disable-next-line
   }, []);
+
   return (
     <>
       <Header />
@@ -107,144 +143,76 @@ function Cart() {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
+          transition={{ duration: 0.6 }}
+          className="px-4 py-8"
         >
-          <Box className="py-5 sm:py-10">
-            <Breadcrumb items={breadcrumbItems} />
+          <Breadcrumb items={breadItems} />
 
-            {/* Cart Table */}
-            <Box className="relative w-full overflow-x-auto rounded-xl shadow-md mb-7">
-              <Box
-                className="min-w-[700px] bg-white bg-opacity-60 backdrop-blur-md rounded-xl scroll-smooth overflow-x-auto scrollbar-thin scrollbar-thumb-[#DB4444]/70 scrollbar-track-transparent hover:scrollbar-thumb-[#DB4444] transition-all duration-300"
-                style={{ WebkitOverflowScrolling: "touch" }}
-              >
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>No.</TableCell>
-                      <TableCell>Product</TableCell>
-                      <TableCell align="right">Price</TableCell>
-                      <TableCell align="right">Quantity</TableCell>
-                      <TableCell align="center">Action</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  {loading ? (
-                    <Loader />
-                  ) : (
-                    <TableBody>
-                      {cartData.map((item, idx) => (
-                        <TableRow key={item.id}>
-                          <TableCell>{idx + 1}.</TableCell>
-                          <TableCell>
-                            <Box className="flex items-center gap-4">
-                              <img
-                                src={item.product_item.images[0]}
-                                alt={item.product_item.pro_name}
-                                className="w-16 h-16 object-contain"
-                              />
-                              <Typography>
-                                {item.product_item.pro_name}
-                              </Typography>
-                            </Box>
-                          </TableCell>
-                          <TableCell align="right">
-                            ${item.product_item.new_price}
-                          </TableCell>
-                          <TableCell align="right">
-                            <Select
-                              value={item.quantity}
-                              onChange={(e) =>
-                                handleQtyChange(
-                                  item.id,
-                                  parseInt(e.target.value)
-                                )
-                              }
-                              size="small"
-                            >
-                              {[1, 2, 3, 4, 5].map((qty) => (
-                                <MenuItem value={qty} key={qty}>
-                                  {qty}
-                                </MenuItem>
-                              ))}
-                            </Select>
-                          </TableCell>
-                          <TableCell align="center">
-                            <Button
-                              variant="contained"
-                              color="secondary"
-                              startIcon={<LocalMallIcon />}
-                              onClick={handleClickOpen}
-                              className="!capitalize font-medium"
-                            >
-                              Buy Now
-                            </Button>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  )}
-                </Table>
-              </Box>
-            </Box>
+          <div className="bg-white shadow rounded-lg overflow-x-auto mb-6">
+            {loading ? (
+              <Spin tip="Loading cart items...">
+                <div style={{ height: "150px" }} />
+              </Spin>
+            ) : (
+              <Table
+                dataSource={cartData}
+                columns={columns}
+                rowKey="_id"
+                pagination={false}
+                scroll={{ x: true }}
+              />
+            )}
+          </div>
 
-            {/* Return to Shop Button */}
-            <Link to="/home">
-              <Button
-                variant="outlined"
-                className="!capitalize !text-black !font-medium hover:!bg-[#c63b3b] hover:!text-white !rounded !px-5 !py-2"
-              >
-                Return To Shop
-              </Button>
-            </Link>
+          <Link to="/home">
+            <Button className="mb-6" type="default">
+              Return to Shop
+            </Button>
+          </Link>
 
-            {/* Coupon + Cart Summary */}
-            <Box className="flex flex-col lg:flex-row justify-between items-start gap-6 mt-10">
-              {/* Coupon */}
-              <Box className="w-full lg:w-1/2">
-                <Applycoup />
-              </Box>
+          <Row gutter={[24, 24]}>
+            <Col xs={24} md={14}>
+              <Applycoup />
+            </Col>
 
-              {/* Cart Total */}
-              <Box className="w-full lg:w-[40%] border rounded-md px-5 py-7">
-                <Typography variant="h6" className="!mb-6 font-medium">
-                  Cart Total
-                </Typography>
-                <Box className="flex justify-between border-b pb-2 mb-4">
-                  <span>Subtotal:</span>
-                  <span>${subtotal}</span>
-                </Box>
-                <Box className="flex justify-between border-b pb-2 mb-4">
-                  <span>Shipping:</span>
-                  <span>Free</span>
-                </Box>
-                <Box className="flex justify-between pb-2 mb-4">
-                  <span>Total:</span>
-                  <span>${subtotal}</span>
-                </Box>
-                <Link to="/checkout">
-                  <Buttongroup name="Proceed To Checkout" />
-                </Link>
-              </Box>
-            </Box>
-          </Box>
+            <Col xs={24} md={10}>
+              <div className="border p-6 rounded-lg shadow-sm bg-white">
+                <Typography.Title level={5}>Cart Total</Typography.Title>
+                <Divider />
+                <Row justify="space-between">
+                  <Typography.Text>Subtotal:</Typography.Text>
+                  <Typography.Text>${subtotal.toFixed(2)}</Typography.Text>
+                </Row>
+                <Row justify="space-between">
+                  <Typography.Text>Shipping:</Typography.Text>
+                  <Typography.Text>Free</Typography.Text>
+                </Row>
+                <Divider />
+                <Row justify="space-between">
+                  <Typography.Text strong>Total:</Typography.Text>
+                  <Typography.Text strong>
+                    ${subtotal.toFixed(2)}
+                  </Typography.Text>
+                </Row>
+                <div className="mt-4">
+                  <Link to="/checkout">
+                    <Buttongroup name="Proceed To Checkout" />
+                  </Link>
+                </div>
+              </div>
+            </Col>
+          </Row>
 
-          {/* Dialog */}
-          <Dialog fullScreen={fullScreen} open={open} onClose={handleClose}>
-            <DialogTitle>Buy Confirmation</DialogTitle>
-            <DialogContent>
-              <DialogContentText>
-                Are you sure you want to proceed with your purchase?
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button autoFocus onClick={handleClose}>
-                Cancel
-              </Button>
-              <Button onClick={handleClose} autoFocus>
-                Confirm
-              </Button>
-            </DialogActions>
-          </Dialog>
+          <Modal
+            open={modalVisible}
+            title="Buy Confirmation"
+            onCancel={() => setModalVisible(false)}
+            onOk={() => setModalVisible(false)}
+            okText="Confirm"
+            centered
+          >
+            <p>Are you sure you want to proceed with your purchase?</p>
+          </Modal>
         </motion.div>
       </Container>
       <Footer />

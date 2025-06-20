@@ -5,11 +5,11 @@ import { useNavigate, useParams } from "react-router";
 import { motion } from "framer-motion";
 import {
   LocalOffer,
-  FavoriteBorder,
-  Favorite,
   PublicOutlined,
   CreditCardOutlined,
   PersonOutlineOutlined,
+  FavoriteBorder as FavoriteBorderIcon,
+  Favorite as FavoriteIcon,
 } from "@mui/icons-material";
 import axios from "axios";
 import Header from "../components/layout/Header";
@@ -20,12 +20,13 @@ import Loader from "../components/ui/Loader";
 import Review from "../components/layout/Review";
 import Gift from "../components/layout/Gift";
 import { Form, Formik } from "formik";
+import ProductDetailSkeleton from "../components/ui/ProductDetailSkeleton";
 
 function ProductDetail() {
   const [product, setProduct] = useState(null);
   const [selectedImage, setSelectedImage] = useState("");
-  const [like, setLike] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [likedProducts, setLikedProducts] = useState({});
   const { coupon } = useContext(Context);
   const Token = useContext(token);
   const { id } = useParams();
@@ -38,7 +39,6 @@ function ProductDetail() {
   };
 
   const handleCart = async (values) => {
-    console.log(values);
     setLoading(true);
     try {
       await axios
@@ -48,7 +48,6 @@ function ProductDetail() {
           },
         })
         .then((res) => {
-          console.log(res.data);
           if (res.data.Status === "Success") {
             setLoading(false);
             navigate("/cart");
@@ -93,10 +92,44 @@ function ProductDetail() {
       const singleProduct = productData.find((item) => item._id === id);
       setProduct(singleProduct);
       setSelectedImage(singleProduct.images?.[0] || "");
+      if (!singleProduct) {
+        console.error("Product not found");
+        setLoading(false);
+        setProduct(null);
+        return;
+      }
     } catch (err) {
       console.error("Failed to fetch product:", err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const toggleLike = async (product) => {
+    const isLiked = likedProducts[product._id];
+    setLikedProducts((prev) => ({ ...prev, [product._id]: !isLiked }));
+    const payload = {
+      product_id: product._id,
+      user_id: JSON.parse(localStorage.getItem("userId")) || "",
+    };
+
+    try {
+      if (!isLiked) {
+        await axios.post(
+          "https://generateapi.onrender.com/api/wishlist",
+          payload,
+          {
+            headers: { Authorization: Token },
+          }
+        );
+      } else {
+        await axios.delete(
+          `https://generateapi.onrender.com/api/wishlist/${payload.product_id}`,
+          { headers: { Authorization: Token } }
+        );
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -114,7 +147,9 @@ function ProductDetail() {
 
           {/* Product Detail Section */}
           {loading ? (
-            <Loader />
+            <ProductDetailSkeleton />
+          ) : !product ? (
+            <p className="text-center text-red-500">Product not found.</p>
           ) : (
             <Box className="flex flex-col lg:flex-row gap-10">
               {/* Left Side - Images */}
@@ -215,12 +250,16 @@ function ProductDetail() {
                       </Button>
 
                       <Box className="border border-gray-300 rounded-md">
-                        <Tooltip title="Favorite" placement="bottom">
-                          <IconButton onClick={() => setLike(!like)}>
-                            {like ? (
-                              <Favorite style={{ fill: "black" }} />
+                        <Tooltip title="Add to Favorite" placement="bottom">
+                          <IconButton
+                            size="small"
+                            onClick={() => toggleLike(product)}
+                            className="bg-white border rounded-full"
+                          >
+                            {likedProducts[product._id] ? (
+                              <FavoriteIcon className="text-red-500" />
                             ) : (
-                              <FavoriteBorder />
+                              <FavoriteBorderIcon className="text-gray-600" />
                             )}
                           </IconButton>
                         </Tooltip>

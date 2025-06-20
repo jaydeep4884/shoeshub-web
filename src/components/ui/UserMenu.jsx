@@ -1,4 +1,4 @@
-import { Avatar, Dropdown, Menu, Space } from "antd";
+import { Avatar, Dropdown, Space } from "antd";
 import React from "react";
 import {
   UserOutlined,
@@ -15,24 +15,31 @@ function UserMenu() {
     navigate("/");
   };
 
-  const menu = (
-    <Menu>
-      <Menu.Item key="profile" icon={<UserOutlined />}>
-        <Link to="/profile">Profile</Link>
-      </Menu.Item>
-      <Menu.Item key="settings" icon={<SettingOutlined />}>
-        <Link to="/settings">Settings</Link>
-      </Menu.Item>
-      <Menu.Divider />
-      <Menu.Item key="logout" icon={<LogoutOutlined />} danger>
-        <Link onClick={LogoutAdmin}>Logout</Link>
-      </Menu.Item>
-    </Menu>
-  );
+  const menuItems = [
+    {
+      key: "profile",
+      icon: <UserOutlined />,
+      label: <Link to="/profile">Profile</Link>,
+    },
+    {
+      key: "settings",
+      icon: <SettingOutlined />,
+      label: <Link to="/settings">Settings</Link>,
+    },
+    {
+      type: "divider",
+    },
+    {
+      key: "logout",
+      icon: <LogoutOutlined />,
+      danger: true,
+      label: <span onClick={LogoutAdmin}>Logout</span>, // Don't wrap logout in <Link>
+    },
+  ];
 
   return (
     <>
-      <Dropdown overlay={menu} trigger={["click"]}>
+      <Dropdown menu={{ items: menuItems }} trigger={["click"]}>
         <Space>
           <Avatar
             className="cursor-pointer"
