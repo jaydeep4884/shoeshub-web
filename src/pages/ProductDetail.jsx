@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Box, Button, Container, IconButton, Rating } from "@mui/material";
 import { Tooltip } from "antd";
-import { useNavigate, useParams } from "react-router";
+import { Link, useParams } from "react-router";
 import { motion } from "framer-motion";
 import {
   LocalOffer,
@@ -21,6 +21,7 @@ import Review from "../components/layout/Review";
 import Gift from "../components/layout/Gift";
 import { Form, Formik } from "formik";
 import ProductDetailSkeleton from "../components/ui/ProductDetailSkeleton";
+import toast, { Toaster } from "react-hot-toast";
 
 function ProductDetail() {
   const [product, setProduct] = useState(null);
@@ -30,7 +31,7 @@ function ProductDetail() {
   const { coupon } = useContext(Context);
   const Token = useContext(token);
   const { id } = useParams();
-  const navigate = useNavigate();
+
   const initialValues = {
     user_id: JSON.parse(localStorage.getItem("userId")),
     product_item: id,
@@ -50,7 +51,7 @@ function ProductDetail() {
         .then((res) => {
           if (res.data.Status === "Success") {
             setLoading(false);
-            navigate("/cart");
+            toast.success("Product Added in the Cart !");
           }
         });
     } catch (error) {
@@ -249,6 +250,15 @@ function ProductDetail() {
                         {loading ? <Loader /> : "Add to Cart"}
                       </Button>
 
+                      <Link to={`/checkout/${id}`}>
+                        <Button
+                          variant="contained"
+                          className="!capitalize !bg-green-500 !text-black !px-6 py-2"
+                        >
+                          Buy Now
+                        </Button>
+                      </Link>
+
                       <Box className="border border-gray-300 rounded-md">
                         <Tooltip title="Add to Favorite" placement="bottom">
                           <IconButton
@@ -280,6 +290,7 @@ function ProductDetail() {
               </Box>
             </Box>
           )}
+          <Toaster />
         </Box>
       </Container>
       <Review />

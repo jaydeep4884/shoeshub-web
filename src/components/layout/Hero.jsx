@@ -1,11 +1,11 @@
 import { Box } from "@mui/material";
 import React from "react";
 import Slider from "react-slick";
-import slide1 from "../img/slides/hero-slide-01.png";
-import slide2 from "../img/slides/hero-slide-02.png";
-import slide3 from "../img/slides/hero-slide-03.png";
-import slide4 from "../img/slides/hero-slide-04.png";
-import slide5 from "../img/slides/hero-slide-05.png";
+import slide1 from "../img/slides/hero-banner-01.webp";
+import slide2 from "../img/slides/hero-banner-02.webp";
+import slide3 from "../img/slides/hero-banner-03.webp";
+import slide4 from "../img/slides/hero-banner-04.webp";
+import slide5 from "../img/slides/hero-banner-05.webp";
 
 function Hero() {
   const settings = {
@@ -16,7 +16,7 @@ function Hero() {
     slidesToScroll: 1,
     autoplay: true,
     speed: 2000,
-    autoplaySpeed: 2000,
+    autoplaySpeed: 3000,
     cssEase: "linear",
     arrows: false,
   };

@@ -4,14 +4,13 @@ import {
   Select,
   Button,
   Typography,
-  Modal,
   Row,
   Col,
   Divider,
   Spin,
 } from "antd";
-import { Link } from "react-router";
-import { ShoppingOutlined } from "@ant-design/icons";
+import { Link, useNavigate } from "react-router";
+import { ShoppingOutlined, DeleteOutlined } from "@ant-design/icons";
 import { motion } from "framer-motion";
 import axios from "axios";
 import Header from "../components/layout/Header";
@@ -21,6 +20,7 @@ import Buttongroup from "../components/ui/Buttongroup";
 import { token } from "../assets/contexts";
 import Breadcrumb from "../components/ui/Breadcrumb";
 import { Container } from "@mui/material";
+import toast, { Toaster } from "react-hot-toast";
 
 const { Option } = Select;
 
@@ -29,8 +29,8 @@ const breadItems = [{ label: "Home", link: "/home" }, { label: "Cart" }];
 function Cart() {
   const [cartData, setCartData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
   const Token = useContext(token);
+  const navigate = useNavigate();
 
   const fetchCartItems = async () => {
     setLoading(true);
@@ -59,6 +59,22 @@ function Cart() {
     const quantity = item?.quantity || 1;
     return sum + price * quantity;
   }, 0);
+
+  const deleteCartItem = async (id) => {
+    console.log(id);
+    try {
+      await axios
+        .delete(`https://generateapi.onrender.com/api/Cart/${id}`, {
+          headers: { Authorization: Token },
+        })
+        .then(() => {
+          toast.success("Cart Item Deleted !!");
+          fetchCartItems();
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const columns = [
     {
@@ -119,14 +135,26 @@ function Cart() {
       title: "Action",
       key: "action",
       align: "center",
-      render: () => (
-        <Button
-          icon={<ShoppingOutlined />}
-          type="primary"
-          onClick={() => setModalVisible(true)}
-        >
-          Buy Now
-        </Button>
+      render: (_, record) => (
+        <div className="flex flex-col sm:flex-row justify-center gap-2 sm:gap-4">
+          <Button
+            icon={<ShoppingOutlined />}
+            type="primary"
+            onClick={() => navigate("/checkout")}
+            className="w-full sm:w-auto"
+          >
+            Buy Now
+          </Button>
+          <Button
+            icon={<DeleteOutlined />}
+            type="primary"
+            danger
+            onClick={() => deleteCartItem(record._id)}
+            className="w-full sm:w-auto"
+          >
+            Delete
+          </Button>
+        </div>
       ),
     },
   ];
@@ -202,19 +230,9 @@ function Cart() {
               </div>
             </Col>
           </Row>
-
-          <Modal
-            open={modalVisible}
-            title="Buy Confirmation"
-            onCancel={() => setModalVisible(false)}
-            onOk={() => setModalVisible(false)}
-            okText="Confirm"
-            centered
-          >
-            <p>Are you sure you want to proceed with your purchase?</p>
-          </Modal>
         </motion.div>
       </Container>
+      <Toaster />
       <Footer />
     </>
   );

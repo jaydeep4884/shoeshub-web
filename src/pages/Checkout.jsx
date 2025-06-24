@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Box,
   Checkbox,
@@ -16,16 +16,23 @@ import Applycoup from "../components/ui/Applycoup";
 import Buttongroup from "../components/ui/Buttongroup";
 import { motion, AnimatePresence } from "framer-motion";
 import toast, { Toaster } from "react-hot-toast";
-import cartImg from "../components/img/shoes/shoes-01-01.png";
 import visaPay from "../components/img/payment logo/visa-pay.svg";
 import bkashPay from "../components/img/payment logo/bkash-pay.svg";
 import nagadPay from "../components/img/payment logo/nagad-pay.svg";
 import masterPay from "../components/img/payment logo/mastercard-pay.svg";
 import Breadcrumb from "../components/ui/Breadcrumb";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
+import { token } from "../assets/contexts";
+import axios from "axios";
+import ProductDetailSkeleton from "../components/ui/ProductDetailSkeleton";
 
 const Checkout = () => {
   const navigate = useNavigate();
+  const [product, setProduct] = useState(null);
+  const [selectedImage, setSelectedImage] = useState("");
+  const [loading, setLoading] = useState(true);
+  const Token = useContext(token);
+  const { id } = useParams();
   const inputFields = [
     { name: "firstname", label: "First Name*", type: "text" },
     { name: "company", label: "Company Name", type: "text" },
@@ -77,6 +84,36 @@ const Checkout = () => {
     resetForm();
     console.log(values);
   };
+
+  // Fetching Single Product
+  const fetchProduct = async () => {
+    try {
+      const res = await axios.get(
+        `https://generateapi.onrender.com/api/Product-Detail/`,
+        { headers: { Authorization: Token } }
+      );
+      const productData = res.data.Data;
+      const singleProduct = productData.find((item) => item._id === id);
+
+      if (singleProduct) {
+        setProduct(singleProduct);
+        setSelectedImage(singleProduct.images?.[0] || "");
+      } else {
+        console.error("Product not found");
+      }
+    } catch (err) {
+      console.error("Failed to fetch product:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchProduct();
+    // eslint-disable-next-line
+  }, []);
+
+  console.log(product);
 
   return (
     <>
@@ -142,101 +179,107 @@ const Checkout = () => {
                   {/* Right */}
                   <Box className="w-full lg:w-[45%] space-y-6">
                     <Box className="p-4 sm:p-5 bg-white border rounded-xl shadow-sm space-y-6">
-                      {/* Product */}
-                      <Box className="flex justify-between items-center">
-                        <Box className="flex items-center gap-4">
-                          <img
-                            src={cartImg}
-                            alt="H1 Gamepad"
-                            className="w-16 sm:w-20 object-contain"
-                          />
-                          <Typography className="font-medium">
-                            H1 Gamepad
-                          </Typography>
-                        </Box>
-                        <Typography className="font-semibold">$1100</Typography>
-                      </Box>
+                      {product ? (
+                        <>
+                          <Box className="flex justify-between items-center gap-5">
+                            <Box className="flex items-center gap-4">
+                              <img
+                                src={selectedImage}
+                                alt={product.pro_name}
+                                className="w-16 sm:w-20 object-contain"
+                              />
+                              <Typography className="font-medium line-clamp-1">
+                                {product.pro_name}
+                              </Typography>
+                            </Box>
+                            <Typography className="font-semibold">
+                              ${product.new_price}
+                            </Typography>
+                          </Box>
 
-                      {/* Summary */}
-                      <Box className="space-y-2 border-t pt-4 text-sm">
-                        <Box className="flex justify-between">
-                          <span>Subtotal:</span>
-                          <span>$1750</span>
-                        </Box>
-                        <Box className="flex justify-between">
-                          <span>Shipping:</span>
-                          <span>Free</span>
-                        </Box>
-                        <Box className="flex justify-between border-t pt-2 font-semibold">
-                          <span>Total:</span>
-                          <span>$1750</span>
-                        </Box>
-                      </Box>
+                          {/* Summary */}
+                          <Box className="space-y-2 border-t pt-4 text-sm">
+                            <Box className="flex justify-between">
+                              <span>Subtotal:</span>
+                              <span>${product.new_price}</span>
+                            </Box>
+                            <Box className="flex justify-between">
+                              <span>Shipping:</span>
+                              <span>Free</span>
+                            </Box>
+                            <Box className="flex justify-between border-t pt-2 font-semibold">
+                              <span>Total:</span>
+                              <span>${product.new_price}</span>
+                            </Box>
+                          </Box>
 
-                      {/* Payment Method */}
-                      <Field name="paymentMethod">
-                        {({ field }) => (
-                          <RadioGroup {...field}>
-                            <FormControlLabel
-                              value="bank"
-                              control={<Radio />}
-                              label="Bank"
-                            />
-                            <FormControlLabel
-                              value="cod"
-                              control={<Radio />}
-                              label="Cash on Delivery"
-                            />
-                          </RadioGroup>
-                        )}
-                      </Field>
-
-                      {/* Bank Provider */}
-                      <Field name="paymentMethod">
-                        {({ field }) => (
-                          <AnimatePresence>
-                            {field.value === "bank" && (
-                              <Field name="bankProvider">
-                                {({ field: bankField }) => (
-                                  <motion.div
-                                    key="bankSection"
-                                    initial={{ opacity: 0, height: 0 }}
-                                    animate={{ opacity: 1, height: "auto" }}
-                                    exit={{ opacity: 0, height: 0 }}
-                                    className="flex flex-wrap gap-3 overflow-hidden"
-                                  >
-                                    {banks.map(({ value, img }) => (
-                                      <motion.img
-                                        key={value}
-                                        src={img}
-                                        alt={value}
-                                        whileTap={{ scale: 0.95 }}
-                                        className={`p-1 cursor-pointer border rounded ${
-                                          bankField.value === value
-                                            ? "border-gray-300"
-                                            : "border-transparent"
-                                        }`}
-                                        onClick={() =>
-                                          bankField.onChange({
-                                            target: {
-                                              name: "bankProvider",
-                                              value,
-                                            },
-                                          })
-                                        }
-                                      />
-                                    ))}
-                                  </motion.div>
-                                )}
-                              </Field>
+                          {/* Payment Method */}
+                          <Field name="paymentMethod">
+                            {({ field }) => (
+                              <RadioGroup {...field}>
+                                <FormControlLabel
+                                  value="bank"
+                                  control={<Radio />}
+                                  label="Bank"
+                                />
+                                <FormControlLabel
+                                  value="cod"
+                                  control={<Radio />}
+                                  label="Cash on Delivery"
+                                />
+                              </RadioGroup>
                             )}
-                          </AnimatePresence>
-                        )}
-                      </Field>
+                          </Field>
 
-                      {/* Coupon and Button */}
-                      <Applycoup />
-                      <Buttongroup name="Place Order" />
+                          {/* Bank Provider */}
+                          <Field name="paymentMethod">
+                            {({ field }) => (
+                              <AnimatePresence>
+                                {field.value === "bank" && (
+                                  <Field name="bankProvider">
+                                    {({ field: bankField }) => (
+                                      <motion.div
+                                        key="bankSection"
+                                        initial={{ opacity: 0, height: 0 }}
+                                        animate={{ opacity: 1, height: "auto" }}
+                                        exit={{ opacity: 0, height: 0 }}
+                                        className="flex flex-wrap gap-3 overflow-hidden"
+                                      >
+                                        {banks.map(({ value, img }) => (
+                                          <motion.img
+                                            key={value}
+                                            src={img}
+                                            alt={value}
+                                            whileTap={{ scale: 0.95 }}
+                                            className={`p-1 cursor-pointer border rounded ${
+                                              bankField.value === value
+                                                ? "border-gray-300"
+                                                : "border-transparent"
+                                            }`}
+                                            onClick={() =>
+                                              bankField.onChange({
+                                                target: {
+                                                  name: "bankProvider",
+                                                  value,
+                                                },
+                                              })
+                                            }
+                                          />
+                                        ))}
+                                      </motion.div>
+                                    )}
+                                  </Field>
+                                )}
+                              </AnimatePresence>
+                            )}
+                          </Field>
+
+                          <Applycoup />
+                          <Buttongroup name="Place Order" />
+                        </>
+                      ) : (
+                        <ProductDetailSkeleton />
+                      )}
                     </Box>
                   </Box>
                 </Form>
