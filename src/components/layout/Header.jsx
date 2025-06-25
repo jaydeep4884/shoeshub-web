@@ -53,6 +53,7 @@ export default function Header() {
     { pageName: "Orders", icon: orderIcon, pageLink: "/orders" },
     { pageName: "Favorite", icon: likeIcon, pageLink: "/fav" },
     { pageName: "Cart", icon: cartIcon, pageLink: "/cart" },
+    { pageName: "Contact", icon: orderIcon, pageLink: "/contact" },
   ];
 
   const PageLinks = () =>

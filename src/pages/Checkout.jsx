@@ -30,7 +30,6 @@ const Checkout = () => {
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [selectedImage, setSelectedImage] = useState("");
-  const [loading, setLoading] = useState(true);
   const Token = useContext(token);
   const { id } = useParams();
   const inputFields = [
@@ -104,7 +103,6 @@ const Checkout = () => {
     } catch (err) {
       console.error("Failed to fetch product:", err);
     } finally {
-      setLoading(false);
     }
   };
 
@@ -178,7 +176,7 @@ const Checkout = () => {
 
                   {/* Right */}
                   <Box className="w-full lg:w-[45%] space-y-6">
-                    <Box className="p-4 sm:p-5 bg-white border rounded-xl shadow-sm space-y-6">
+                    <Box className="p-4 sm:p-5 bg-white border rounded-xl shadow-sm ">
                       {product ? (
                         <>
                           <Box className="flex justify-between items-center gap-5">
@@ -275,6 +273,7 @@ const Checkout = () => {
                           </Field>
 
                           <Applycoup />
+                          <br />
                           <Buttongroup name="Place Order" />
                         </>
                       ) : (
