@@ -1,25 +1,38 @@
 import { Box, Button, InputBase } from "@mui/material";
 import React, { useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
+import { useFormikContext } from "formik";
 
 function Applycoup() {
-  const [couponCode, setCouponCode] = useState("");
-  const validCode = "JAKAAS123";
+  const { values, setFieldValue } = useFormikContext();
+  const [enteredCode, setEnteredCode] = useState("");
+
+  // You could fetch this list from your API, but hardcoded for now
+  const validCoupons = {
+    JAKAAS123: "682d5f2478f9be60721ce1a0",
+    // more can be added here
+  };
 
   const checkCode = () => {
-    if (couponCode.trim().toUpperCase() === validCode) {
-      toast.success("Coupon Added 🎉✨");
+    const code = enteredCode.trim().toUpperCase();
+    const couponId = validCoupons[code];
+
+    if (couponId) {
+      setFieldValue("couponCode", couponId); // store coupon **ID**
+      toast.success("Coupon Applied 🎉✨");
     } else {
-      toast.error("Invalid Coupon Code 🙄🙄");
+      setFieldValue("couponCode", ""); // clear invalid
+      toast.error("Invalid Coupon Code 🙄");
     }
-    setCouponCode("");
+
+    setEnteredCode("");
   };
 
   return (
     <Box className="flex gap-3">
       <InputBase
-        value={couponCode}
-        onChange={(e) => setCouponCode(e.target.value)}
+        value={enteredCode}
+        onChange={(e) => setEnteredCode(e.target.value)}
         placeholder="Coupon Code"
         className="flex-1 px-3 py-2 border border-gray-400 rounded placeholder-gray-500"
       />
@@ -30,7 +43,6 @@ function Applycoup() {
       >
         Apply Coupon
       </Button>
-      <Toaster />
     </Box>
   );
 }

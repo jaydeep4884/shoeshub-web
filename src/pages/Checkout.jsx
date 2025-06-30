@@ -33,16 +33,16 @@ const Checkout = () => {
   const Token = useContext(token);
   const { id } = useParams();
   const inputFields = [
-    { name: "firstname", label: "First Name*", type: "text" },
-    { name: "company", label: "Company Name", type: "text" },
-    { name: "address", label: "Street Address*", type: "text" },
+    { name: "fullname", label: "First Name*", type: "text" },
+    { name: "companyName", label: "Company Name", type: "text" },
+    { name: "streetAddress", label: "Street Address*", type: "text" },
     {
       name: "apartment",
       label: "Apartment, floor, etc. (optional)",
       type: "text",
     },
     { name: "city", label: "Town/City*", type: "text" },
-    { name: "mobile", label: "Phone Number*", type: "number" },
+    { name: "phone", label: "Phone Number*", type: "text" },
     { name: "email", label: "Email Address*", type: "email" },
   ];
 
@@ -54,32 +54,48 @@ const Checkout = () => {
   ];
 
   const initialValues = {
-    firstname: "",
-    company: "",
-    address: "",
+    fullname: "",
+    companyName: "",
+    streetAddress: "",
     apartment: "",
     city: "",
-    mobile: "",
+    phone: "",
     email: "",
-    permission: "",
-    paymentMethod: "cod",
-    bankProvider: "",
+    paymentMethod: "",
+    paymentProvider: "",
+    couponCode: "", // Add this
+    saveForNextTime: false,
   };
 
   const breadItems = [
     { label: "Home", link: "/home" },
-    { label: "Product", link: "" },
+    { label: "Product", link: `/product/${id}` },
     { label: "View Cart", link: "/cart" },
     { label: "CheckOut" },
   ];
 
-  const handleSubmit = (values, { resetForm }) => {
-    if (values.paymentMethod === "bank" && !values.bankProvider) {
+  const handleSubmit = async (values, { resetForm }) => {
+    if (values.paymentMethod === "bank" && !values.paymentProvider) {
       toast.error("Please select a bank payment option.");
       return;
     }
-    toast.success("Order Placed Successfully 🎉🎂");
-    navigate("/orderplace");
+    const payload = {
+      ...values,
+      user_id: JSON.parse(localStorage.getItem("userId")) || "",
+    };
+    try {
+      await axios
+        .post("https://generateapi.onrender.com/api/Payment", payload, {
+          headers: { Authorization: Token },
+        })
+        .then((res) => {
+          console.log(res.data);
+          toast.success("Order Placed Successfully 🎉🎂");
+          // navigate("/orderplace");
+        });
+    } catch (error) {
+      console.log(error);
+    }
     resetForm();
     console.log(values);
   };
@@ -110,8 +126,6 @@ const Checkout = () => {
     fetchProduct();
     // eslint-disable-next-line
   }, []);
-
-  console.log(product);
 
   return (
     <>
@@ -153,7 +167,7 @@ const Checkout = () => {
                         />
                       </Box>
                     ))}
-                    <Field name="permission">
+                    <Field name="saveForNextTime">
                       {({ field }) => (
                         <FormControlLabel
                           control={
@@ -234,7 +248,7 @@ const Checkout = () => {
                             {({ field }) => (
                               <AnimatePresence>
                                 {field.value === "bank" && (
-                                  <Field name="bankProvider">
+                                  <Field name="paymentProvider">
                                     {({ field: bankField }) => (
                                       <motion.div
                                         key="bankSection"
@@ -257,7 +271,7 @@ const Checkout = () => {
                                             onClick={() =>
                                               bankField.onChange({
                                                 target: {
-                                                  name: "bankProvider",
+                                                  name: "paymentProvider",
                                                   value,
                                                 },
                                               })
