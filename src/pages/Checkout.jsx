@@ -63,7 +63,7 @@ const Checkout = () => {
     email: "",
     paymentMethod: "",
     paymentProvider: "",
-    couponCode: "", // Add this
+    couponCode: "",
     saveForNextTime: false,
   };
 

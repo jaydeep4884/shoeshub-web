@@ -4,7 +4,6 @@ import React, { createContext, useEffect, useState } from "react";
 export const token = createContext("4aMp3nobXg24Lqun");
 
 export const Context = createContext();
-
 export const AuthProvider = ({ children }) => {
   const [coupon, setCoupon] = useState();
 

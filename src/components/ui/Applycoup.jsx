@@ -1,32 +1,54 @@
 import { Box, Button, InputBase } from "@mui/material";
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useFormikContext } from "formik";
+import axios from "axios";
+import { token } from "../../assets/contexts";
 
 function Applycoup() {
   const { values, setFieldValue } = useFormikContext();
+  const [coupons, setCoupons] = useState([]);
   const [enteredCode, setEnteredCode] = useState("");
+  const Token = useContext(token);
 
-  // You could fetch this list from your API, but hardcoded for now
-  const validCoupons = {
-    JAKAAS123: "682d5f2478f9be60721ce1a0",
-    // more can be added here
+  const fetchCouponCode = async () => {
+    try {
+      const res = await axios.get(
+        "https://generateapi.onrender.com/api/Coupon",
+        {
+          headers: {
+            Authorization: Token,
+          },
+        }
+      );
+      console.log(res.data?.Data);
+      setCoupons(res.data?.Data || []);
+    } catch (err) {
+      console.error("Failed to fetch coupons:", err);
+    }
   };
 
+  // Coupone Fatch Succusesfully : JAKAS420
   const checkCode = () => {
     const code = enteredCode.trim().toUpperCase();
-    const couponId = validCoupons[code];
+    const matchCoupon = coupons.find(
+      (coupon) => coupon.coupon.toUpperCase() === code
+    );
 
-    if (couponId) {
-      setFieldValue("couponCode", couponId); // store coupon **ID**
+    if (matchCoupon) {
+      setFieldValue("couponCode", matchCoupon._id);
       toast.success("Coupon Applied 🎉✨");
     } else {
-      setFieldValue("couponCode", ""); // clear invalid
+      setFieldValue("couponCode", "");
       toast.error("Invalid Coupon Code 🙄");
     }
-
     setEnteredCode("");
   };
+
+  useEffect(() => {
+    fetchCouponCode();
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <Box className="flex gap-3">
