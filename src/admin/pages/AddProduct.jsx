@@ -109,16 +109,19 @@ const Category = () => {
               },
             }
           )
-          .then(() => {
+          .then((res) => {
             toast.success("Product Added !");
+            console.log(res);
             fetchData();
             setOpen(false);
             handleModelClose();
           });
         resetForm();
       }
-    } catch {
+    } catch (error) {
       toast.error("Failed to save product.");
+      console.log(error);
+
     }
   };
 
@@ -156,56 +159,65 @@ const Category = () => {
 
   const ProductFormFields = ({ setFieldValue, values }) => {
     const textFields = [
-      { name: "pro_name", placeholder: "Product Name" },
-      { name: "type", placeholder: "Product Type" },
-      { name: "typeofheel", placeholder: "Type of Heel" },
-      { name: "waterlevel", placeholder: "Water Level" },
-      { name: "material", placeholder: "Material" },
+      { name: "pro_name", placeholder: "Product Name", label: 'Product Name' },
+      { name: "type", placeholder: "Product Type", label: "Product Type" },
+      { name: "typeofheel", placeholder: "Type of Heel", label: "Type of Heel" },
+      { name: "waterlevel", placeholder: "Water Level", label: "Water Level" },
+      { name: "material", placeholder: "Material", label: "Material" },
     ];
 
     const numberFields = [
-      { name: "pro_rating", min: 0, max: 5, placeholder: "Rating" },
-      { name: "review", min: 0, placeholder: "Reviews" },
-      { name: "new_price", min: 0, placeholder: "New Price" },
-      { name: "old_price", min: 0, placeholder: "Old Price" },
-      { name: "quantity", min: 0, placeholder: "Quantity" },
+      { name: "pro_rating", min: 0, max: 5, placeholder: "Rating", label: "Rating" },
+      { name: "review", min: 0, placeholder: "Reviews", label: "Reviews" },
+      { name: "new_price", min: 0, placeholder: "New Price", label: "New Price" },
+      { name: "old_price", min: 0, placeholder: "Old Price", label: "Old Price" },
+      { name: "quantity", min: 0, placeholder: "Quantity", label: "Quantity" },
     ];
 
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {textFields.map(({ name, placeholder }) => (
-          <Field key={name} name={name}>
-            {({ field }) => <Input {...field} placeholder={placeholder} />}
-          </Field>
+        {textFields.map(({ name, placeholder, label }) => (
+          <div key={name} className="flex flex-col">
+            <label className="text-[12px] mb-1 ">{label}</label>
+            <Field name={name}>
+              {({ field }) => <Input {...field} placeholder={placeholder} />}
+            </Field>
+          </div>
         ))}
-        {numberFields.map(({ name, min, max, placeholder }) => (
-          <Field key={name} name={name}>
-            {({ field }) => (
-              <InputNumber
-                {...field}
-                min={min}
-                max={max}
-                className="w-full"
-                placeholder={placeholder}
-                onChange={(val) => setFieldValue(name, val)}
-              />
-            )}
-          </Field>
+        {numberFields.map(({ name, min, max, placeholder, label }) => (
+          <div key={name} className="flex flex-col">
+            <label className="text-[12px] mb-1 ">{label}</label>
+            <Field name={name}>
+              {({ field }) => (
+                <InputNumber
+                  {...field}
+                  min={min}
+                  max={max}
+                  className="w-full"
+                  placeholder={placeholder}
+                  onChange={(val) => setFieldValue(name, val)}
+                />
+              )}
+            </Field>
+          </div>
         ))}
-        <Select
-          placeholder="Select Category"
-          onChange={(val) => setFieldValue("cat_name", val)}
-          value={values.cat_name}
-          className="w-full"
-        >
-          {catData.map((cat) => (
-            <Option key={cat._id} value={cat._id}>
-              {cat.cat_name}
-            </Option>
-          ))}
-        </Select>
+        <div className="flex flex-col">
+          <label className="text-[12px] mb-1 ">Category</label>
+          <Select
+            placeholder="Select Category"
+            onChange={(val) => setFieldValue("cat_name", val)}
+            value={values.cat_name}
+            className="w-full"
+          >
+            {catData.map((cat) => (
+              <Option key={cat._id} value={cat._id}>
+                {cat.cat_name}
+              </Option>
+            ))}
+          </Select>
+        </div>
         <div className="col-span-1 sm:col-span-2">
-          <p className="text-sm mb-1">Upload Images</p>
+          <label className="text-[12px] mb-1 ">Upload Images</label>&nbsp;
           <input
             type="file"
             multiple
