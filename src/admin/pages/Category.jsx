@@ -41,7 +41,6 @@ const Category = () => {
       ...values,
       user_id: JSON.parse(localStorage.getItem("userId")) || "",
     };
-
     try {
       if (id) {
         await axios.patch(

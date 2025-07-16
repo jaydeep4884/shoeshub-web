@@ -10,6 +10,7 @@ function Applycoup() {
   const [coupons, setCoupons] = useState([]);
   const [enteredCode, setEnteredCode] = useState("");
   const Token = useContext(token);
+  console.log(values);
 
   const fetchCouponCode = async () => {
     try {
@@ -21,7 +22,7 @@ function Applycoup() {
           },
         }
       );
-      console.log(res.data?.Data);
+
       setCoupons(res.data?.Data || []);
     } catch (err) {
       console.error("Failed to fetch coupons:", err);

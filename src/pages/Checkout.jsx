@@ -32,8 +32,10 @@ const Checkout = () => {
   const [selectedImage, setSelectedImage] = useState("");
   const Token = useContext(token);
   const { id } = useParams();
+  localStorage.setItem("ProductId", JSON.stringify(id));
+
   const inputFields = [
-    { name: "fullname", label: "First Name*", type: "text" },
+    { name: "fullName", label: "First Name*", type: "text" },
     { name: "companyName", label: "Company Name", type: "text" },
     { name: "streetAddress", label: "Street Address*", type: "text" },
     {
@@ -42,7 +44,7 @@ const Checkout = () => {
       type: "text",
     },
     { name: "city", label: "Town/City*", type: "text" },
-    { name: "phone", label: "Phone Number*", type: "text" },
+    { name: "phone", label: "Phone Number*", type: "number" },
     { name: "email", label: "Email Address*", type: "email" },
   ];
 
@@ -54,7 +56,7 @@ const Checkout = () => {
   ];
 
   const initialValues = {
-    fullname: "",
+    fullName: "",
     companyName: "",
     streetAddress: "",
     apartment: "",
@@ -82,29 +84,30 @@ const Checkout = () => {
     const payload = {
       ...values,
       user_id: JSON.parse(localStorage.getItem("userId")) || "",
+      cart_product: JSON.parse(localStorage.getItem("ProductId")) || "",
     };
+
     try {
       await axios
-        .post("https://generateapi.onrender.com/api/Payment", payload, {
+        .post("https://generateapi.onrender.com/api/Payment-Details", payload, {
           headers: { Authorization: Token },
         })
         .then((res) => {
           console.log(res.data);
           toast.success("Order Placed Successfully 🎉🎂");
-          // navigate("/orderplace");
+          navigate("/orderplace");
         });
     } catch (error) {
       console.log(error);
     }
     resetForm();
-    console.log(values);
   };
 
   // Fetching Single Product
   const fetchProduct = async () => {
     try {
       const res = await axios.get(
-        `https://generateapi.onrender.com/api/Product-Detail/`,
+        `https://generateapi.onrender.com/api/Product-Detail`,
         { headers: { Authorization: Token } }
       );
       const productData = res.data.Data;

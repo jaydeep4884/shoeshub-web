@@ -11,6 +11,9 @@ import Loader from "../../components/ui/Loader";
 const AdminLogin = () => {
   const [showPassword, setShowPassword] = useState(false);
   const Token = useContext(token);
+
+  console.log("Token ==> ",Token);
+  
   const [Loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -24,12 +27,16 @@ const AdminLogin = () => {
       ...values,
       user_id: JSON.parse(localStorage.getItem("userId")) || "",
     };
+
+    console.log("login ==> ",payload);
+    
+
     setLoading(true);
 
     try {
       const res = await axios.post(
         "https://generateapi.onrender.com/auth/login",
-        payload,
+        values,
         {
           headers: {
             Authorization: Token,
@@ -38,6 +45,7 @@ const AdminLogin = () => {
       );
       if (res.data.Status === "Success") {
         toast.success("Admin Login Successfully"); // USER_1 ram@gmail.com
+        
         localStorage.setItem("token", Token);
         navigate("/admin/dashboard/");
         setLoading(false);

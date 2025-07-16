@@ -12,6 +12,7 @@ function UserMenu() {
 
   const LogoutAdmin = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("userId");
     navigate("/");
   };
 

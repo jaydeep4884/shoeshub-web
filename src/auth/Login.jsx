@@ -20,16 +20,17 @@ function Login() {
   };
 
   const handleSubmit = async (values, { resetForm }) => {
-    const payload = {
-      ...values,
-      user_id: JSON.parse(localStorage.getItem("userId")) || "",
-    };
+    // const payload = {
+    //   ...values,
+    //   user_id: JSON.parse(localStorage.getItem("userId")) || "",
+    // };
+
     setLoading(true);
 
     try {
       const res = await axios.post(
         "https://generateapi.onrender.com/auth/login",
-        payload,
+        values,
         {
           headers: {
             Authorization: Token,
@@ -40,6 +41,7 @@ function Login() {
       if (res.data.Status === "Success") {
         toast.success("Login Successfully");
         localStorage.setItem("token", Token);
+        localStorage.setItem("userId", JSON.stringify(res.data?.data?._id));
         navigate("/home");
       } else {
         toast.error("Login failed.");

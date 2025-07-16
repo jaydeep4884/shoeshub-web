@@ -77,6 +77,7 @@ const Category = () => {
       }
     });
     formData.append("user_id", JSON.parse(localStorage.getItem("userId")));
+    setLoading(true);
 
     try {
       if (id) {
@@ -96,6 +97,7 @@ const Category = () => {
             setId(null);
             fetchData();
             handleModelClose();
+            setLoading(false);
           });
       } else {
         await axios
@@ -115,13 +117,13 @@ const Category = () => {
             fetchData();
             setOpen(false);
             handleModelClose();
+            setLoading(false);
           });
         resetForm();
       }
     } catch (error) {
       toast.error("Failed to save product.");
-      console.log(error);
-
+      setLoading(false);
     }
   };
 
@@ -159,18 +161,38 @@ const Category = () => {
 
   const ProductFormFields = ({ setFieldValue, values }) => {
     const textFields = [
-      { name: "pro_name", placeholder: "Product Name", label: 'Product Name' },
+      { name: "pro_name", placeholder: "Product Name", label: "Product Name" },
       { name: "type", placeholder: "Product Type", label: "Product Type" },
-      { name: "typeofheel", placeholder: "Type of Heel", label: "Type of Heel" },
+      {
+        name: "typeofheel",
+        placeholder: "Type of Heel",
+        label: "Type of Heel",
+      },
       { name: "waterlevel", placeholder: "Water Level", label: "Water Level" },
       { name: "material", placeholder: "Material", label: "Material" },
     ];
 
     const numberFields = [
-      { name: "pro_rating", min: 0, max: 5, placeholder: "Rating", label: "Rating" },
+      {
+        name: "pro_rating",
+        min: 0,
+        max: 5,
+        placeholder: "Rating",
+        label: "Rating",
+      },
       { name: "review", min: 0, placeholder: "Reviews", label: "Reviews" },
-      { name: "new_price", min: 0, placeholder: "New Price", label: "New Price" },
-      { name: "old_price", min: 0, placeholder: "Old Price", label: "Old Price" },
+      {
+        name: "new_price",
+        min: 0,
+        placeholder: "New Price",
+        label: "New Price",
+      },
+      {
+        name: "old_price",
+        min: 0,
+        placeholder: "Old Price",
+        label: "Old Price",
+      },
       { name: "quantity", min: 0, placeholder: "Quantity", label: "Quantity" },
     ];
 
