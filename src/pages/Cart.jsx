@@ -21,6 +21,7 @@ import { token } from "../assets/contexts";
 import Breadcrumb from "../components/ui/Breadcrumb";
 import { Container } from "@mui/material";
 import toast, { Toaster } from "react-hot-toast";
+import { Formik, Form } from "formik";
 
 const { Option } = Select;
 
@@ -61,7 +62,6 @@ function Cart() {
   }, 0);
 
   const deleteCartItem = async (id) => {
-    console.log(id);
     try {
       await axios
         .delete(`https://generateapi.onrender.com/api/Cart/${id}`, {
@@ -140,7 +140,7 @@ function Cart() {
           <Button
             icon={<ShoppingOutlined />}
             type="primary"
-            onClick={() => navigate("/checkout")}
+            onClick={() => navigate(`/checkout/${record.product_item?._id}`)}
             className="w-full sm:w-auto"
           >
             Buy Now
@@ -200,7 +200,17 @@ function Cart() {
 
           <Row gutter={[24, 24]}>
             <Col xs={24} md={14}>
-              <Applycoup />
+              <Formik
+                initialValues={{ couponCode: "" }}
+                onSubmit={(values) => {
+                  // you can handle coupon submit here if needed
+                  console.log("Submitted:", values);
+                }}
+              >
+                <Form>
+                  <Applycoup />
+                </Form>
+              </Formik>
             </Col>
 
             <Col xs={24} md={10}>

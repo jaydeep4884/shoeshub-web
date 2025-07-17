@@ -26,8 +26,8 @@ function OrderPlaced() {
             🎉 Order Placed Successfully!
           </h1>
           <p className="text-sm sm:text-base md:text-lg text-gray-600 px-2">
-            Thank you for your purchase. Your order is now being processed.
-            You will receive a confirmation email shortly.
+            Thank you for your purchase. Your order is now being processed. You
+            will receive a confirmation email shortly.
           </p>
         </Box>
 
@@ -41,9 +41,9 @@ function OrderPlaced() {
             type="primary"
             size="large"
             className="px-6 py-2 text-sm sm:text-base md:text-lg rounded-lg"
-            onClick={() => navigate("/home")}
+            onClick={() => navigate("/orders")}
           >
-            Continue Shopping
+            Check Your Orders
           </Button>
         </motion.div>
       </motion.div>

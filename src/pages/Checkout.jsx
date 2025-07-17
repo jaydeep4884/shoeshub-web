@@ -92,8 +92,7 @@ const Checkout = () => {
         .post("https://generateapi.onrender.com/api/Payment-Details", payload, {
           headers: { Authorization: Token },
         })
-        .then((res) => {
-          console.log(res.data);
+        .then(() => {
           toast.success("Order Placed Successfully 🎉🎂");
           navigate("/orderplace");
         });

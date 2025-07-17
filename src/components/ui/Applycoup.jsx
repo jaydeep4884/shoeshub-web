@@ -6,11 +6,11 @@ import axios from "axios";
 import { token } from "../../assets/contexts";
 
 function Applycoup() {
+  // eslint-disable-next-line
   const { values, setFieldValue } = useFormikContext();
   const [coupons, setCoupons] = useState([]);
   const [enteredCode, setEnteredCode] = useState("");
   const Token = useContext(token);
-  console.log(values);
 
   const fetchCouponCode = async () => {
     try {

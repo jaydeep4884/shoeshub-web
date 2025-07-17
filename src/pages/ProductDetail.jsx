@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Box, Button, Container, IconButton, Rating } from "@mui/material";
 import { Tooltip } from "antd";
-import { Link, useParams } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 import { motion } from "framer-motion";
 import {
   LocalOffer,
@@ -31,6 +31,7 @@ function ProductDetail() {
   const { coupon } = useContext(Context);
   const Token = useContext(token);
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const initialValues = {
     user_id: JSON.parse(localStorage.getItem("userId")),
@@ -245,6 +246,7 @@ function ProductDetail() {
                       <Button
                         type="submit"
                         variant="contained"
+                        onClick={() => navigate("/cart")}
                         className="!capitalize !bg-black !px-6 py-2"
                       >
                         {loading ? <Loader /> : "Add to Cart"}
