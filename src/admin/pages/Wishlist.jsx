@@ -7,7 +7,7 @@ import { QuestionCircleOutlined } from "@ant-design/icons";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { motion } from "framer-motion";
 import { IconButton } from "@mui/material";
-import  {toast, Toaster } from "react-hot-toast";
+import { toast, Toaster } from "react-hot-toast";
 
 function Wishlist() {
   const [wishlistData, setWishlistData] = useState([]);
@@ -78,7 +78,7 @@ function Wishlist() {
                     <Popconfirm
                       title="Delete the Favorite?"
                       description="Are you sure?"
-                      onConfirm={() => handleDelete(product.product_id._id)}
+                      onConfirm={() => handleDelete(product.product_id)}
                       okText="Yes"
                       cancelText="No"
                       icon={<QuestionCircleOutlined style={{ color: "red" }} />}
