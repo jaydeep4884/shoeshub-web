@@ -113,7 +113,7 @@ const Category = () => {
           )
           .then((res) => {
             toast.success("Product Added !");
-            console.log(res);
+
             fetchData();
             setOpen(false);
             handleModelClose();

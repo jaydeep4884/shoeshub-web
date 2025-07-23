@@ -50,8 +50,6 @@ const Dashboard = () => {
     orders.forEach((order) => {
       const month = dayjs(order.createdAt).format("MMM");
       const amount = order.cart_product?.new_price;
-      console.log("Amount : ", amount);
-
       revenue += amount;
 
       if (!ordersByMonth[month]) {
@@ -89,7 +87,7 @@ const Dashboard = () => {
 
   const fetchProducts = async () => {
     const res = await axios.get(
-      "https://generateapi.onrender.com/api/product",
+      "https://generateapi.onrender.com/api/Product-Detail",
       {
         headers: { Authorization: Token },
       }
@@ -113,6 +111,7 @@ const Dashboard = () => {
     fetchOrders();
     fetchProducts();
     fetchFeedbacks();
+    // eslint-disable-next-line
   }, []);
 
   const stats = [
