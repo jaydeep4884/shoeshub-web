@@ -1,18 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Box, Container, IconButton, Skeleton, Tooltip } from "@mui/material";
+import { Box, Container, Skeleton } from "@mui/material";
 import { Rate, Typography } from "antd";
 import axios from "axios";
 import { token } from "../../assets/contexts";
-import {
-  FavoriteBorder as FavoriteBorderIcon,
-  Favorite as FavoriteIcon,
-} from "@mui/icons-material";
-import toast, { Toaster } from "react-hot-toast";
 import { Link } from "react-router";
 
 function Bestshoes() {
   const [data, setData] = useState([]);
-  const [likedProducts, setLikedProducts] = useState({});
   const [loading, setLoading] = useState(true);
   const Token = useContext(token);
 
@@ -32,38 +26,6 @@ function Bestshoes() {
     } catch (err) {
       console.error(err);
       setLoading(false);
-    }
-  };
-
-  const toggleLike = async (product) => {
-    const isLiked = likedProducts[product._id];
-    setLikedProducts((prev) => ({ ...prev, [product._id]: !isLiked }));
-    const payload = {
-      product_id: product._id,
-      user_id: JSON.parse(localStorage.getItem("userId")) || "",
-    };
-
-    try {
-      if (!isLiked) {
-        await axios
-          .post("https://generateapi.onrender.com/api/wishlist", payload, {
-            headers: { Authorization: Token },
-          })
-          .then(() => {
-            toast.success("Product Added in Wishlist !!");
-          });
-      } else {
-        await axios
-          .delete(
-            `https://generateapi.onrender.com/api/wishlist/${payload.product_id}`,
-            { headers: { Authorization: Token } }
-          )
-          .then(() => {
-            toast.success("Product Remove from Wishlist !!");
-          });
-      }
-    } catch (error) {
-      console.log(error);
     }
   };
 
@@ -104,30 +66,13 @@ function Bestshoes() {
                   key={product._id}
                   className="relative bg-white border rounded-md hover:shadow-lg transition p-3 sm:p-4 flex flex-col"
                 >
-                  {/* Wishlist icon */}
-                  <div className="absolute top-2 right-2 z-10">
-                    <Tooltip title="Add to Favorite" placement="bottom">
-                      <IconButton
-                        size="small"
-                        onClick={() => toggleLike(product)}
-                        className="bg-white border rounded-full"
-                      >
-                        {likedProducts[product._id] ? (
-                          <FavoriteIcon className="text-red-500" />
-                        ) : (
-                          <FavoriteBorderIcon className="text-gray-600" />
-                        )}
-                      </IconButton>
-                    </Tooltip>
-                  </div>
-
                   <Link to={`/product/${product._id}`}>
                     {/* Product Image */}
                     <div className="w-full h-[160px] sm:h-[180px] md:h-[200px] flex items-center justify-center mb-3">
                       <img
                         src={product.images?.[0]}
                         alt={product.pro_name}
-                        className="max-h-full object-contain"
+                        className="max-h-full object-cover"
                       />
                     </div>
                     {/* Product Name */}
@@ -163,7 +108,6 @@ function Bestshoes() {
               ))}
         </div>
       </Box>
-      <Toaster />
     </Container>
   );
 }

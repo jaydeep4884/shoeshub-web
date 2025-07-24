@@ -25,6 +25,7 @@ import dayjs from "dayjs";
 import ProductionQuantityLimitsIcon from "@mui/icons-material/ProductionQuantityLimits";
 import { token } from "../../assets/contexts";
 
+
 const Dashboard = () => {
   const Token = useContext(token);
   const [counts, setCounts] = useState({
@@ -120,11 +121,7 @@ const Dashboard = () => {
       label: "Total Orders",
       value: counts.orders,
     },
-    {
-      icon: <DollarOutlined />,
-      label: "Total Revenue",
-      value: `$${totalRevenue.toLocaleString()}`,
-    },
+
     {
       icon: <ProductionQuantityLimitsIcon />,
       label: "Total Products",
@@ -135,6 +132,11 @@ const Dashboard = () => {
       label: "Feedbacks",
       value: counts.feedbacks,
     },
+    {
+      icon: <DollarOutlined />,
+      label: "Total Revenue",
+      value: `$${totalRevenue.toLocaleString()}`,
+    },
   ];
 
   const pieData = [
@@ -142,6 +144,7 @@ const Dashboard = () => {
     { name: "Products", count: counts.products },
     { name: "Feedbacks", count: counts.feedbacks },
   ];
+
   const COLORS = ["#3b82f6", "#10b981", "#f59e0b"];
 
   return (
@@ -149,10 +152,10 @@ const Dashboard = () => {
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="space-y-6"
+      className=""
     >
-      <h2 className="text-3xl font-bold text-gray-800 mb-4">
-        🚀 Welcome Back, Admin
+      <h2 className="text-xl  sm:text-3xl font-bold text-gray-800 mb-4">
+        To Kese He Aap Logg 🤖 !!
       </h2>
 
       {/* Stats */}
@@ -161,7 +164,7 @@ const Dashboard = () => {
           <motion.div
             key={i}
             whileHover={{ scale: 1.05 }}
-            className="bg-white shadow-lg rounded-xl p-5 border border-gray-100 hover:shadow-xl transition-all"
+            className="bg-white shadow-lg rounded-xl flex flex-col gap-1 items-center p-4 border border-gray-100 hover:shadow-xl transition-all"
           >
             <div className="text-3xl text-blue-500 mb-2">{stat.icon}</div>
             <div className="text-sm text-gray-500">{stat.label}</div>
@@ -176,7 +179,7 @@ const Dashboard = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
         {/* Donut Chart */}
         <div className="bg-white">
-          <h3 className="text-[12px] font-semibold mb-4 text-gray-700">
+          <h3 className="text-lg font-semibold mb-4 text-gray-700">
             Overview Chart
           </h3>
           <ResponsiveContainer width="100%" height={300}>

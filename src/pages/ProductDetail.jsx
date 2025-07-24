@@ -24,7 +24,7 @@ import ProductDetailSkeleton from "../components/ui/ProductDetailSkeleton";
 import toast, { Toaster } from "react-hot-toast";
 
 function ProductDetail() {
-  const [product, setProduct] = useState(null);
+  const [product, setProduct] = useState([]);
   const [selectedImage, setSelectedImage] = useState("");
   const [loading, setLoading] = useState(true);
   const [likedProducts, setLikedProducts] = useState({});
@@ -124,6 +124,7 @@ function ProductDetail() {
             headers: { Authorization: Token },
           }
         );
+        toast.success("Product Added in Wishlist 😊");
       } else {
         await axios.delete(
           `https://generateapi.onrender.com/api/wishlist/${payload.product_id}`,
