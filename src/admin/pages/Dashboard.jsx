@@ -4,6 +4,7 @@ import {
   ShoppingCartOutlined,
   DollarOutlined,
   MessageOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
 import {
   PieChart,
@@ -25,13 +26,13 @@ import dayjs from "dayjs";
 import ProductionQuantityLimitsIcon from "@mui/icons-material/ProductionQuantityLimits";
 import { token } from "../../assets/contexts";
 
-
 const Dashboard = () => {
   const Token = useContext(token);
   const [counts, setCounts] = useState({
     orders: 0,
     products: 0,
     feedbacks: 0,
+    user: 0,
   });
   const [monthlyData, setMonthlyData] = useState([]);
   const [totalRevenue, setTotalRevenue] = useState(0);
@@ -108,10 +109,22 @@ const Dashboard = () => {
     setCounts((prev) => ({ ...prev, feedbacks: feedbacks.length }));
   };
 
+  const fetchUsers = async () => {
+    const res = await axios.get(
+      "https://generateapi.onrender.com/auth/authUser",
+      {
+        headers: { Authorization: Token },
+      }
+    );
+    const myUsers = res.data?.Data || [];
+    setCounts((prev) => ({ ...prev, user: myUsers.length }));
+  };
+
   useEffect(() => {
     fetchOrders();
     fetchProducts();
     fetchFeedbacks();
+    fetchUsers();
     // eslint-disable-next-line
   }, []);
 
@@ -133,6 +146,11 @@ const Dashboard = () => {
       value: counts.feedbacks,
     },
     {
+      icon: <UserOutlined />,
+      label: "Total Users",
+      value: counts.user,
+    },
+    {
       icon: <DollarOutlined />,
       label: "Total Revenue",
       value: `$${totalRevenue.toLocaleString()}`,
@@ -143,9 +161,10 @@ const Dashboard = () => {
     { name: "Orders", count: counts.orders },
     { name: "Products", count: counts.products },
     { name: "Feedbacks", count: counts.feedbacks },
+    { name: "User", count: counts.user },
   ];
 
-  const COLORS = ["#3b82f6", "#10b981", "#f59e0b"];
+  const COLORS = ["#3b82f6", "#10b981", "#f59e0b", "#DC3C22"];
 
   return (
     <motion.div
@@ -159,7 +178,7 @@ const Dashboard = () => {
       </h2>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
         {stats.map((stat, i) => (
           <motion.div
             key={i}
@@ -255,6 +274,7 @@ const Dashboard = () => {
           </ResponsiveContainer>
         </div>
       </div>
+      {/* <Footer /> */}
     </motion.div>
   );
 };

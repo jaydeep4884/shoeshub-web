@@ -22,10 +22,8 @@
     "axios": "^1.9.0",
     "canvas-confetti": "^1.9.3",
     "class-variance-authority": "^0.7.1",
-    "clsx": "^2.1.1",
     "dayjs": "^1.11.13",
     "formik": "^2.4.6",
-    "framer-motion": "^12.23.6",
     "lightswind": "^3.1.12",
     "lottie-react": "^2.4.1",
     "lucide-react": "^0.487.0",
@@ -44,7 +42,6 @@
     "recharts": "^3.1.0",
     "slick-carousel": "^1.8.1",
     "styled-components": "^6.1.17",
-    "tailwind-merge": "^3.2.0",
     "tailwind-scrollbar": "^3.1.0",
     "tw-animate-css": "^1.2.5",
     "web-vitals": "^2.1.4"

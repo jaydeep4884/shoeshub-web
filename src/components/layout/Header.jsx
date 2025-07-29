@@ -27,12 +27,12 @@ export default function Header() {
       const res = await axios.get(
         "https://generateapi.onrender.com/api/category",
         {
-          headers: {
-            Authorization: Token,
-          },
+          headers: { Authorization: Token },
         }
       );
-      setData(Array.isArray(res.data.Data) ? res.data.Data : []);
+      const categories = Array.isArray(res.data.Data) ? res.data.Data : [];
+      setData(categories);
+      localStorage.setItem("categories", JSON.stringify(categories));
     } catch (error) {
       console.error("Error fetching categories:", error);
     }
@@ -88,10 +88,14 @@ export default function Header() {
   );
 
   useEffect(() => {
+    const cached = localStorage.getItem("categories");
+    if (cached) {
+      setData(JSON.parse(cached));
+    }
     fetchCategories();
     // eslint-disable-next-line
   }, []);
-
+  
   useEffect(() => {
     document.body.style.overflow = mobileMenuOpen ? "hidden" : "auto";
   }, [mobileMenuOpen]);

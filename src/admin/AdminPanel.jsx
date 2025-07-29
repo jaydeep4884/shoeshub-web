@@ -33,47 +33,49 @@ const AdminPanel = () => {
   }, []);
 
   return (
-    <div className="flex h-screen overflow-hidden">
-      {/* Sidebar */}
-      {isDesktop && (
-        <div className="fixed top-0 left-0 w-64 h-full z-20 bg-white shadow">
-          <Sidebar
-            selectedKey={selectedKey}
-            setSelectedKey={handleSetSelectedKey}
-            isDesktop={true}
-          />
-        </div>
-      )}
+    <>
+      <div className="flex h-screen overflow-hidden">
+        {/* Sidebar */}
+        {isDesktop && (
+          <div className="fixed top-0 left-0 w-64 h-full z-20 bg-white shadow">
+            <Sidebar
+              selectedKey={selectedKey}
+              setSelectedKey={handleSetSelectedKey}
+              isDesktop={true}
+            />
+          </div>
+        )}
 
-      {/* Main Content */}
-      <div className={`flex flex-col flex-1 ${isDesktop ? "lg:ml-64" : ""}`}>
-        <div className="fixed top-0 left-0 right-0 z-10 bg-white lg:ml-64">
-          <HeaderBar toggleDrawer={() => setDrawerVisible(true)} />
+        {/* Main Content */}
+        <div className={`flex flex-col flex-1 ${isDesktop ? "lg:ml-64" : ""}`}>
+          <div className="fixed top-0 left-0 right-0 z-10 bg-white lg:ml-64">
+            <HeaderBar toggleDrawer={() => setDrawerVisible(true)} />
+          </div>
+
+          <div className="pt-20 px-4 overflow-auto h-full">
+            <PageContainer>
+              <Outlet />
+            </PageContainer>
+          </div>
         </div>
 
-        <div className="pt-20 px-4 overflow-auto h-full">
-          <PageContainer>
-            <Outlet />
-          </PageContainer>
-        </div>
+        {/* Mobile Drawer */}
+        {!isDesktop && (
+          <Drawer
+            visible={drawerVisible}
+            onClose={() => setDrawerVisible(false)}
+            placement="left"
+            bodyStyle={{ padding: 0 }}
+          >
+            <Sidebar
+              selectedKey={selectedKey}
+              setSelectedKey={handleSetSelectedKey}
+              isDesktop={false}
+            />
+          </Drawer>
+        )}
       </div>
-
-      {/* Mobile Drawer */}
-      {!isDesktop && (
-        <Drawer
-          visible={drawerVisible}
-          onClose={() => setDrawerVisible(false)}
-          placement="left"
-          bodyStyle={{ padding: 0 }}
-        >
-          <Sidebar
-            selectedKey={selectedKey}
-            setSelectedKey={handleSetSelectedKey}
-            isDesktop={false}
-          />
-        </Drawer>
-      )}
-    </div>
+    </>
   );
 };
 
