@@ -5,6 +5,7 @@ import { Link } from "react-router";
 import Select from "react-select";
 import { motion, AnimatePresence } from "framer-motion";
 import { token } from "../../assets/contexts";
+import CallIcon from "@mui/icons-material/Call";
 import { countryOptions } from "../ui/countries";
 import brand from "../img/logo/brand.png";
 import search from "../img/icons/Search-icon.svg";
@@ -53,7 +54,6 @@ export default function Header() {
     { pageName: "Orders", icon: orderIcon, pageLink: "/orders" },
     { pageName: "Favorite", icon: likeIcon, pageLink: "/fav" },
     { pageName: "Cart", icon: cartIcon, pageLink: "/cart" },
-    { pageName: "Contact", icon: orderIcon, pageLink: "/contact" },
   ];
 
   const PageLinks = () =>
@@ -95,7 +95,7 @@ export default function Header() {
     fetchCategories();
     // eslint-disable-next-line
   }, []);
-  
+
   useEffect(() => {
     document.body.style.overflow = mobileMenuOpen ? "hidden" : "auto";
   }, [mobileMenuOpen]);
@@ -120,8 +120,12 @@ export default function Header() {
 
           {/* Page Link : Order,Favorite,Cart  */}
           <Box className="flex items-center gap-5 text-sm text-gray-600">
-            <Box className="hidden lg:flex gap-4">
+            <Box className="hidden lg:flex gap-4 items-center">
               <PageLinks />
+              <Link to={"/contact"} className="flex items-center gap-1">
+                <CallIcon style={{ fontSize: "18px", color: "#B1BABF" }} />{" "}
+                Contact
+              </Link>
             </Box>
 
             {/* UserMenu  */}
@@ -202,6 +206,10 @@ export default function Header() {
               <div className="flex flex-col gap-4">
                 <NavLinks />
                 <PageLinks />
+                <Link to={"/contact"} className="flex items-center gap-2">
+                  <CallIcon style={{ fontSize: "18px", color: "#B1BABF" }} />{" "}
+                  Contact
+                </Link>
                 <CountrySelector
                   selected={selectedCountry}
                   onChange={setSelectedCountry}

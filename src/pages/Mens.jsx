@@ -3,11 +3,17 @@ import { Container } from "@mui/material";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import PageBanner from "../components/ui/PageBanner";
+import Feature from "../components/layout/Feature";
+import Review from "../components/layout/Review";
+import Newsletter from "../components/layout/Newsletter";
 import MensBanner from "../components/img/Banners/mens-banner.png";
 import { motion } from "framer-motion";
 import { token } from "../assets/contexts";
 import axios from "axios";
-import Loader from "../components/ui/Loader";
+import { Rate } from "antd";
+import { Link } from "react-router";
+import ProductSkeleton from "../components/ui/ProductSkeleton";
+import LikeButton from "../components/ui/LikeButton";
 
 function Mens() {
   const [products, setProducts] = useState([]);
@@ -27,8 +33,6 @@ function Mens() {
       const mensProducts = allProducts.filter(
         (product) => product.cat_name?.cat_name.toLowerCase() === "men"
       );
-      console.log(mensProducts);
-
       setProducts(mensProducts);
     } catch (err) {
       console.error("Failed to fetch products:", err);
@@ -52,38 +56,60 @@ function Mens() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-xl font-semibold mb-4">Men's Shoes</h2>
+            <h2 className="text-xl font-medium mb-4">Men's Shoes : </h2>
 
             {loading ? (
-              <Loader />
+              <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
+                <ProductSkeleton />
+              </div>
             ) : products.length === 0 ? (
               <p>No Men's Shoes Found</p>
             ) : (
               <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 {products.map((product) => (
-                  <div
-                    key={product._id}
-                    className="border p-4 rounded shadow hover:shadow-lg transition"
-                  >
-                    <img
-                      src={product.images[0]}
-                      alt={product.pro_name}
-                      className="w-full h-48 object-cover mb-3 rounded"
-                    />
-                    <h3 className="font-semibold text-lg">{product.name}</h3>
-                    <p className="text-sm text-gray-600">
-                      {product.description}
-                    </p>
-                    <p className="mt-1 font-bold text-blue-600">
-                      ${product.price}
-                    </p>
-                  </div>
+                  <Link to={`/product/${product._id}`} key={product._id}>
+                    <div
+                      key={product._id}
+                      className="border py-1 px-4 rounded shadow hover:shadow-lg transition"
+                    >
+                      <LikeButton pid={product._id} toggle={product} />
+                      <img
+                        src={product.images[0]}
+                        alt={product.pro_name}
+                        className="w-full h-48 object-cover mb-3 rounded"
+                      />
+                      <h3 className="font-medium text-lg line-clamp-1">
+                        {product.pro_name}
+                      </h3>
+                      <p className="mt-1 mb-1 font-semibold ">
+                        MRP : ₹ {product.new_price}.00{" "}
+                        <span className="line-through text-sm text-gray-400">
+                          {" "}
+                          ₹{product.old_price}
+                        </span>
+                      </p>
+                      <div className="flex justify-between gap-2 items-center ">
+                        <Rate
+                          allowHalf
+                          disabled
+                          style={{ fontSize: "14px" }}
+                          defaultValue={product.pro_rating}
+                        />
+                        <p className="text-sm text-gray-400">
+                          {product.review} Reviews
+                        </p>
+                      </div>
+                    </div>
+                  </Link>
                 ))}
               </div>
             )}
           </motion.div>
         </div>
       </Container>
+      <Feature />
+      <Review />
+      <Newsletter />
       <Footer />
     </>
   );

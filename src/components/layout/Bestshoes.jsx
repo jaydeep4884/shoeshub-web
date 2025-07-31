@@ -1,9 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Box, Container, Skeleton } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import { Rate, Typography } from "antd";
 import axios from "axios";
 import { token } from "../../assets/contexts";
 import { Link } from "react-router";
+import ProductSkeleton from "../ui/ProductSkeleton";
 
 function Bestshoes() {
   const [data, setData] = useState([]);
@@ -22,9 +23,9 @@ function Bestshoes() {
       );
       const products = Array.isArray(res.data.Data) ? res.data.Data : [];
       setData(getRandomProducts(products, 4));
-      setLoading(false);
     } catch (err) {
       console.error(err);
+    } finally {
       setLoading(false);
     }
   };
@@ -45,67 +46,51 @@ function Bestshoes() {
         </h3>
 
         <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
-          {loading
-            ? Array.from({ length: 4 }).map((_, i) => (
-                <div
-                  key={i}
-                  className="bg-white border rounded-md p-3 sm:p-4 flex flex-col gap-3"
-                >
-                  <Skeleton
-                    variant="rectangular"
-                    animation="wave"
-                    height={180}
-                  />
-                  <Skeleton variant="text" width="80%" />
-                  <Skeleton variant="text" width="60%" />
-                  <Skeleton variant="text" width="40%" />
-                </div>
-              ))
-            : data.map((product) => (
-                <div
-                  key={product._id}
-                  className="relative bg-white border rounded-md hover:shadow-lg transition p-3 sm:p-4 flex flex-col"
-                >
-                  <Link to={`/product/${product._id}`}>
-                    {/* Product Image */}
-                    <div className="w-full h-[160px] sm:h-[180px] md:h-[200px] flex items-center justify-center mb-3">
-                      <img
-                        src={product.images?.[0]}
-                        alt={product.pro_name}
-                        className="max-h-full object-cover"
+          {loading ? (
+            <ProductSkeleton />
+          ) : (
+            data.map((product) => (
+              <div
+                key={product._id}
+                className="relative bg-white border rounded-md hover:shadow-lg transition p-3 sm:p-4 flex flex-col"
+              >
+                <Link to={`/product/${product._id}`}>
+                  <div className="w-full h-[160px] sm:h-[180px] md:h-[200px] flex items-center justify-center mb-3">
+                    <img
+                      src={product.images?.[0]}
+                      alt={product.pro_name}
+                      className="max-h-full object-cover"
+                    />
+                  </div>
+                  <Typography.Text className="text-sm font-semibold text-gray-800 mb-1 line-clamp-1">
+                    {product.pro_name}
+                  </Typography.Text>
+                  <div className="mb-2">
+                    <span className="font-bold">${product.new_price}</span>
+                    <span className="ml-2 line-through text-gray-400 text-sm">
+                      ${product.old_price}
+                    </span>
+                  </div>
+                  <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-1 md:gap-0">
+                    <div className="flex items-center gap-1">
+                      <Rate
+                        disabled
+                        allowHalf
+                        defaultValue={product.pro_rating}
+                        style={{ fontSize: "14px" }}
                       />
-                    </div>
-                    {/* Product Name */}
-                    <Typography.Text className="text-sm font-semibold text-gray-800 mb-1 line-clamp-1">
-                      {product.pro_name}
-                    </Typography.Text>
-                    {/* Price */}
-                    <div className="mb-2">
-                      <span className="font-bold">${product.new_price}</span>
-                      <span className="ml-2 line-through text-gray-400 text-sm">
-                        ${product.old_price}
+                      <span className="text-xs text-gray-600">
+                        {product.pro_rating}/5
                       </span>
                     </div>
-                    {/* Rating and Review */}
-                    <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-1 md:gap-0">
-                      <div className="flex items-center gap-1">
-                        <Rate
-                          disabled
-                          allowHalf
-                          defaultValue={product.pro_rating}
-                          style={{ fontSize: "14px" }}
-                        />
-                        <span className="text-xs text-gray-600">
-                          {product.pro_rating}/5
-                        </span>
-                      </div>
-                      <Typography.Text className="text-xs text-gray-500">
-                        {product.review} reviews
-                      </Typography.Text>
-                    </div>
-                  </Link>
-                </div>
-              ))}
+                    <Typography.Text className="text-xs text-gray-500">
+                      {product.review} reviews
+                    </Typography.Text>
+                  </div>
+                </Link>
+              </div>
+            ))
+          )}
         </div>
       </Box>
     </Container>

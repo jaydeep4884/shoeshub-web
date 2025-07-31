@@ -2,8 +2,10 @@ import { Box, Button } from "@mui/material";
 import React from "react";
 import backgroundImg from "../img/gift-bg-img.png";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import { useNavigate } from "react-router";
 
 function Gift() {
+  const navigate = useNavigate();
   return (
     <Box className="py-5 sm:py-14 bg-white">
       {/* CONTAINER: Keeps content centered and not full-width */}
@@ -25,6 +27,7 @@ function Gift() {
             </h2>
             <Button
               variant="contained"
+              onClick={() => navigate("/cart")}
               className="!bg-white !text-black !capitalize !font-semibold hover:!bg-gray-300 !rounded-[10px] !px-[18px] !py-[10px]"
               endIcon={<ArrowForwardIcon />}
             >

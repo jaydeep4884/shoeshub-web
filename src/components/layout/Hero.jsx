@@ -11,6 +11,7 @@ import respSlide2 from "../img/slides/resp-banner-02.webp";
 import respSlide3 from "../img/slides/resp-banner-03.webp";
 import respSlide4 from "../img/slides/resp-banner-04.webp";
 import respSlide5 from "../img/slides/resp-banner-05.webp";
+import { Link } from "react-router";
 
 function Hero() {
   const settings = {
@@ -30,17 +31,19 @@ function Hero() {
     <Box>
       {/* Desktop Slides - hidden on small screens */}
       <Box className="hidden sm:block w-full">
-        <Slider {...settings}>
-          {[slide1, slide2, slide3, slide4, slide5].map((slide, index) => (
-            <Box key={index}>
-              <img
-                src={slide}
-                alt={`slide-${index + 1}`}
-                className="w-full h-auto object-cover"
-              />
-            </Box>
-          ))}
-        </Slider>
+        <Link to={"/men"}>
+          <Slider {...settings}>
+            {[slide1, slide2, slide3, slide4, slide5].map((slide, index) => (
+              <Box key={index}>
+                <img
+                  src={slide}
+                  alt={`slide-${index + 1}`}
+                  className="w-full h-auto object-cover"
+                />
+              </Box>
+            ))}
+          </Slider>
+        </Link>
       </Box>
 
       {/* Responsive Slides - shown only on small screens */}

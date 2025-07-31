@@ -1,8 +1,10 @@
 import { Box, Container } from "@mui/material";
 import React from "react";
 import shoesImage from "../img/shoes.png";
+import { useNavigate } from "react-router";
 
 function Banner() {
+  const navigate = useNavigate();
   return (
     <Box className="px-4 sm:px-8 bg-[#63A1DC] rounded-xl text-white">
       <Container maxWidth="lg">
@@ -17,7 +19,10 @@ function Banner() {
                 <p className="text-base mt-2">
                   Step into comfort and walk in style with us..
                 </p>
-                <button className="mt-4 bg-[#96CF02] hover:bg-[#7fb800] transition-all duration-300 text-white rounded-md py-2 px-5 uppercase font-semibold text-sm shadow-md">
+                <button
+                  onClick={() => navigate("/men")}
+                  className="mt-4 bg-[#96CF02] hover:bg-[#7fb800] transition-all duration-300 text-white rounded-md py-2 px-5 uppercase font-semibold text-sm shadow-md"
+                >
                   Explore Our Collection
                 </button>
               </Box>
@@ -28,8 +33,11 @@ function Banner() {
                   Elevate your style with our classic leather shoes. These shoes
                   offer superior comfort.
                 </p>
-                <button className="mt-4 bg-[#96CF02] hover:bg-[#7fb800] transition-all duration-300 text-white rounded-md py-2 px-5 uppercase font-semibold text-sm shadow-md">
-                  Add to Cart
+                <button
+                  onClick={() => navigate("/couple")}
+                  className="mt-4 bg-[#96CF02] hover:bg-[#7fb800] transition-all duration-300 text-white rounded-md py-2 px-5 uppercase font-semibold text-sm shadow-md"
+                >
+                  Check Product
                 </button>
               </Box>
             </Box>
