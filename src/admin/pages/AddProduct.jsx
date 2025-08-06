@@ -161,7 +161,7 @@ const Category = () => {
 
   const ProductFormFields = ({ setFieldValue, values }) => {
     const textFields = [
-      { name: "pro_name", placeholder: "Product Name", label: "Product Name" },
+      { name: "pro_name", placeholder: "Product Name", label: "Product Name"},
       { name: "type", placeholder: "Product Type", label: "Product Type" },
       {
         name: "typeofheel",
@@ -325,7 +325,7 @@ const Category = () => {
               key={product._id}
               className="border rounded-lg p-2 bg-white shadow"
             >
-              <div className="bg-[#DDD]">
+              <div>
                 <img
                   src={product.images?.[0]}
                   alt={product.pro_name}
@@ -396,6 +396,7 @@ const Category = () => {
               <ProductFormFields
                 setFieldValue={setFieldValue}
                 values={values}
+                require
               />
               <Button
                 type="primary"

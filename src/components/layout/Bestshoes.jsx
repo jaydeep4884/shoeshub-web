@@ -22,7 +22,7 @@ function Bestshoes() {
         }
       );
       const products = Array.isArray(res.data.Data) ? res.data.Data : [];
-      setData(getRandomProducts(products, 4));
+      setData(getRandomProducts(products, 8));
     } catch (err) {
       console.error(err);
     } finally {

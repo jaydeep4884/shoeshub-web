@@ -44,45 +44,30 @@ const Dashboard = () => {
         headers: { Authorization: Token },
       }
     );
-    const orders = res.data?.Data || [];
 
+    const orders = res.data?.Data || [];
     let revenue = 0;
-    const ordersByMonth = {};
+    const ordersByDate = {};
 
     orders.forEach((order) => {
-      const month = dayjs(order.createdAt).format("MMM");
-      const amount = order.cart_product?.new_price;
+      const date = dayjs(order.createdAt).format("YYYY-MM-DD"); // group by exact date
+      const amount = order.cart_product?.new_price || 0;
       revenue += amount;
 
-      if (!ordersByMonth[month]) {
-        ordersByMonth[month] = { orders: 0, revenue: 0 };
+      if (!ordersByDate[date]) {
+        ordersByDate[date] = { date, orders: 0, revenue: 0 };
       }
-      ordersByMonth[month].orders += 1;
-      ordersByMonth[month].revenue += amount;
+
+      ordersByDate[date].orders += 1;
+      ordersByDate[date].revenue += amount;
     });
 
-    const months = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ];
+    // Convert object to sorted array by date
+    const sortedData = Object.values(ordersByDate).sort(
+      (a, b) => new Date(a.date) - new Date(b.date)
+    );
 
-    const data = months.map((month) => ({
-      month,
-      orders: ordersByMonth[month]?.orders || 0,
-      revenue: ordersByMonth[month]?.revenue || 0,
-    }));
-
-    setMonthlyData(data);
+    setMonthlyData(sortedData); // reused variable, now it's daily data
     setTotalRevenue(revenue);
     setCounts((prev) => ({ ...prev, orders: orders.length }));
   };
@@ -174,7 +159,7 @@ const Dashboard = () => {
       className=""
     >
       <h2 className="text-xl  sm:text-3xl font-bold text-gray-800 mb-4">
-        To Kese He Aap Logg 🤖 !!
+        To Kese He Aap Logg !!
       </h2>
 
       {/* Stats */}
@@ -228,12 +213,18 @@ const Dashboard = () => {
         {/* Line Chart */}
         <div className="bg-white ">
           <h3 className="text-lg font-semibold mb-4 text-gray-700">
-            Monthly Orders
+            Daily Orders
           </h3>
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={monthlyData}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="month" />
+              <XAxis
+                dataKey="date"
+                tickFormatter={(date) => dayjs(date).format("DD MMM")}
+                angle={-45}
+                textAnchor="end"
+              />
+
               <YAxis allowDecimals={false} />
               <Tooltip />
               <Line
@@ -249,7 +240,7 @@ const Dashboard = () => {
         {/* Area Chart */}
         <div className="bg-white md:col-span-2">
           <h3 className="text-lg font-semibold mb-4 text-gray-700">
-            Revenue Growth
+            Revenue by Date
           </h3>
           <ResponsiveContainer width="100%" height={300}>
             <AreaChart data={monthlyData}>
@@ -259,7 +250,13 @@ const Dashboard = () => {
                   <stop offset="95%" stopColor="#6366f1" stopOpacity={0} />
                 </linearGradient>
               </defs>
-              <XAxis dataKey="month" />
+              <XAxis
+                dataKey="date"
+                tickFormatter={(date) => dayjs(date).format("DD MMM")}
+                angle={-45}
+                textAnchor="end"
+              />
+
               <YAxis />
               <CartesianGrid strokeDasharray="3 3" />
               <Tooltip />

@@ -205,10 +205,10 @@ function ProductDetail() {
                 <Box className="mb-6">
                   <Box className="flex items-center gap-2 mb-2">
                     <h2 className="text-2xl sm:text-3xl font-bold">
-                      ${product.new_price}
+                      ₹{product.new_price}
                     </h2>
                     <h2 className="text-lg sm:text-xl text-[#71717A] line-through font-bold">
-                      ${product.old_price}
+                      ₹{product.old_price}
                     </h2>
                   </Box>
                   <Box className="flex items-center gap-1">

@@ -17,6 +17,7 @@ function Home() {
       <Hero />
       <Bestshoes />
       <Banner />
+      <Bestshoes />
       <Feature />
       <Brands />
       <Review />

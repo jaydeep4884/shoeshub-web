@@ -6,7 +6,7 @@ import PageBanner from "../components/ui/PageBanner";
 import Feature from "../components/layout/Feature";
 import Review from "../components/layout/Review";
 import Newsletter from "../components/layout/Newsletter";
-import CoupleBanner from "../components/img/Banners/couple-banner.png";
+import CoupleVideo from "../components/img/Banners/couple-video.mp4";
 import { motion } from "framer-motion";
 import { token } from "../assets/contexts";
 
@@ -48,7 +48,7 @@ function Couple() {
   return (
     <>
       <Header />
-      <PageBanner path={CoupleBanner} />
+      <PageBanner path={CoupleVideo} isVideo />
       <Container maxWidth="lg">
         <div className="py-8 sm:py-10">
           <motion.div

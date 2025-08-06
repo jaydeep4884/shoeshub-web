@@ -33,7 +33,7 @@ const footerLinks = [
   {
     title: "Customer Policies",
     FooterData: [
-      { name: "Contact Us", link: "/contact" },
+      { name: "Contact Us", link: "/contact" }, 
       { name: "FAQ", link: "/*" },
       { name: "T&C", link: "/*" },
       { name: "Terms Of Use", link: "/*" },
