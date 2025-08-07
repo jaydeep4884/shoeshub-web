@@ -6,7 +6,6 @@ import Review from "../components/layout/Review";
 import Feature from "../components/layout/Feature";
 import Brands from "../components/layout/Brands";
 import Gift from "../components/layout/Gift";
-import Hero from "../components/layout/Hero";
 import Banner from "../components/layout/Banner";
 import Bestshoes from "../components/layout/Bestshoes";
 
@@ -14,7 +13,7 @@ function Home() {
   return (
     <>
       <Header />
-      <Hero />
+      
       <Bestshoes />
       <Banner />
       <Bestshoes />

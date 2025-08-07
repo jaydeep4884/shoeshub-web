@@ -5,7 +5,7 @@ function PageBanner({ path, isVideo = false }) {
     <div className="bg-[#e9dfdf] min-h-14 lg:min-h-24">
       {isVideo ? (
         <video
-          className="h-[150px] lg:h-auto w-full object-cover"
+          className="h-[290px] lg:h-96 w-full object-cover"
           autoPlay
           loop
           muted
