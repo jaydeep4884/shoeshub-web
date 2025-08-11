@@ -12,16 +12,6 @@ import search from "../img/icons/Search-icon.svg";
 import orderIcon from "../img/icons/order-icon.svg";
 import likeIcon from "../img/icons/like-icon.svg";
 import cartIcon from "../img/icons/cart-icon.svg";
-import heroVedio from "../img/Banners/hero-video.mp4";
-
-const fadeIn = {
-  hidden: { opacity: 0, y: 30 },
-  visible: (i) => ({
-    opacity: 1,
-    y: 0,
-    transition: { delay: i * 0.1, duration: 0.6 },
-  }),
-};
 
 const PAGE_LINKS = [
   { name: "Orders", icon: orderIcon, to: "/orders" },
@@ -75,54 +65,14 @@ const Header = () => {
       <NavLink key={to} to={to}>
         <Box className="flex items-center gap-1">
           <img src={icon} alt={name} />
-          <Typography>{name}</Typography>
+          <Typography className="text-white">{name}</Typography>
         </Box>
       </NavLink>
     ));
 
   return (
-    <div className="relative w-full h-screen overflow-hidden">
-      <video
-        className="absolute top-0 left-0 w-full h-full object-cover z-0"
-        autoPlay
-        loop
-        muted
-        playsInline
-      >
-        <source src={heroVedio} type="video/mp4" />
-      </video>
-
-      <div className="absolute inset-0 bg-black/30 z-0" />
-
-      <div className="absolute inset-0 z-10 flex items-center justify-center text-center text-white px-4">
-        <motion.div
-          className="max-w-4xl mx-auto px-4"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-        >
-          <motion.h1
-            className="text-4xl sm:text-5xl lg:text-6xl font-bold"
-            variants={fadeIn}
-            custom={0}
-          >
-            Step Up. Stand Out. <br />
-            <span className="bg-gradient-to-r from-[#FF6FD8] to-[#3813C2] text-transparent bg-clip-text">
-              Exclusive Kicks for Every Vibe.
-            </span>
-          </motion.h1>
-          <motion.p
-            className="mt-6 text-base sm:text-lg max-w-xl mx-auto text-gray-300"
-            variants={fadeIn}
-            custom={1}
-          >
-            Use Clarity and AuraUI to build professional-grade UI experiences in
-            minutes, not weeks.
-          </motion.p>
-        </motion.div>
-      </div>
-
-      <header className="fixed top-2 left-2 right-2 md:top-5 md:left-5 md:right-5 rounded-full z-10 bg-black/30 backdrop-blur-sm shadow-md">
+    <div className="relative w-full ">
+      <header className="fixed top-2 left-2 right-2 md:top-5 md:left-5 md:right-5 rounded-full z-50 bg-black/30 backdrop-blur-sm shadow-md">
         <Container maxWidth="lg">
           <Box className="flex justify-between flex-wrap items-stretch py-3 md:pt-4 md:pb-0 gap-4">
             <Box className="flex items-center gap-4 flex-1">
@@ -189,7 +139,7 @@ const Header = () => {
                 exit={{ opacity: 0 }}
               />
               <motion.div
-                className="fixed top-0 left-0 right-0 bg-white z-50 flex flex-col gap-5 p-6"
+                className="fixed top-0 left-0 right-0 bg-black/80 backdrop-blur-sm z-50 flex flex-col rounded-lg gap-5 p-6"
                 initial={{ y: "-100%" }}
                 animate={{ y: 0 }}
                 exit={{ y: "-100%" }}
@@ -203,7 +153,7 @@ const Header = () => {
                     ✕
                   </button>
                 </Box>
-                <div className="flex flex-col gap-4">
+                <div className="flex flex-col items-center justify-center gap-4">
                   <NavLinks />
                   <PageLinks />
                   <NavLink to="/contact">

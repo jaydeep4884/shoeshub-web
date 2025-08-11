@@ -2,19 +2,18 @@ import React, { useContext, useEffect, useState } from "react";
 import { Container } from "@mui/material";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
-import PageBanner from "../components/ui/PageBanner";
 import Feature from "../components/layout/Feature";
 import Review from "../components/layout/Review";
 import Newsletter from "../components/layout/Newsletter";
 import CoupleVideo from "../components/img/Banners/couple-video.mp4";
 import { motion } from "framer-motion";
 import { token } from "../assets/contexts";
-
 import axios from "axios";
 import { Rate } from "antd";
 import { Link } from "react-router";
 import ProductSkeleton from "../components/ui/ProductSkeleton";
 import LikeButton from "../components/ui/LikeButton";
+import HeroSection from "../components/layout/Hero";
 
 function Couple() {
   const [products, setProducts] = useState([]);
@@ -48,7 +47,12 @@ function Couple() {
   return (
     <>
       <Header />
-      <PageBanner path={CoupleVideo} isVideo />
+      <HeroSection
+        videoSrc={CoupleVideo}
+        heading=" Walk Together in Style"
+        subHeading="Perfect Pairs for Perfect Pairs."
+        subtitle="Coordinated looks designed for you and your other half."
+      />
       <Container maxWidth="lg">
         <div className="py-8 sm:py-10">
           <motion.div

@@ -2,19 +2,18 @@ import React, { useContext, useEffect, useState } from "react";
 import { Container } from "@mui/material";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
-import PageBanner from "../components/ui/PageBanner";
 import Feature from "../components/layout/Feature";
 import Review from "../components/layout/Review";
 import Newsletter from "../components/layout/Newsletter";
-import KidsBanner from "../components/img/Banners/kids-banner.png";
 import { motion } from "framer-motion";
 import { token } from "../assets/contexts";
-
 import axios from "axios";
 import { Rate } from "antd";
 import { Link } from "react-router";
 import ProductSkeleton from "../components/ui/ProductSkeleton";
 import LikeButton from "../components/ui/LikeButton";
+import HeroSection from "../components/layout/Hero";
+import KidVideo from "../components/img/Banners/kids-video.mp4";
 
 function Kids() {
   const [products, setProducts] = useState([]);
@@ -48,7 +47,12 @@ function Kids() {
   return (
     <>
       <Header />
-      <PageBanner path={KidsBanner} />
+      <HeroSection
+        videoSrc={KidVideo}
+        heading="Fun, Colorful & Comfortable "
+        subHeading="Shoes They’ll Love to Wear."
+        subtitle="Playtime-approved styles made for endless adventures."
+      />
       <Container maxWidth="lg">
         <div className="py-8 sm:py-10">
           <motion.div

@@ -2,19 +2,19 @@ import React, { useContext, useEffect, useState } from "react";
 import { Container } from "@mui/material";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
-import PageBanner from "../components/ui/PageBanner";
 import Feature from "../components/layout/Feature";
 import Review from "../components/layout/Review";
 import Newsletter from "../components/layout/Newsletter";
-import WomenBanner from "../components/img/Banners/women-banner.png";
 import { motion } from "framer-motion";
 import { token } from "../assets/contexts";
+import WomenVideo from "../components/img/Banners/women-video.mp4";
 
 import axios from "axios";
 import { Rate } from "antd";
 import { Link } from "react-router";
 import ProductSkeleton from "../components/ui/ProductSkeleton";
 import LikeButton from "../components/ui/LikeButton";
+import HeroSection from "../components/layout/Hero";
 
 function Couple() {
   const [products, setProducts] = useState([]);
@@ -48,7 +48,12 @@ function Couple() {
   return (
     <>
       <Header />
-      <PageBanner path={WomenBanner} />
+      <HeroSection
+        videoSrc={WomenVideo}
+        heading="Chic, Bold & Timeless"
+        subHeading="Kicks to Match Your Vibe."
+        subtitle="Elevate every outfit with our versatile women’s collection."
+      />
       <Container maxWidth="lg">
         <div className="py-8 sm:py-10">
           <motion.div

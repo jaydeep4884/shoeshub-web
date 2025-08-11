@@ -8,12 +8,19 @@ import Brands from "../components/layout/Brands";
 import Gift from "../components/layout/Gift";
 import Banner from "../components/layout/Banner";
 import Bestshoes from "../components/layout/Bestshoes";
+import HeroSection from "../components/layout/Hero";
+import heroVideo from "../components/img/Banners/hero-video.mp4";
 
 function Home() {
   return (
     <>
       <Header />
-      
+      <HeroSection
+        videoSrc={heroVideo}
+        heading=" Step Up. Stand Out."
+        subHeading=" Exclusive Kicks for Every Vibe."
+        subtitle="Discover our latest arrivals and timeless classics, all in one place."
+      />
       <Bestshoes />
       <Banner />
       <Bestshoes />

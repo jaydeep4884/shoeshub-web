@@ -2,11 +2,9 @@ import React, { useContext, useEffect, useState } from "react";
 import { Container } from "@mui/material";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
-import PageBanner from "../components/ui/PageBanner";
 import Feature from "../components/layout/Feature";
 import Review from "../components/layout/Review";
 import Newsletter from "../components/layout/Newsletter";
-import MensBanner from "../components/img/Banners/mens-banner.png";
 import { motion } from "framer-motion";
 import { token } from "../assets/contexts";
 import axios from "axios";
@@ -14,6 +12,8 @@ import { Rate } from "antd";
 import { Link } from "react-router";
 import ProductSkeleton from "../components/ui/ProductSkeleton";
 import LikeButton from "../components/ui/LikeButton";
+import HeroSection from "../components/layout/Hero";
+import MenVideo from "../components/img/Banners/mens-video (2).mp4";
 
 function Mens() {
   const [products, setProducts] = useState([]);
@@ -48,7 +48,12 @@ function Mens() {
   return (
     <>
       <Header />
-      <PageBanner path={MensBanner} />
+      <HeroSection
+        videoSrc={MenVideo}
+        heading="Style, Comfort & Confidence "
+        subHeading="For Every Step You Take."
+        subtitle="From workdays to weekends, find shoes that move with you."
+      />
       <Container maxWidth="lg">
         <div className="py-8 sm:py-10">
           <motion.div

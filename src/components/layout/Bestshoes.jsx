@@ -68,7 +68,7 @@ function Bestshoes() {
                   <div className="mb-2">
                     <span className="font-bold">${product.new_price}</span>
                     <span className="ml-2 line-through text-gray-400 text-sm">
-                      ${product.old_price}
+                      ₹{product.old_price}
                     </span>
                   </div>
                   <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-1 md:gap-0">
