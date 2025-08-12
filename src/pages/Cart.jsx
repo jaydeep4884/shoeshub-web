@@ -11,7 +11,6 @@ import {
 } from "antd";
 import { Link, useNavigate } from "react-router";
 import { ShoppingOutlined, DeleteOutlined } from "@ant-design/icons";
-import { motion } from "framer-motion";
 import axios from "axios";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
@@ -19,9 +18,9 @@ import Applycoup from "../components/ui/Applycoup";
 import Buttongroup from "../components/ui/Buttongroup";
 import { token } from "../assets/contexts";
 import Breadcrumb from "../components/ui/Breadcrumb";
-import { Container } from "@mui/material";
 import toast, { Toaster } from "react-hot-toast";
 import { Formik, Form } from "formik";
+import PageContainer from "../components/ui/PageContainer";
 
 const { Option } = Select;
 
@@ -167,80 +166,72 @@ function Cart() {
   return (
     <>
       <Header />
-      <Container maxWidth="lg">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          <Breadcrumb items={breadItems} />
+      <PageContainer>
+        <Breadcrumb items={breadItems} />
 
-          <div className="bg-white shadow rounded-lg overflow-x-auto mb-6">
-            {loading ? (
-              <Spin tip="Loading cart items...">
-                <div style={{ height: "150px" }} />
-              </Spin>
-            ) : (
-              <Table
-                dataSource={cartData}
-                columns={columns}
-                rowKey="_id"
-                pagination={false}
-                scroll={{ x: true }}
-              />
-            )}
-          </div>
+        <div className="bg-white shadow rounded-lg overflow-x-auto mb-6">
+          {loading ? (
+            <Spin tip="Loading cart items...">
+              <div style={{ height: "150px" }} />
+            </Spin>
+          ) : (
+            <Table
+              dataSource={cartData}
+              columns={columns}
+              rowKey="_id"
+              pagination={false}
+              scroll={{ x: true }}
+            />
+          )}
+        </div>
 
-          <Link to="/home">
-            <Button className="mb-6" type="default">
-              Return to Shop
-            </Button>
-          </Link>
+        <Link to="/home">
+          <Button className="mb-6" type="default">
+            Return to Shop
+          </Button>
+        </Link>
 
-          <Row gutter={[24, 24]}>
-            <Col xs={24} md={14}>
-              <Formik
-                initialValues={{ couponCode: "" }}
-                onSubmit={(values) => {
-                  // you can handle coupon submit here if needed
-                  console.log("Submitted:", values);
-                }}
-              >
-                <Form>
-                  <Applycoup />
-                </Form>
-              </Formik>
-            </Col>
+        <Row gutter={[24, 24]} className="pb-3 sm:pb-5">
+          <Col xs={24} md={14}>
+            <Formik
+              initialValues={{ couponCode: "" }}
+              onSubmit={(values) => {
+                // you can handle coupon submit here if needed
+                console.log("Submitted:", values);
+              }}
+            >
+              <Form>
+                <Applycoup />
+              </Form>
+            </Formik>
+          </Col>
 
-            <Col xs={24} md={10}>
-              <div className="border p-6 rounded-lg shadow-sm bg-white">
-                <Typography.Title level={5}>Cart Total</Typography.Title>
-                <Divider />
-                <Row justify="space-between">
-                  <Typography.Text>Subtotal:</Typography.Text>
-                  <Typography.Text>${subtotal.toFixed(2)}</Typography.Text>
-                </Row>
-                <Row justify="space-between">
-                  <Typography.Text>Shipping:</Typography.Text>
-                  <Typography.Text>Free</Typography.Text>
-                </Row>
-                <Divider />
-                <Row justify="space-between">
-                  <Typography.Text strong>Total:</Typography.Text>
-                  <Typography.Text strong>
-                    ${subtotal.toFixed(2)}
-                  </Typography.Text>
-                </Row>
-                <div className="mt-4">
-                  <Link to="/checkout">
-                    <Buttongroup name="Proceed To Checkout" />
-                  </Link>
-                </div>
+          <Col xs={24} md={10}>
+            <div className="border p-6 rounded-lg shadow-sm bg-white">
+              <Typography.Title level={5}>Cart Total</Typography.Title>
+              <Divider />
+              <Row justify="space-between">
+                <Typography.Text>Subtotal:</Typography.Text>
+                <Typography.Text>${subtotal.toFixed(2)}</Typography.Text>
+              </Row>
+              <Row justify="space-between">
+                <Typography.Text>Shipping:</Typography.Text>
+                <Typography.Text>Free</Typography.Text>
+              </Row>
+              <Divider />
+              <Row justify="space-between">
+                <Typography.Text strong>Total:</Typography.Text>
+                <Typography.Text strong>${subtotal.toFixed(2)}</Typography.Text>
+              </Row>
+              <div className="mt-4">
+                <Link to="/checkout">
+                  <Buttongroup name="Proceed To Checkout" />
+                </Link>
               </div>
-            </Col>
-          </Row>
-        </motion.div>
-      </Container>
+            </div>
+          </Col>
+        </Row>
+      </PageContainer>
       <Toaster />
       <Footer />
     </>

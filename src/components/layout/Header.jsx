@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Box, Container } from "@mui/material";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import { Close, Call as CallIcon, Menu as MenuIcon } from "@mui/icons-material";
 import { Typography } from "antd";
@@ -24,6 +24,10 @@ const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const Token = useContext(token);
   const isAuthenticated = Boolean(localStorage.getItem("token"));
+  const location = useLocation();
+  const isVideoPage = ["/kids", "/men", "/women", "/couple", "/home"].includes(
+    location.pathname
+  );
 
   useEffect(() => {
     const cached = localStorage.getItem("categories");
@@ -72,7 +76,11 @@ const Header = () => {
 
   return (
     <div className="relative w-full ">
-      <header className="fixed top-2 left-2 right-2 md:top-5 md:left-5 md:right-5 rounded-full z-50 bg-black/30 backdrop-blur-sm shadow-md">
+      <header
+        className={`fixed top-2 left-2 right-2 md:top-5 md:left-5 md:right-5 rounded-full z-50 shadow-md 
+        ${isVideoPage ? "bg-black/30 backdrop-blur-sm" : "bg-gradient-to-r from-[#b49fc7] via-[#6a3750] to-[#f37474]"} 
+      `}
+      >
         <Container maxWidth="lg">
           <Box className="flex justify-between flex-wrap items-stretch py-3 md:pt-4 md:pb-0 gap-4">
             <Box className="flex items-center gap-4 flex-1">

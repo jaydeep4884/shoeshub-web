@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Box, Button, Container, IconButton, Rating } from "@mui/material";
+import { Box, Button, IconButton, Rating } from "@mui/material";
 import { Tooltip } from "antd";
 import { Link, useNavigate, useParams } from "react-router";
 import { motion } from "framer-motion";
@@ -22,6 +22,7 @@ import Gift from "../components/layout/Gift";
 import { Form, Formik } from "formik";
 import ProductDetailSkeleton from "../components/ui/ProductDetailSkeleton";
 import toast, { Toaster } from "react-hot-toast";
+import PageContainer from "../components/ui/PageContainer";
 
 function ProductDetail() {
   const [product, setProduct] = useState([]);
@@ -144,8 +145,8 @@ function ProductDetail() {
   return (
     <>
       <Header />
-      <Container maxWidth="lg">
-        <Box className="py-5 sm:py-10">
+      <PageContainer>
+        <Box>
           <Breadcrumb items={breadItems} />
 
           {/* Product Detail Section */}
@@ -295,7 +296,8 @@ function ProductDetail() {
           )}
           <Toaster />
         </Box>
-      </Container>
+      </PageContainer>
+
       <Review />
       <Gift />
       <Footer />

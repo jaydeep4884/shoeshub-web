@@ -1,6 +1,5 @@
 import React, { useContext, useState } from "react";
 import { Input, Button } from "antd";
-import { motion } from "framer-motion";
 import {
   MailOutlined,
   PhoneOutlined,
@@ -14,6 +13,7 @@ import Footer from "../components/layout/Footer";
 import Feature from "../components/layout/Feature";
 import Loader from "../components/ui/Loader";
 import { token } from "../assets/contexts";
+import PageContainer from "../components/ui/PageContainer";
 
 const inputs = [
   { name: "name", placeholder: "Enter Your Name" },
@@ -66,13 +66,8 @@ const ContactUs = () => {
   return (
     <>
       <Header />
-      <div className="bg-gray-50 p-4 md:p-10">
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
-          className="mx-auto bg-white rounded-xl shadow-xl grid lg:grid-cols-2 gap-6 overflow-hidden"
-        >
+      <PageContainer>
+        <div className="mx-auto bg-white rounded-xl shadow-xl grid lg:grid-cols-2 gap-6 overflow-hidden">
           <div className="p-6 lg:p-10 space-y-6">
             <h2 className="text-3xl font-bold text-gray-800">Contact Us</h2>
             <p className="text-gray-600">
@@ -129,8 +124,8 @@ const ContactUs = () => {
               referrerPolicy="no-referrer-when-downgrade"
             />
           </div>
-        </motion.div>
-      </div>
+        </div>
+      </PageContainer>
       <Feature />
       <Footer />
       <Toaster />

@@ -1,12 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
-import { Box, Container } from "@mui/material";
+import { Box } from "@mui/material";
 import { motion } from "framer-motion";
 import { Rate, Typography } from "antd";
 import axios from "axios";
 import { token } from "../assets/contexts";
 import Loader from "../components/ui/Loader";
+import PageContainer from "../components/ui/PageContainer";
 
 function Favorite() {
   const [wishlistData, setWishlistData] = useState([]);
@@ -37,8 +38,8 @@ function Favorite() {
   return (
     <>
       <Header />
-      <Container maxWidth="lg">
-        <Box className="py-5 sm:py-10">
+      <PageContainer>
+        <Box className="pb-3 sm:pb-5">
           <Typography.Title className="!text-lg !mb-5">
             Your Favorite Items :
           </Typography.Title>
@@ -105,7 +106,7 @@ function Favorite() {
             </>
           )}
         </Box>
-      </Container>
+      </PageContainer>
       <Footer />
     </>
   );

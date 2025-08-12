@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import {
   Box,
   Checkbox,
-  Container,
   FormControlLabel,
   Radio,
   RadioGroup,
@@ -25,6 +24,7 @@ import { useNavigate, useParams } from "react-router";
 import { token } from "../assets/contexts";
 import axios from "axios";
 import ProductDetailSkeleton from "../components/ui/ProductDetailSkeleton";
+import PageContainer from "../components/ui/PageContainer";
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -132,177 +132,171 @@ const Checkout = () => {
   return (
     <>
       <Header />
-      <Container maxWidth="lg">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-        >
-          <Box className="py-8 sm:py-10">
-            <Breadcrumb items={breadItems} />
+      <PageContainer>
+        <Box className="pb-3 sm:pb-5">
+          <Breadcrumb items={breadItems} />
 
-            <Box className="bg-white p-4 sm:p-6 md:p-10 border rounded-xl shadow-sm">
-              <Typography variant="h4" className="font-semibold !mb-6">
-                Billing Details
-              </Typography>
+          <Box className="bg-white p-4 sm:p-6 md:p-10 border rounded-xl shadow-sm">
+            <Typography variant="h4" className="font-semibold !mb-6">
+              Billing Details
+            </Typography>
 
-              <Formik initialValues={initialValues} onSubmit={handleSubmit}>
-                <Form className="flex justify-between items-center flex-col lg:flex-row gap-10">
-                  {/* Left */}
-                  <Box className="w-full lg:w-[45%] space-y-5">
-                    {inputFields.map(({ name, label, type }) => (
-                      <Box key={name}>
-                        <label className="text-gray-700 text-sm">{label}</label>
-                        <Field
-                          as={TextField}
-                          name={name}
-                          type={type}
-                          size="small"
-                          fullWidth
-                          required
-                          InputProps={{
-                            sx: {
-                              "& fieldset": { border: "none" },
-                              backgroundColor: "#f3f4f6",
-                            },
-                          }}
-                        />
-                      </Box>
-                    ))}
-                    <Field name="saveForNextTime">
-                      {({ field }) => (
-                        <FormControlLabel
-                          control={
-                            <Checkbox
-                              {...field}
-                              checked={field.value}
-                              size="small"
-                              color="error"
+            <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+              <Form className="flex justify-between items-center flex-col lg:flex-row gap-10">
+                {/* Left */}
+                <Box className="w-full lg:w-[45%] space-y-5">
+                  {inputFields.map(({ name, label, type }) => (
+                    <Box key={name}>
+                      <label className="text-gray-700 text-sm">{label}</label>
+                      <Field
+                        as={TextField}
+                        name={name}
+                        type={type}
+                        size="small"
+                        fullWidth
+                        required
+                        InputProps={{
+                          sx: {
+                            "& fieldset": { border: "none" },
+                            backgroundColor: "#f3f4f6",
+                          },
+                        }}
+                      />
+                    </Box>
+                  ))}
+                  <Field name="saveForNextTime">
+                    {({ field }) => (
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            {...field}
+                            checked={field.value}
+                            size="small"
+                            color="error"
+                          />
+                        }
+                        label={
+                          <span className="text-sm">
+                            Save info for next time
+                          </span>
+                        }
+                      />
+                    )}
+                  </Field>
+                </Box>
+
+                {/* Right */}
+                <Box className="w-full lg:w-[45%] space-y-6">
+                  <Box className="p-4 sm:p-5 bg-white border rounded-xl shadow-sm ">
+                    {product ? (
+                      <>
+                        <Box className="flex justify-between items-center gap-5">
+                          <Box className="flex items-center gap-4">
+                            <img
+                              src={selectedImage}
+                              alt={product.pro_name}
+                              className="w-16 sm:w-20 object-contain"
                             />
-                          }
-                          label={
-                            <span className="text-sm">
-                              Save info for next time
-                            </span>
-                          }
-                        />
-                      )}
-                    </Field>
-                  </Box>
-
-                  {/* Right */}
-                  <Box className="w-full lg:w-[45%] space-y-6">
-                    <Box className="p-4 sm:p-5 bg-white border rounded-xl shadow-sm ">
-                      {product ? (
-                        <>
-                          <Box className="flex justify-between items-center gap-5">
-                            <Box className="flex items-center gap-4">
-                              <img
-                                src={selectedImage}
-                                alt={product.pro_name}
-                                className="w-16 sm:w-20 object-contain"
-                              />
-                              <Typography className="font-medium line-clamp-1">
-                                {product.pro_name}
-                              </Typography>
-                            </Box>
-                            <Typography className="font-semibold">
-                              ${product.new_price}
+                            <Typography className="font-medium line-clamp-1">
+                              {product.pro_name}
                             </Typography>
                           </Box>
+                          <Typography className="font-semibold">
+                            ${product.new_price}
+                          </Typography>
+                        </Box>
 
-                          {/* Summary */}
-                          <Box className="space-y-2 border-t pt-4 text-sm">
-                            <Box className="flex justify-between">
-                              <span>Subtotal:</span>
-                              <span>${product.new_price}</span>
-                            </Box>
-                            <Box className="flex justify-between">
-                              <span>Shipping:</span>
-                              <span>Free</span>
-                            </Box>
-                            <Box className="flex justify-between border-t pt-2 font-semibold">
-                              <span>Total:</span>
-                              <span>${product.new_price}</span>
-                            </Box>
+                        {/* Summary */}
+                        <Box className="space-y-2 border-t pt-4 text-sm">
+                          <Box className="flex justify-between">
+                            <span>Subtotal:</span>
+                            <span>${product.new_price}</span>
                           </Box>
+                          <Box className="flex justify-between">
+                            <span>Shipping:</span>
+                            <span>Free</span>
+                          </Box>
+                          <Box className="flex justify-between border-t pt-2 font-semibold">
+                            <span>Total:</span>
+                            <span>${product.new_price}</span>
+                          </Box>
+                        </Box>
 
-                          {/* Payment Method */}
-                          <Field name="paymentMethod">
-                            {({ field }) => (
-                              <RadioGroup {...field}>
-                                <FormControlLabel
-                                  value="bank"
-                                  control={<Radio />}
-                                  label="Bank"
-                                />
-                                <FormControlLabel
-                                  value="cod"
-                                  control={<Radio />}
-                                  label="Cash on Delivery"
-                                />
-                              </RadioGroup>
-                            )}
-                          </Field>
+                        {/* Payment Method */}
+                        <Field name="paymentMethod">
+                          {({ field }) => (
+                            <RadioGroup {...field}>
+                              <FormControlLabel
+                                value="bank"
+                                control={<Radio />}
+                                label="Bank"
+                              />
+                              <FormControlLabel
+                                value="cod"
+                                control={<Radio />}
+                                label="Cash on Delivery"
+                              />
+                            </RadioGroup>
+                          )}
+                        </Field>
 
-                          {/* Bank Provider */}
-                          <Field name="paymentMethod">
-                            {({ field }) => (
-                              <AnimatePresence>
-                                {field.value === "bank" && (
-                                  <Field name="paymentProvider">
-                                    {({ field: bankField }) => (
-                                      <motion.div
-                                        key="bankSection"
-                                        initial={{ opacity: 0, height: 0 }}
-                                        animate={{ opacity: 1, height: "auto" }}
-                                        exit={{ opacity: 0, height: 0 }}
-                                        className="flex flex-wrap gap-3 overflow-hidden"
-                                      >
-                                        {banks.map(({ value, img }) => (
-                                          <motion.img
-                                            key={value}
-                                            src={img}
-                                            alt={value}
-                                            whileTap={{ scale: 0.95 }}
-                                            className={`p-1 cursor-pointer border rounded ${
-                                              bankField.value === value
-                                                ? "border-gray-300"
-                                                : "border-transparent"
-                                            }`}
-                                            onClick={() =>
-                                              bankField.onChange({
-                                                target: {
-                                                  name: "paymentProvider",
-                                                  value,
-                                                },
-                                              })
-                                            }
-                                          />
-                                        ))}
-                                      </motion.div>
-                                    )}
-                                  </Field>
-                                )}
-                              </AnimatePresence>
-                            )}
-                          </Field>
+                        {/* Bank Provider */}
+                        <Field name="paymentMethod">
+                          {({ field }) => (
+                            <AnimatePresence>
+                              {field.value === "bank" && (
+                                <Field name="paymentProvider">
+                                  {({ field: bankField }) => (
+                                    <motion.div
+                                      key="bankSection"
+                                      initial={{ opacity: 0, height: 0 }}
+                                      animate={{ opacity: 1, height: "auto" }}
+                                      exit={{ opacity: 0, height: 0 }}
+                                      className="flex flex-wrap gap-3 overflow-hidden"
+                                    >
+                                      {banks.map(({ value, img }) => (
+                                        <motion.img
+                                          key={value}
+                                          src={img}
+                                          alt={value}
+                                          whileTap={{ scale: 0.95 }}
+                                          className={`p-1 cursor-pointer border rounded ${
+                                            bankField.value === value
+                                              ? "border-gray-300"
+                                              : "border-transparent"
+                                          }`}
+                                          onClick={() =>
+                                            bankField.onChange({
+                                              target: {
+                                                name: "paymentProvider",
+                                                value,
+                                              },
+                                            })
+                                          }
+                                        />
+                                      ))}
+                                    </motion.div>
+                                  )}
+                                </Field>
+                              )}
+                            </AnimatePresence>
+                          )}
+                        </Field>
 
-                          <Applycoup />
-                          <br />
-                          <Buttongroup name="Place Order" />
-                        </>
-                      ) : (
-                        <ProductDetailSkeleton />
-                      )}
-                    </Box>
+                        <Applycoup />
+                        <br />
+                        <Buttongroup name="Place Order" />
+                      </>
+                    ) : (
+                      <ProductDetailSkeleton />
+                    )}
                   </Box>
-                </Form>
-              </Formik>
-            </Box>
+                </Box>
+              </Form>
+            </Formik>
           </Box>
-        </motion.div>
-      </Container>
+        </Box>
+      </PageContainer>
       <Toaster />
       <Footer />
     </>

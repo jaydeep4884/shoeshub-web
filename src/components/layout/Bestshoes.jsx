@@ -66,7 +66,7 @@ function Bestshoes() {
                     {product.pro_name}
                   </Typography.Text>
                   <div className="mb-2">
-                    <span className="font-bold">${product.new_price}</span>
+                    <span className="font-bold">₹{product.new_price}</span>
                     <span className="ml-2 line-through text-gray-400 text-sm">
                       ₹{product.old_price}
                     </span>
