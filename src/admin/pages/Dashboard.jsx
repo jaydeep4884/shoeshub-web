@@ -11,15 +11,16 @@ import {
   Pie,
   Cell,
   Legend,
-  LineChart,
-  Line,
   CartesianGrid,
   XAxis,
   YAxis,
   Tooltip,
+  ResponsiveContainer,
+  Bar,
+  ComposedChart,
+  Line,
   AreaChart,
   Area,
-  ResponsiveContainer,
 } from "recharts";
 import axios from "axios";
 import dayjs from "dayjs";
@@ -47,27 +48,18 @@ const Dashboard = () => {
 
     const orders = res.data?.Data || [];
     let revenue = 0;
-    const ordersByDate = {};
 
-    orders.forEach((order) => {
-      const date = dayjs(order.createdAt).format("YYYY-MM-DD"); // group by exact date
+    const orderData = orders.map((order, index) => {
       const amount = order.cart_product?.new_price || 0;
       revenue += amount;
-
-      if (!ordersByDate[date]) {
-        ordersByDate[date] = { date, orders: 0, revenue: 0 };
-      }
-
-      ordersByDate[date].orders += 1;
-      ordersByDate[date].revenue += amount;
+      return {
+        id: index + 1, // Unique bar ID
+        date: dayjs(order.createdAt).format("YYYY-MM-DD HH:mm"), // Show date+time
+        revenue: amount,
+      };
     });
 
-    // Convert object to sorted array by date
-    const sortedData = Object.values(ordersByDate).sort(
-      (a, b) => new Date(a.date) - new Date(b.date)
-    );
-
-    setMonthlyData(sortedData); // reused variable, now it's daily data
+    setMonthlyData(orderData);
     setTotalRevenue(revenue);
     setCounts((prev) => ({ ...prev, orders: orders.length }));
   };
@@ -105,36 +97,19 @@ const Dashboard = () => {
     setCounts((prev) => ({ ...prev, user: myUsers.length }));
   };
 
-  useEffect(() => {
-    fetchOrders();
-    fetchProducts();
-    fetchFeedbacks();
-    fetchUsers();
-    // eslint-disable-next-line
-  }, []);
-
   const stats = [
     {
       icon: <ShoppingCartOutlined />,
       label: "Total Orders",
       value: counts.orders,
     },
-
     {
       icon: <ProductionQuantityLimitsIcon />,
       label: "Total Products",
       value: counts.products,
     },
-    {
-      icon: <MessageOutlined />,
-      label: "Feedbacks",
-      value: counts.feedbacks,
-    },
-    {
-      icon: <UserOutlined />,
-      label: "Total Users",
-      value: counts.user,
-    },
+    { icon: <MessageOutlined />, label: "Feedbacks", value: counts.feedbacks },
+    { icon: <UserOutlined />, label: "Total Users", value: counts.user },
     {
       icon: <DollarOutlined />,
       label: "Total Revenue",
@@ -151,14 +126,20 @@ const Dashboard = () => {
 
   const COLORS = ["#3b82f6", "#10b981", "#f59e0b", "#DC3C22"];
 
+  useEffect(() => {
+    fetchOrders();
+    fetchProducts();
+    fetchFeedbacks();
+    fetchUsers();
+    // eslint-disable-next-line
+  }, []);
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className=""
     >
-      <h2 className="text-xl  sm:text-3xl font-bold text-gray-800 mb-4">
+      <h2 className="text-xl sm:text-3xl font-bold text-gray-800 mb-4">
         To Kese He Aap Logg !!
       </h2>
 
@@ -168,7 +149,7 @@ const Dashboard = () => {
           <motion.div
             key={i}
             whileHover={{ scale: 1.05 }}
-            className="bg-white shadow-lg rounded-xl flex flex-col gap-1 items-center p-4 border border-gray-100 hover:shadow-xl transition-all"
+            className="shadow-lg rounded-xl flex flex-col gap-1 items-center p-4 border border-gray-300 hover:shadow-xl transition-all"
           >
             <div className="text-3xl text-blue-500 mb-2">{stat.icon}</div>
             <div className="text-sm text-gray-500">{stat.label}</div>
@@ -182,7 +163,7 @@ const Dashboard = () => {
       {/* Charts */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
         {/* Donut Chart */}
-        <div className="bg-white">
+        <div>
           <h3 className="text-lg font-semibold mb-4 text-gray-700">
             Overview Chart
           </h3>
@@ -210,68 +191,68 @@ const Dashboard = () => {
           </ResponsiveContainer>
         </div>
 
-        {/* Line Chart */}
-        <div className="bg-white ">
+        {/* Composed Chart - Orders by Day */}
+        <div className="">
           <h3 className="text-lg font-semibold mb-4 text-gray-700">
             Daily Orders
           </h3>
           <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={monthlyData}>
+            <ComposedChart data={monthlyData}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis
-                dataKey="date"
-                tickFormatter={(date) => dayjs(date).format("DD MMM")}
-                angle={-45}
-                textAnchor="end"
-              />
-
-              <YAxis allowDecimals={false} />
+              <XAxis dataKey="date" angle={-45} textAnchor="end" height={60} />
+              <YAxis />
               <Tooltip />
+              <Legend />
+              <Bar dataKey="orders" barSize={20} fill="#82ca9d" />
               <Line
                 type="monotone"
                 dataKey="orders"
-                stroke="#10b981"
+                stroke="#ff7300"
                 strokeWidth={2}
               />
-            </LineChart>
+            </ComposedChart>
           </ResponsiveContainer>
         </div>
 
-        {/* Area Chart */}
-        <div className="bg-white md:col-span-2">
+        <div className="md:col-span-2">
           <h3 className="text-lg font-semibold mb-4 text-gray-700">
-            Revenue by Date
+            Revenue Trend
           </h3>
           <ResponsiveContainer width="100%" height={300}>
             <AreaChart data={monthlyData}>
               <defs>
-                <linearGradient id="colorRev" x1="0" y1="0" x2="0" y2="1">
+                <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="5%" stopColor="#6366f1" stopOpacity={0.8} />
                   <stop offset="95%" stopColor="#6366f1" stopOpacity={0} />
                 </linearGradient>
               </defs>
+              <CartesianGrid strokeDasharray="3 3" />
               <XAxis
                 dataKey="date"
                 tickFormatter={(date) => dayjs(date).format("DD MMM")}
                 angle={-45}
                 textAnchor="end"
               />
-
               <YAxis />
-              <CartesianGrid strokeDasharray="3 3" />
-              <Tooltip />
+              <Tooltip
+                contentStyle={{
+                  background: "#fff",
+                  borderRadius: "8px",
+                  boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                  border: "none",
+                }}
+              />
               <Area
                 type="monotone"
                 dataKey="revenue"
                 stroke="#6366f1"
                 fillOpacity={1}
-                fill="url(#colorRev)"
+                fill="url(#colorRevenue)"
               />
             </AreaChart>
           </ResponsiveContainer>
         </div>
       </div>
-      {/* <Footer /> */}
     </motion.div>
   );
 };

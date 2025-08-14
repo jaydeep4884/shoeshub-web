@@ -2,21 +2,20 @@ import React from "react";
 import { Container } from "@mui/material";
 import { motion } from "framer-motion";
 
-function PageContainer({ children }) {
+function BgBody({ children }) {
   return (
-    <>
-      <Container maxWidth="lg">
+    <Container maxWidth="lg">
+      <div className="py-8 sm:py-10">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
-          className="pt-20 sm:pt-40"
+          transition={{ duration: 0.6 }}
         >
           {children}
         </motion.div>
-      </Container>
-    </>
+      </div>
+    </Container>
   );
 }
 
-export default PageContainer;
+export default BgBody;

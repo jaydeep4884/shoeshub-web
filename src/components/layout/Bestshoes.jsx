@@ -52,7 +52,7 @@ function Bestshoes() {
             data.map((product) => (
               <div
                 key={product._id}
-                className="relative bg-white border rounded-md hover:shadow-lg transition p-3 sm:p-4 flex flex-col"
+                className="relative bg-white  rounded-xl hover:shadow-lg transition p-3 sm:p-4 flex flex-col"
               >
                 <Link to={`/product/${product._id}`}>
                   <div className="w-full h-[160px] sm:h-[180px] md:h-[200px] flex items-center justify-center mb-3">

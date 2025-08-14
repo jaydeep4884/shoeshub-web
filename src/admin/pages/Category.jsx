@@ -127,7 +127,7 @@ const Category = () => {
 
   return (
     <>
-      <div className="flex justify-end mb-5">
+      <div className=" flex justify-end mb-5">
         <Button
           type="primary"
           icon={<PlusCircleOutlined />}
@@ -138,6 +138,7 @@ const Category = () => {
       </div>
 
       <Table
+      className=""
         dataSource={data}
         columns={columns}
         locale={{

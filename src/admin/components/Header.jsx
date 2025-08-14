@@ -28,7 +28,7 @@ const HeaderBar = ({ toggleDrawer }) => {
   );
 
   return (
-    <div className="bg-white border-b px-6 py-4 flex items-center justify-between">
+    <div className="bg-white border-b border-[#ddd] px-6 py-4 flex items-center justify-between">
       {/* Hamburger Menu for Mobile */}
       <Button
         type="text"

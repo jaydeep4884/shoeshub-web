@@ -37,7 +37,7 @@ const AdminPanel = () => {
       <div className="flex h-screen overflow-hidden">
         {/* Sidebar */}
         {isDesktop && (
-          <div className="fixed top-0 left-0 w-64 h-full z-20 bg-white shadow">
+          <div className="fixed top-0 left-0 w-64 h-full z-20  shadow">
             <Sidebar
               selectedKey={selectedKey}
               setSelectedKey={handleSetSelectedKey}
@@ -48,7 +48,7 @@ const AdminPanel = () => {
 
         {/* Main Content */}
         <div className={`flex flex-col flex-1 ${isDesktop ? "lg:ml-64" : ""}`}>
-          <div className="fixed top-0 left-0 right-0 z-10 bg-white lg:ml-64">
+          <div className="fixed top-0 left-0 right-0 z-10  lg:ml-64">
             <HeaderBar toggleDrawer={() => setDrawerVisible(true)} />
           </div>
 
