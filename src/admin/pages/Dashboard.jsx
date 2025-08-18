@@ -47,20 +47,23 @@ const Dashboard = () => {
     );
 
     const orders = res.data?.Data || [];
-    let revenue = 0;
+    let totalRevenue = 0;
 
     const orderData = orders.map((order, index) => {
       const amount = order.cart_product?.new_price || 0;
-      revenue += amount;
+      totalRevenue += amount;
+
       return {
-        id: index + 1, // Unique bar ID
-        date: dayjs(order.createdAt).format("YYYY-MM-DD HH:mm"), // Show date+time
-        revenue: amount,
+        id: index + 1, // Unique ID for chart
+        date: dayjs(order.createdAt).format("YYYY-MM-DD HH:mm"), // Date + Time
+        orders: 1, // Always 1 per record
+        revenue: amount, // Revenue for this order
       };
     });
+    console.log(orderData);
 
-    setMonthlyData(orderData);
-    setTotalRevenue(revenue);
+    setMonthlyData(orderData); // For charts
+    setTotalRevenue(totalRevenue); // Just the sum (for stats card)
     setCounts((prev) => ({ ...prev, orders: orders.length }));
   };
 
@@ -199,7 +202,7 @@ const Dashboard = () => {
           <ResponsiveContainer width="100%" height={300}>
             <ComposedChart data={monthlyData}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="date" angle={-45} textAnchor="end" height={60} />
+              <XAxis dataKey="date" hide/>
               <YAxis />
               <Tooltip />
               <Legend />
@@ -214,6 +217,7 @@ const Dashboard = () => {
           </ResponsiveContainer>
         </div>
 
+        {/* Area Chart - Revenue by Day */}
         <div className="md:col-span-2">
           <h3 className="text-lg font-semibold mb-4 text-gray-700">
             Revenue Trend

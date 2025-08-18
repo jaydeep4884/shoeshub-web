@@ -23,6 +23,7 @@ function HeroSection({ videoSrc, heading, subHeading, subtitle }) {
         ref={videoRef}
         className="absolute top-0 left-0 w-full h-full object-cover z-0 pointer-events-none"
         autoPlay
+        preload="none"
         loop
         muted
         playsInline

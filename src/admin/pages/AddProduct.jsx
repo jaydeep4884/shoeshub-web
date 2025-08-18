@@ -161,7 +161,7 @@ const Category = () => {
 
   const ProductFormFields = ({ setFieldValue, values }) => {
     const textFields = [
-      { name: "pro_name", placeholder: "Product Name", label: "Product Name"},
+      { name: "pro_name", placeholder: "Product Name", label: "Product Name" },
       { name: "type", placeholder: "Product Type", label: "Product Type" },
       {
         name: "typeofheel",
@@ -329,7 +329,8 @@ const Category = () => {
                 <img
                   src={product.images?.[0]}
                   alt={product.pro_name}
-                  className="w-full  h-[15rem] sm:h-40 object-cover rounded mb-2"
+                  className="w-full  h-[15rem] sm:h-40 object-cover rounded mb-2 "
+                  loading="lazy"
                 />
               </div>
               <h3 className="text-lg font-semibold line-clamp-1">

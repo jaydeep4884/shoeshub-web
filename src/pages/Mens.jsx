@@ -11,7 +11,7 @@ import { Link } from "react-router";
 import ProductSkeleton from "../components/ui/ProductSkeleton";
 import LikeButton from "../components/ui/LikeButton";
 import HeroSection from "../components/layout/Hero";
-import MenVideo from "../components/img/Banners/mens-video (2).mp4";
+import MenVideo from "../components/img/Banners/mens-video.mp4";
 import BgBody from "../components/ui/BgBody";
 
 function Mens() {
