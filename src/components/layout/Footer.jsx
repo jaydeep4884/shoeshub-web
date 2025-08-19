@@ -1,12 +1,13 @@
-import { Box, Button, Container } from "@mui/material";
 import React from "react";
-import InputBox from "../ui/InputBox";
-import { Field, Form, Formik } from "formik";
-import footerBrand from "../img/logo/footer-brand.svg";
-import mastercard from "../img/Mastercard.png";
-import paypal from "../img/PayPal.png";
-import visa from "../img/Visa.png";
+import { Image, Input, Typography } from "antd";
+import footerBrand from "../img/logo/mylogo.png";
 import { Link } from "react-router";
+import {
+  FaFacebookF,
+  FaXTwitter,
+  FaSquareInstagram,
+  FaRss,
+} from "react-icons/fa6";
 
 const footerLinks = [
   {
@@ -33,7 +34,7 @@ const footerLinks = [
   {
     title: "Customer Policies",
     FooterData: [
-      { name: "Contact Us", link: "/contact" }, 
+      { name: "Contact Us", link: "/contact" },
       { name: "FAQ", link: "/*" },
       { name: "T&C", link: "/*" },
       { name: "Terms Of Use", link: "/*" },
@@ -52,87 +53,100 @@ const footerLinks = [
 ];
 
 const Footer = () => {
-  const handleSubmit = (values, { resetForm }) => {
-    console.log(values);
-    resetForm();
-  };
+  const linkStyle =
+    "text-gray-400 hover:text-white transition-colors duration-300 cursor-pointer text-sm";
+
+  const sectionTitle =
+    "text-white/90 font-semibold tracking-wide text-sm uppercase mb-4";
+
+  const socialStyle =
+    "w-10 h-10 flex items-center justify-center rounded-full border border-white/20 bg-white/5 backdrop-blur-sm hover:bg-blue-500 hover:border-blue-500 hover:text-white text-gray-300 transition-all duration-300";
 
   return (
-    <footer
-      className="w-full !bg-[#faeded]"
-      style={{
-        borderTop: "10px solid",
-        borderImage:
-          " linear-gradient(to right, rgba(151, 71, 255, 1), rgba(255, 165, 0, 1)) 1",
-      }}
-    >
-      <Container maxWidth="lg">
-        <Box className="py-10 sm:py-14">
-          <Box className="flex flex-col lg:flex-row gap-10">
-            {/* Footer Left */}
-            <Box className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:w-[60%] gap-8 ">
-              {footerLinks.map((section, index) => (
-                <Box key={index}>
-                  <h3 className="font-semibold text-gray-500 mb-2 sm:text-base text-sm">
-                    {section.title}
-                  </h3>
-                  <ul className="space-y-2">
-                    {section.FooterData.map((el, idx) => (
-                      <li key={idx}>
-                        <Link
-                          to={el.link}
-                          className="text-gray-400 hover:text-black transition-colors sm:text-base text-sm duration-200 "
-                        >
-                          {el.name}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </Box>
-              ))}
-            </Box>
+    <footer className="relative bg-gradient-to-br from-gray-900 via-gray-950 to-black text-white overflow-hidden">
+      {/* Decorative gradient blobs */}
+      <div className="absolute top-0 left-0 w-96 h-96 bg-blue-600/20 rounded-full blur-3xl animate-pulse"></div>
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-fuchsia-600/20 rounded-full blur-3xl animate-pulse"></div>
 
-            {/* Footer Right */}
-            <Box className="flex-1 sm:w-full md:w-full !lg:w-[40%]">
-              <Box className="mb-10">
-                <Formik initialValues={{ email: "" }} onSubmit={handleSubmit}>
-                  <Form className="flex flex-col sm:flex-row gap-4 sm:items-stretch">
-                    <Field
-                      name="email"
-                      type="email"
-                      placeholder="Enter your email"
-                      component={InputBox}
-                    />
-                    <Button
-                      type="submit"
-                      variant="contained"
-                      className="font-semibold !px-8"
-                    >
-                      Subscribe
-                    </Button>
-                  </Form>
-                </Formik>
-              </Box>
+      <div className="relative pt-16 pb-10 px-6 lg:px-12">
+        {/* Top Section */}
+        <div className="w-full grid grid-cols-1 md:grid-cols-6 gap-14">
+          {/* Brand + Description */}
+          <div className="md:col-span-2">
+            <Image
+              src={footerBrand}
+              alt="Brand Logo"
+              className="mb-4 !h-[70px] !w-[150px] object-cover"
+            />
+            <p className="text-gray-400 text-base leading-7 ">
+              <span className="font-medium text-white">Unisole</span> Step into
+              comfort, step into style. From everyday wear to statement looks,
+              we’ve got the perfect sole for every walk of life.
+            </p>
+          </div>
 
-              <Box className="flex justify-between sm:flex-row  md:flex-row  sm:items-center gap-6">
-                <Link to="/home">
-                  <img src={footerBrand} alt="Unisole Logo" />
+          {/* Footer Links */}
+          <div className="md:col-span-4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-10 text-sm">
+            {footerLinks.map((section, index) => (
+              <div key={index}>
+                <h4 className={sectionTitle}>{section.title}</h4>
+                <ul className="space-y-3">
+                  {section.FooterData.map((el, idx) => (
+                    <li key={idx}>
+                      <Link to={el.link} className={linkStyle}>
+                        {el.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Newsletter */}
+        <div className="mt-10 max-w-[800px] mx-auto border-t border-white/10 pt-8 text-center">
+          <Typography.Title
+            level={3}
+            className="!text-white text-xl font-semibold mb-3"
+          >
+            Stay Updated
+          </Typography.Title>
+          <p className="text-gray-400 mb-8 text-sm">
+            Join our newsletter – Be the first to know about new collections &
+            deals.
+          </p>
+          <div className="flex flex-col sm:flex-row items-center gap-4 justify-center">
+            <Input
+              type="email"
+              placeholder="Enter your email"
+              className="w-full sm:w-auto flex-1 rounded-full border border-white/20 bg-white/10 backdrop-blur-md px-5 py-3 text-sm text-black placeholder-gray-400 "
+            />
+            <button className="px-8 py-3 rounded-full bg-gradient-to-r from-blue-600 to-fuchsia-600 hover:from-blue-500 hover:to-pink-500 text-white text-sm font-medium shadow-lg shadow-blue-600/20 transition-all duration-300">
+              Subscribe
+            </button>
+          </div>
+        </div>
+
+        {/* Bottom Bar */}
+        <div className="mt-10 border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-400">
+          {/* Socials */}
+          <div className="flex gap-4 mb-6 md:mb-0">
+            {[FaFacebookF, FaXTwitter, FaSquareInstagram, FaRss].map(
+              (Icon, i) => (
+                <Link key={i} to="/home" className={socialStyle}>
+                  <Icon className="w-4 h-4" />
                 </Link>
-                <Box>
-                  <p className="font-semibold mb-2 text-sm sm:text-base">
-                    Payment Methods
-                  </p>
-                  <Box className="flex gap-4">
-                    <img src={mastercard} alt="Mastercard" />
-                    <img src={paypal} alt="PayPal" />
-                    <img src={visa} alt="Visa" />
-                  </Box>
-                </Box>
-              </Box>
-            </Box>
-          </Box>
-        </Box>
-      </Container>
+              )
+            )}
+          </div>
+          <p className="text-center">
+            © {new Date().getFullYear()}{" "}
+            <span className="text-white font-medium">Unisole</span>. All Rights
+            Reserved
+          </p>
+        </div>
+      </div>
     </footer>
   );
 };

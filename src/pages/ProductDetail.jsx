@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Box, Button, IconButton, Rating } from "@mui/material";
-import { Tooltip } from "antd";
+import { Image, Tooltip } from "antd";
 import { Link, useNavigate, useParams } from "react-router";
 import { motion } from "framer-motion";
 import {
@@ -174,15 +174,20 @@ function ProductDetail() {
                   ))}
                 </Box>
 
-                <motion.img
+                <motion.div
                   key={selectedImage}
-                  src={selectedImage}
-                  alt="Selected"
-                  className="w-full max-h-[360px] sm:max-h-auto object-contain"
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
+                  className="flex items-center justify-center w-full"
                   transition={{ duration: 0.5 }}
-                />
+                >
+                  <Image
+                    key={selectedImage}
+                    src={selectedImage}
+                    alt="Selected"
+                    className="w-full max-h-[360px] sm:max-h-auto object-contain"
+                  />
+                </motion.div>
               </Box>
 
               {/* Right Side - Details */}

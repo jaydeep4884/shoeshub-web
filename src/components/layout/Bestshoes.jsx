@@ -49,10 +49,12 @@ function Bestshoes() {
           {loading ? (
             <ProductSkeleton />
           ) : (
-            data.map((product) => (
+            data.map((product, index) => (
               <div
                 key={product._id}
-                className="relative bg-white  rounded-xl hover:shadow-lg transition p-3 sm:p-4 flex flex-col"
+                className={`relative bg-white p-3 sm:p-4 flex flex-col overflow-hidden hover:shadow-lg rounded-2xl group transform transition duration-300 ${
+                  index % 2 === 0 ? "-rotate-2" : "rotate-2"
+                } hover:rotate-0`}
               >
                 <Link to={`/product/${product._id}`}>
                   <div className="w-full h-[160px] sm:h-[180px] md:h-[200px] flex items-center justify-center mb-3">
