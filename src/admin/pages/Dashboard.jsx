@@ -108,7 +108,7 @@ const Dashboard = () => {
     {
       icon: <DollarOutlined />,
       label: "Total Revenue",
-      value: `$${totalRevenue.toLocaleString()}`,
+      value: `₹${totalRevenue.toLocaleString()}`,
     },
   ];
 
