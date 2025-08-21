@@ -5,20 +5,21 @@ import { Box } from "@mui/material";
 import { motion } from "framer-motion";
 import { Rate, Typography } from "antd";
 import axios from "axios";
-import { token } from "../assets/contexts";
+import { baseUrl, token } from "../assets/contexts";
 import Loader from "../components/ui/Loader";
 import PageContainer from "../components/ui/PageContainer";
 
 function Favorite() {
   const [wishlistData, setWishlistData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const Token = useContext(token);
+  const Token = useContext(token, baseUrl);
+  const apiUrl = useContext(baseUrl);
 
   const getWishlistData = async () => {
     setLoading(true);
     try {
       await axios
-        .get("https://generateapi.onrender.com/api/wishlist", {
+        .get(`${apiUrl}/wishlist`, {
           headers: { Authorization: Token },
         })
         .then((res) => {

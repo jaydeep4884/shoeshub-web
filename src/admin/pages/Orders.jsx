@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Typography, Image } from "antd";
 import axios from "axios";
-import { token } from "../../assets/contexts";
+import { baseUrl, token } from "../../assets/contexts";
 import Loader from "../../components/ui/Loader";
 import toast, { Toaster } from "react-hot-toast";
 
@@ -9,16 +9,14 @@ const Orders = () => {
   const [orderData, setOrderData] = useState([]);
   const [loading, setLoading] = useState(false);
   const Token = useContext(token);
+  const apiUrl = useContext(baseUrl);
 
   const fetchOrderData = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(
-        "https://generateapi.onrender.com/api/Payment-Details",
-        {
-          headers: { Authorization: Token },
-        }
-      );
+      const res = await axios.get(`${apiUrl}/Payment-Details`, {
+        headers: { Authorization: Token },
+      });
       setOrderData(res.data?.Data || []);
       console.log(res.data?.Data);
     } catch (error) {
@@ -30,7 +28,7 @@ const Orders = () => {
   const cancelOrder = async (id) => {
     try {
       await axios
-        .delete(`https://generateapi.onrender.com/api/Payment-Details/${id}`, {
+        .delete(`${apiUrl}/Payment-Details/${id}`, {
           headers: { Authorization: Token },
         })
         .then(() => {

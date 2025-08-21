@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useFormikContext } from "formik";
 import axios from "axios";
-import { token } from "../../assets/contexts";
+import { baseUrl, token } from "../../assets/contexts";
 
 function Applycoup() {
   // eslint-disable-next-line
@@ -11,17 +11,15 @@ function Applycoup() {
   const [coupons, setCoupons] = useState([]);
   const [enteredCode, setEnteredCode] = useState("");
   const Token = useContext(token);
+  const apiUrl = useContext(baseUrl);
 
   const fetchCouponCode = async () => {
     try {
-      const res = await axios.get(
-        "https://generateapi.onrender.com/api/Coupon",
-        {
-          headers: {
-            Authorization: Token,
-          },
-        }
-      );
+      const res = await axios.get(`${apiUrl}/Coupon`, {
+        headers: {
+          Authorization: Token,
+        },
+      });
 
       setCoupons(res.data?.Data || []);
     } catch (err) {

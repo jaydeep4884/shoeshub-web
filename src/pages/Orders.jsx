@@ -5,7 +5,7 @@ import Bestshoes from "../components/layout/Bestshoes";
 import Gift from "../components/layout/Gift";
 import ProductDetailSkeleton from "../components/ui/ProductDetailSkeleton";
 import axios from "axios";
-import { token } from "../assets/contexts";
+import { baseUrl, token } from "../assets/contexts";
 import { motion } from "framer-motion";
 import { Card, Steps, Typography, Space, Row, Col, Divider, Tag } from "antd";
 import { CheckCircleOutlined } from "@ant-design/icons";
@@ -20,15 +20,15 @@ const Orders = () => {
   const [orderData, setOrderData] = useState([]);
   const [loading, setLoading] = useState(false);
   const Token = useContext(token);
+  const apiUrl = useContext(baseUrl);
 
   useEffect(() => {
     const fetchOrders = async () => {
       setLoading(true);
       try {
-        const { data } = await axios.get(
-          "https://generateapi.onrender.com/api/Payment-Details",
-          { headers: { Authorization: Token } }
-        );
+        const { data } = await axios.get(`${apiUrl}/Payment-Detail`, {
+          headers: { Authorization: Token },
+        });
         setOrderData(data.Data);
       } catch {
         toast.error("No Any Orders Found !!");

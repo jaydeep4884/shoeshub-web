@@ -7,7 +7,7 @@ import {
 } from "@ant-design/icons";
 import { Field, Form, Formik } from "formik";
 import axios from "axios";
-import { token } from "../../assets/contexts";
+import { baseUrl, token } from "../../assets/contexts";
 import Loader from "../../components/ui/Loader";
 
 const Category = () => {
@@ -15,18 +15,16 @@ const Category = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const Token = useContext(token);
+  const apiUrl = useContext(baseUrl);
   const [id, setId] = useState(null);
   const [initialValues, setInitialValues] = useState({ cat_name: "" });
 
   const fetchCategories = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(
-        "https://generateapi.onrender.com/api/category",
-        {
-          headers: { Authorization: Token },
-        }
-      );
+      const res = await axios.get(`${apiUrl}/category`, {
+        headers: { Authorization: Token },
+      });
       setData(res.data?.Data || []);
     } catch (err) {
       console.error("Fetch error:", err);
@@ -43,18 +41,14 @@ const Category = () => {
     };
     try {
       if (id) {
-        await axios.patch(
-          `https://generateapi.onrender.com/api/category/${id}`,
-          payload,
-          { headers: { Authorization: Token } }
-        );
+        await axios.patch(`${apiUrl}/category/${id}`, payload, {
+          headers: { Authorization: Token },
+        });
         message.success("Category Updated ✅");
       } else {
-        await axios.post(
-          "https://generateapi.onrender.com/api/category",
-          payload,
-          { headers: { Authorization: Token } }
-        );
+        await axios.post(`${apiUrl}/category`, payload, {
+          headers: { Authorization: Token },
+        });
         message.success("Category Added ✅");
       }
       fetchCategories();
@@ -70,10 +64,9 @@ const Category = () => {
 
   const deleteCategory = async (id) => {
     try {
-      await axios.delete(
-        `https://generateapi.onrender.com/api/category/${id}`,
-        { headers: { Authorization: Token } }
-      );
+      await axios.delete(`${apiUrl}/category/${id}`, {
+        headers: { Authorization: Token },
+      });
       message.success("Category Deleted ✅");
       fetchCategories();
     } catch (err) {
@@ -138,7 +131,7 @@ const Category = () => {
       </div>
 
       <Table
-      className=""
+        className=""
         dataSource={data}
         columns={columns}
         locale={{

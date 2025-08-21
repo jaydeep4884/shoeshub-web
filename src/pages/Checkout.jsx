@@ -21,7 +21,7 @@ import nagadPay from "../components/img/payment logo/nagad-pay.svg";
 import masterPay from "../components/img/payment logo/mastercard-pay.svg";
 import Breadcrumb from "../components/ui/Breadcrumb";
 import { useNavigate, useParams } from "react-router";
-import { token } from "../assets/contexts";
+import { baseUrl, token } from "../assets/contexts";
 import axios from "axios";
 import ProductDetailSkeleton from "../components/ui/ProductDetailSkeleton";
 import PageContainer from "../components/ui/PageContainer";
@@ -31,6 +31,7 @@ const Checkout = () => {
   const [product, setProduct] = useState(null);
   const [selectedImage, setSelectedImage] = useState("");
   const Token = useContext(token);
+  const apiUrl = useContext(baseUrl);
   const { id } = useParams();
   localStorage.setItem("ProductId", JSON.stringify(id));
 
@@ -89,7 +90,7 @@ const Checkout = () => {
 
     try {
       await axios
-        .post("https://generateapi.onrender.com/api/Payment-Details", payload, {
+        .post(`${apiUrl}/Payment-Details`, payload, {
           headers: { Authorization: Token },
         })
         .then(() => {
@@ -105,10 +106,9 @@ const Checkout = () => {
   // Fetching Single Product
   const fetchProduct = async () => {
     try {
-      const res = await axios.get(
-        `https://generateapi.onrender.com/api/Product-Detail`,
-        { headers: { Authorization: Token } }
-      );
+      const res = await axios.get(`${apiUrl}/Product-Detail`, {
+        headers: { Authorization: Token },
+      });
       const productData = res.data.Data;
       const singleProduct = productData.find((item) => item._id === id);
 

@@ -15,7 +15,7 @@ import axios from "axios";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import Breadcrumb from "../components/ui/Breadcrumb";
-import { Context, token } from "../assets/contexts";
+import { baseUrl, Context, token } from "../assets/contexts";
 import Loader from "../components/ui/Loader";
 import Review from "../components/layout/Review";
 import Gift from "../components/layout/Gift";
@@ -31,6 +31,7 @@ function ProductDetail() {
   const [likedProducts, setLikedProducts] = useState({});
   const { coupon } = useContext(Context);
   const Token = useContext(token);
+  const apiUrl = useContext(baseUrl);
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -45,7 +46,7 @@ function ProductDetail() {
     setLoading(true);
     try {
       await axios
-        .post("https://generateapi.onrender.com/api/Cart", values, {
+        .post(`${apiUrl}/Cart`, values, {
           headers: {
             Authorization: Token,
           },
@@ -87,10 +88,9 @@ function ProductDetail() {
   // Fetching Single Product
   const fetchProduct = async () => {
     try {
-      const res = await axios.get(
-        `https://generateapi.onrender.com/api/Product-Detail/`,
-        { headers: { Authorization: Token } }
-      );
+      const res = await axios.get(`${apiUrl}/Product-Detail/`, {
+        headers: { Authorization: Token },
+      });
       const productData = res.data.Data;
       const singleProduct = productData.find((item) => item._id === id);
       setProduct(singleProduct);
@@ -118,19 +118,14 @@ function ProductDetail() {
 
     try {
       if (!isLiked) {
-        await axios.post(
-          "https://generateapi.onrender.com/api/wishlist",
-          payload,
-          {
-            headers: { Authorization: Token },
-          }
-        );
+        await axios.post(`${apiUrl}/wishlist`, payload, {
+          headers: { Authorization: Token },
+        });
         toast.success("Product Added in Wishlist 😊");
       } else {
-        await axios.delete(
-          `https://generateapi.onrender.com/api/wishlist/${payload.product_id}`,
-          { headers: { Authorization: Token } }
-        );
+        await axios.delete(`${apiUrl}/wishlist/${payload.product_id}`, {
+          headers: { Authorization: Token },
+        });
       }
     } catch (error) {
       console.log(error);

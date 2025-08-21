@@ -22,10 +22,8 @@ import AddProduct from "./admin/pages/AddProduct";
 import AdminOrders from "./admin/pages/Orders";
 import Users from "./admin/pages/Users";
 import Contacts from "./admin/pages/Contacts";
-import Settings from "./admin/pages/Settings";
 import Category from "./admin/pages/Category";
 import AdminLogin from "./admin/components/AdminLogin";
-// import PrivateRoutes from "./utils/PrivateRoutes";
 import ContactUs from "./pages/ContactUs";
 import Wishlist from "./admin/pages/Wishlist";
 
@@ -65,7 +63,7 @@ function App() {
           <Route path="orders" element={<AdminOrders />} />
           <Route path="users" element={<Users />} />
           <Route path="contacts" element={<Contacts />} />
-          <Route path="settings" element={<Settings />} />
+         
         </Route>
       )}
 

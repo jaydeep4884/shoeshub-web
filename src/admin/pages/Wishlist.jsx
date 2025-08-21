@@ -1,6 +1,6 @@
 import { Popconfirm, Rate, Typography } from "antd";
 import React, { useContext, useEffect, useState } from "react";
-import { token } from "../../assets/contexts";
+import { baseUrl, token } from "../../assets/contexts";
 import axios from "axios";
 import Loader from "../../components/ui/Loader";
 import { QuestionCircleOutlined } from "@ant-design/icons";
@@ -13,12 +13,13 @@ function Wishlist() {
   const [wishlistData, setWishlistData] = useState([]);
   const [loading, setLoading] = useState(false);
   const Token = useContext(token);
+  const apiUrl = useContext(baseUrl);
 
   const getWishlistData = async () => {
     setLoading(true);
     try {
       await axios
-        .get("https://generateapi.onrender.com/api/wishlist", {
+        .get(`${apiUrl}/wishlist`, {
           headers: { Authorization: Token },
         })
         .then((res) => {
@@ -35,7 +36,7 @@ function Wishlist() {
     console.log(id);
     try {
       await axios
-        .delete(`https://generateapi.onrender.com/api/wishlist/${id}`, {
+        .delete(`${apiUrl}/wishlist/${id}`, {
           headers: {
             Authorization: Token,
           },

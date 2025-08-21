@@ -25,10 +25,11 @@ import {
 import axios from "axios";
 import dayjs from "dayjs";
 import ProductionQuantityLimitsIcon from "@mui/icons-material/ProductionQuantityLimits";
-import { token } from "../../assets/contexts";
+import { baseUrl, token } from "../../assets/contexts";
 
 const Dashboard = () => {
   const Token = useContext(token);
+  const apiUrl = useContext(baseUrl);
   const [counts, setCounts] = useState({
     orders: 0,
     products: 0,
@@ -39,12 +40,9 @@ const Dashboard = () => {
   const [totalRevenue, setTotalRevenue] = useState(0);
 
   const fetchOrders = async () => {
-    const res = await axios.get(
-      "https://generateapi.onrender.com/api/Payment-Details",
-      {
-        headers: { Authorization: Token },
-      }
-    );
+    const res = await axios.get(`${apiUrl}/Payment-Details`, {
+      headers: { Authorization: Token },
+    });
 
     const orders = res.data?.Data || [];
     let totalRevenue = 0;
@@ -68,23 +66,17 @@ const Dashboard = () => {
   };
 
   const fetchProducts = async () => {
-    const res = await axios.get(
-      "https://generateapi.onrender.com/api/Product-Detail",
-      {
-        headers: { Authorization: Token },
-      }
-    );
+    const res = await axios.get(`${apiUrl}/Product-Detail`, {
+      headers: { Authorization: Token },
+    });
     const products = res.data?.Data || [];
     setCounts((prev) => ({ ...prev, products: products.length }));
   };
 
   const fetchFeedbacks = async () => {
-    const res = await axios.get(
-      "https://generateapi.onrender.com/api/contact",
-      {
-        headers: { Authorization: Token },
-      }
-    );
+    const res = await axios.get(`${apiUrl}/contact`, {
+      headers: { Authorization: Token },
+    });
     const feedbacks = res.data?.Data || [];
     setCounts((prev) => ({ ...prev, feedbacks: feedbacks.length }));
   };
@@ -202,7 +194,7 @@ const Dashboard = () => {
           <ResponsiveContainer width="100%" height={300}>
             <ComposedChart data={monthlyData}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="date" hide/>
+              <XAxis dataKey="date" hide />
               <YAxis />
               <Tooltip />
               <Legend />

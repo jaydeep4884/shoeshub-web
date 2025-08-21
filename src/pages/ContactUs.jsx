@@ -12,7 +12,7 @@ import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import Feature from "../components/layout/Feature";
 import Loader from "../components/ui/Loader";
-import { token } from "../assets/contexts";
+import { baseUrl, token } from "../assets/contexts";
 import PageContainer from "../components/ui/PageContainer";
 
 const inputs = [
@@ -42,6 +42,7 @@ const contactInfo = [
 const ContactUs = () => {
   const [loading, setLoading] = useState(false);
   const Token = useContext(token);
+  const apiUrl = useContext(baseUrl);
   const initialValues = { name: "", email: "", messege: "" };
 
   const handleSubmit = async (values, { resetForm }) => {
@@ -49,7 +50,7 @@ const ContactUs = () => {
     try {
       const user_id = JSON.parse(localStorage.getItem("userId")) || "";
       const { data } = await axios.post(
-        "https://generateapi.onrender.com/api/contact",
+        `${apiUrl}/contact`,
         { ...values, user_id },
         { headers: { Authorization: Token } }
       );

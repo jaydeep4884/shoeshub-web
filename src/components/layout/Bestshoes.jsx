@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Box, Container } from "@mui/material";
 import { Rate, Typography } from "antd";
 import axios from "axios";
-import { token } from "../../assets/contexts";
+import { baseUrl, token } from "../../assets/contexts";
 import { Link } from "react-router";
 import ProductSkeleton from "../ui/ProductSkeleton";
 
@@ -10,17 +10,15 @@ function Bestshoes() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const Token = useContext(token);
+  const apiUrl = useContext(baseUrl);
 
   // Fetch and randomize products
   const fetchProducts = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(
-        "https://generateapi.onrender.com/api/Product-Detail",
-        {
-          headers: { Authorization: Token },
-        }
-      );
+      const res = await axios.get(`${apiUrl}/Product-Detail`, {
+        headers: { Authorization: Token },
+      });
       const products = Array.isArray(res.data.Data) ? res.data.Data : [];
       setData(getRandomProducts(products, 8));
     } catch (err) {

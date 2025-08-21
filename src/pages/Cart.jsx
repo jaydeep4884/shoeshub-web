@@ -16,7 +16,7 @@ import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import Applycoup from "../components/ui/Applycoup";
 import Buttongroup from "../components/ui/Buttongroup";
-import { token } from "../assets/contexts";
+import { baseUrl, token } from "../assets/contexts";
 import Breadcrumb from "../components/ui/Breadcrumb";
 import toast, { Toaster } from "react-hot-toast";
 import { Formik, Form } from "formik";
@@ -30,12 +30,13 @@ function Cart() {
   const [cartData, setCartData] = useState([]);
   const [loading, setLoading] = useState(false);
   const Token = useContext(token);
+  const apiUrl = useContext(baseUrl);
   const navigate = useNavigate();
 
   const fetchCartItems = async () => {
     setLoading(true);
     try {
-      const res = await axios.get("https://generateapi.onrender.com/api/Cart", {
+      const res = await axios.get(`${apiUrl}/Cart`, {
         headers: { Authorization: Token },
       });
       setCartData(res.data?.Data || []);
@@ -63,7 +64,7 @@ function Cart() {
   const deleteCartItem = async (id) => {
     try {
       await axios
-        .delete(`https://generateapi.onrender.com/api/Cart/${id}`, {
+        .delete(`${apiUrl}/Cart/${id}`, {
           headers: { Authorization: Token },
         })
         .then(() => {

@@ -3,7 +3,7 @@ import { Button, Modal, Table, Popconfirm, Space, Input } from "antd";
 import { PlusCircleOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 import { Field, Form, Formik } from "formik";
 import axios from "axios";
-import { token } from "../../assets/contexts";
+import { baseUrl, token } from "../../assets/contexts";
 import Loader from "../../components/ui/Loader";
 import toast, { Toaster } from "react-hot-toast";
 
@@ -17,18 +17,15 @@ const Contacts = () => {
     email: "",
     messege: "",
   });
-
+  const apiUrl = useContext(baseUrl);
   const Token = useContext(token);
 
   const fetchContacts = async () => {
     setLoading(true);
     try {
-      const { data } = await axios.get(
-        "https://generateapi.onrender.com/api/contact",
-        {
-          headers: { Authorization: Token },
-        }
-      );
+      const { data } = await axios.get(`${apiUrl}/contact`, {
+        headers: { Authorization: Token },
+      });
       setContacts(data?.Data || []);
     } catch (err) {
       console.error("Fetch error:", err);
@@ -46,22 +43,14 @@ const Contacts = () => {
 
     try {
       if (Id) {
-        await axios.patch(
-          `https://generateapi.onrender.com/api/contact/${Id}`,
-          payload,
-          {
-            headers: { Authorization: Token },
-          }
-        );
+        await axios.patch(`${apiUrl}/contact/${Id}`, payload, {
+          headers: { Authorization: Token },
+        });
         toast.success("Feedback Updated ✅");
       } else {
-        await axios.post(
-          "https://generateapi.onrender.com/api/contact",
-          payload,
-          {
-            headers: { Authorization: Token },
-          }
-        );
+        await axios.post(`${apiUrl}/contact`, payload, {
+          headers: { Authorization: Token },
+        });
         toast.success("Feedback Added ✅");
       }
       fetchContacts();
@@ -77,7 +66,7 @@ const Contacts = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`https://generateapi.onrender.com/api/contact/${id}`, {
+      await axios.delete(`${apiUrl}/contact/${id}`, {
         headers: { Authorization: Token },
       });
       toast.success("Feedback Deleted ✅");

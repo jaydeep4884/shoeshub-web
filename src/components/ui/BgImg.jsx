@@ -1,7 +1,7 @@
 import React from "react";
 import bgBody from "../img/Banners/bg-body2.png";
 
-function Background({ children }) {
+function BgImg({ children }) {
   return (
     <div
       className="w-full bg-cover h-auto"
@@ -12,4 +12,4 @@ function Background({ children }) {
   );
 }
 
-export default Background;
+export default BgImg;

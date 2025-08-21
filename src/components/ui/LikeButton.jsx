@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { token } from "../../assets/contexts";
+import { baseUrl, token } from "../../assets/contexts";
 import axios from "axios";
 import { Tooltip } from "antd";
 import { IconButton } from "@mui/material";
@@ -12,6 +12,7 @@ import toast, { Toaster } from "react-hot-toast";
 function LikeButton(props) {
   const [likedProducts, setLikedProducts] = useState({});
   const Token = useContext(token);
+  const apiUrl = useContext(baseUrl);
   const productId = props.pid;
 
   const toggleLike = async (product) => {
@@ -24,25 +25,20 @@ function LikeButton(props) {
 
     try {
       if (!isLiked) {
-        await axios.post(
-          "https://generateapi.onrender.com/api/wishlist",
-          payload,
-          {
-            headers: { Authorization: Token },
-          }
-        );
+        await axios.post(`${apiUrl}/wishlist`, payload, {
+          headers: { Authorization: Token },
+        });
         toast.success("Product Added in Wishlist 😊");
       } else {
-        await axios.delete(
-          `https://generateapi.onrender.com/api/wishlist/${payload.product_id}`,
-          { headers: { Authorization: Token } }
-        );
+        await axios.delete(`${apiUrl}/wishlist/${payload.product_id}`, {
+          headers: { Authorization: Token },
+        });
       }
     } catch (error) {
       console.log(error);
     }
   };
-  
+
   return (
     <div>
       <div className="flex justify-end">

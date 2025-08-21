@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Close, Call as CallIcon, Menu as MenuIcon } from "@mui/icons-material";
 import { Typography } from "antd";
 import axios from "axios";
-import { token } from "../../assets/contexts";
+import { baseUrl, token } from "../../assets/contexts";
 import UserMenu from "../ui/UserMenu";
 import brand from "../img/logo/brand.png";
 import search from "../img/icons/Search-icon.svg";
@@ -23,6 +23,7 @@ const Header = () => {
   const [data, setData] = useState([]);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const Token = useContext(token);
+  const apiUrl = useContext(baseUrl);
   const isAuthenticated = Boolean(localStorage.getItem("token"));
   const location = useLocation();
   const isVideoPage = ["/kids", "/men", "/women", "/couple", "/home"].includes(
@@ -33,7 +34,7 @@ const Header = () => {
     const cached = localStorage.getItem("categories");
     if (cached) setData(JSON.parse(cached));
     axios
-      .get("https://generateapi.onrender.com/api/category", {
+      .get(`${apiUrl}/category`, {
         headers: { Authorization: Token },
       })
       .then((res) => {
@@ -42,6 +43,7 @@ const Header = () => {
         localStorage.setItem("categories", JSON.stringify(categories));
       })
       .catch(console.error);
+    // eslint-disable-next-line
   }, [Token]);
 
   useEffect(() => {

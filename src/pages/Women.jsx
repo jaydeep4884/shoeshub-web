@@ -4,7 +4,7 @@ import Footer from "../components/layout/Footer";
 import Feature from "../components/layout/Feature";
 import Review from "../components/layout/Review";
 import Newsletter from "../components/layout/Newsletter";
-import { token } from "../assets/contexts";
+import { baseUrl, token } from "../assets/contexts";
 import WomenVideo from "../components/img/Banners/women-video.mp4";
 import axios from "axios";
 import { Rate } from "antd";
@@ -18,16 +18,14 @@ function Couple() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const Token = useContext(token);
+  const apiUrl = useContext(baseUrl);
 
   const fetchWomenProducts = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(
-        "https://generateapi.onrender.com/api/Product-Detail",
-        {
-          headers: { Authorization: Token },
-        }
-      );
+      const res = await axios.get(`${apiUrl}/Product-Detail`, {
+        headers: { Authorization: Token },
+      });
       const allProducts = Array.isArray(res.data.Data) ? res.data.Data : [];
       const WomenProducts = allProducts.filter(
         (product) => product.cat_name?.cat_name.toLowerCase() === "women"

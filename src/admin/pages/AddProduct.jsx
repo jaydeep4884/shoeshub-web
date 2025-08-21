@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Field, Form, Formik } from "formik";
 import axios from "axios";
-import { token } from "../../assets/contexts";
+import { baseUrl, token } from "../../assets/contexts";
 import Loader from "../../components/ui/Loader";
 import toast, { Toaster } from "react-hot-toast";
 import {
@@ -32,6 +32,7 @@ const Category = () => {
   const [id, setId] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const Token = useContext(token);
+  const apiUrl = useContext(baseUrl);
 
   const [initialValues, setInitialValues] = useState({
     pro_name: "",
@@ -52,10 +53,10 @@ const Category = () => {
     setLoading(true);
     try {
       const [products, categories] = await Promise.all([
-        axios.get("https://generateapi.onrender.com/api/Product-Detail", {
+        axios.get(`${apiUrl}/Product-Detail`, {
           headers: { Authorization: Token },
         }),
-        axios.get("https://generateapi.onrender.com/api/category", {
+        axios.get(`${apiUrl}/category`, {
           headers: { Authorization: Token },
         }),
       ]);
@@ -82,16 +83,12 @@ const Category = () => {
     try {
       if (id) {
         await axios
-          .patch(
-            `https://generateapi.onrender.com/api/Product-Detail/${id}`,
-            formData,
-            {
-              headers: {
-                Authorization: Token,
-                "Content-Type": "multipart/form-data",
-              },
-            }
-          )
+          .patch(`${apiUrl}/Product-Detail/${id}`, formData, {
+            headers: {
+              Authorization: Token,
+              "Content-Type": "multipart/form-data",
+            },
+          })
           .then(() => {
             toast.success("Product Updated!");
             setId(null);
@@ -101,16 +98,12 @@ const Category = () => {
           });
       } else {
         await axios
-          .post(
-            "https://generateapi.onrender.com/api/Product-Detail/",
-            formData,
-            {
-              headers: {
-                Authorization: Token,
-                "Content-Type": "multipart/form-data",
-              },
-            }
-          )
+          .post(`${apiUrl}/Product-Detail/`, formData, {
+            headers: {
+              Authorization: Token,
+              "Content-Type": "multipart/form-data",
+            },
+          })
           .then((res) => {
             toast.success("Product Added !");
 
@@ -148,10 +141,9 @@ const Category = () => {
 
   const deleteProduct = async (productId) => {
     try {
-      await axios.delete(
-        `https://generateapi.onrender.com/api/Product-Detail/${productId}`,
-        { headers: { Authorization: Token } }
-      );
+      await axios.delete(`${apiUrl}/Product-Detail/${productId}`, {
+        headers: { Authorization: Token },
+      });
       toast.success("Product Deleted!");
       fetchData();
     } catch {
