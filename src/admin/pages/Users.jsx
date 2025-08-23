@@ -14,7 +14,7 @@ const Users = () => {
   const fetchUsers = async () => {
     setLoading(true);
     const res = await axios.get(
-      "https://generateapi.onrender.com/auth/authUser",
+      "https://myapigenerator.onrender.com/auth/authUser",
       {
         headers: { Authorization: Token },
       }

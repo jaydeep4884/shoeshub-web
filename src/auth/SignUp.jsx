@@ -23,7 +23,7 @@ function SignUp() {
     setLoading(true);
     try {
       const res = await axios.post(
-        "https://generateapi.onrender.com/auth/signUp",
+        "https://myapigenerator.onrender.com/auth/signUp",
         values,
         {
           headers: {

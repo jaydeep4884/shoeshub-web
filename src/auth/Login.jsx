@@ -29,7 +29,7 @@ function Login() {
 
     try {
       const res = await axios.post(
-        "https://generateapi.onrender.com/auth/login",
+        "https://myapigenerator.onrender.com/auth/login",
         values,
         {
           headers: {

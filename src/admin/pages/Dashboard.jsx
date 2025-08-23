@@ -83,7 +83,7 @@ const Dashboard = () => {
 
   const fetchUsers = async () => {
     const res = await axios.get(
-      "https://generateapi.onrender.com/auth/authUser",
+      "https://myapigenerator.onrender.com/auth/authUser",
       {
         headers: { Authorization: Token },
       }
