@@ -26,7 +26,7 @@ const Orders = () => {
     const fetchOrders = async () => {
       setLoading(true);
       try {
-        const { data } = await axios.get(`${apiUrl}/Payment-Detail`, {
+        const { data } = await axios.get(`${apiUrl}/Payment-Details`, {
           headers: { Authorization: Token },
         });
         setOrderData(data.Data);
